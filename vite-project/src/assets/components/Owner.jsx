@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import '../../App.css';
 
-const Operations = () => {
+const Owner = () => {
     return(
         <div className="reception-container">
         <section className="header">
@@ -26,4 +26,4 @@ const Operations = () => {
     );
 };
 
-export default Operations;
+export default Owner;
