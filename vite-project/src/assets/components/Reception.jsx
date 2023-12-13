@@ -30,6 +30,7 @@ const Reception = () => {
   };
 
   return (
+    <div className='special'>
     <div className="reception-container">
      <section className="header">
         <div className='lg'>
@@ -114,6 +115,7 @@ const Reception = () => {
         <button type="submit">Submit</button>
       </form>
     </div>
+</div>
 </div>
   );
 };

@@ -7,6 +7,14 @@ body {
   text-align: center;
   margin-top: 100px;
 }
+body .special{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color:#ffffff;
+  text-align: center;
+}
 .logo{
   position:absolute;
   top:0px;
