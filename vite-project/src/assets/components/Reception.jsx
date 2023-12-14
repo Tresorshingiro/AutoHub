@@ -42,10 +42,10 @@ const Reception = () => {
       <NavLink to="/reception" activeClassName="active-link">
        <button className='button'>Car Registration</button>
       </NavLink>
-      <NavLink to="/reception/in-service-vehicles" activeClassName="active-link">
+      <NavLink to="/service" activeClassName="active-link">
        <button className='button'>In-service Vehicles</button>
         </NavLink>
-      <NavLink to="/reception/cleared-vehicles" activeClassName="active-link">
+      <NavLink to="/cleared" activeClassName="active-link">
         <button className='button'>Cleared Vehicles</button>
         </NavLink>
     </div>
