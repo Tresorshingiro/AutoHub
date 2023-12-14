@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../../App.css';
 
 const Reception = () => {
@@ -30,7 +30,7 @@ const Reception = () => {
   };
 
   return (
-    <div className='special'>
+  <div className='special'>
     <div className="reception-container">
      <section className="header">
         <div className='lg'>
@@ -39,83 +39,43 @@ const Reception = () => {
       </section>
     {/* Navigation Links */}
     <div className="nav-links">
-      <Link to="/reception/car-registration">
-       <button className='btn'>Car Registration</button>
-      </Link>
-      <Link to="/reception/in-service-vehicles">
-       <button className='btn'>In-service Vehicles</button>
-        </Link>
-      <Link to="/reception/cleared-vehicles">
-        <button className='btn'>Cleared Vehicles</button>
-        </Link>
+      <NavLink to="/reception" activeClassName="active-link">
+       <button className='button'>Car Registration</button>
+      </NavLink>
+      <NavLink to="/reception/in-service-vehicles" activeClassName="active-link">
+       <button className='button'>In-service Vehicles</button>
+        </NavLink>
+      <NavLink to="/reception/cleared-vehicles" activeClassName="active-link">
+        <button className='button'>Cleared Vehicles</button>
+        </NavLink>
     </div>
     <div className='form'>
       {/* Your form components go here */}
       <form onSubmit={handleSubmit}>
         <label>
-          Brand:
-          <input
-            type="text"
-            name="brand"
-            value={vehicleInfo.brand}
-            onChange={handleChange}
-          />
+        Vehicle Brand:<input type="text" name="brand" value={vehicleInfo.brand} onChange={handleChange}/>
         </label>
-        <br/>
         <label>
-           Brand Type:
-          <input
-            type="text"
-            name="type"
-            value={vehicleInfo.type}
-            onChange={handleChange}
-          />
+        Brand Type:<input type="text" name="type" value={vehicleInfo.type} onChange={handleChange}/>
         </label>
-        <br/>
         <label>
-          Plate No:
-          <input
-            type="text"
-            name="plateNo"
-            value={vehicleInfo.plateNo}
-            onChange={handleChange}
-          />
+        Plate No:<input type="text" name="plateNo" value={vehicleInfo.plateNo} onChange={handleChange}/>
         </label>
-        <br/>
         <label>
-          Owner:
-          <input
-            type="text"
-            name="owner"
-            value={vehicleInfo.owner}
-            onChange={handleChange}
-          />
+          Owner:<input type="text"name="owner" value={vehicleInfo.owner} onChange={handleChange}/>
         </label>
-        <br/>
         <label>
-          Date:
-          <input
-            type="date"
-            name="date"
-            value={vehicleInfo.date}
-            onChange={handleChange}
-          />
+          Engine:<input type="text" name="engine" value={vehicleInfo.engine} onChange={handleChange}/>
         </label>
-        <br/>
         <label>
-          Engine:
-          <input
-            type="text"
-            name="engine"
-            value={vehicleInfo.engine}
-            onChange={handleChange}
-          />
+          Date:<input type="date" name="date" value={vehicleInfo.date} onChange={handleChange}/>
         </label>
+
         <br/>
-        <button type="submit">Submit</button>
+        <button type="submit" className='btn'>Save</button>
       </form>
     </div>
-</div>
+ </div>
 </div>
   );
 };
