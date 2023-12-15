@@ -21,7 +21,7 @@ const Portals = () => {
         </Link>
         <Link to="/signin" className='portal'>
           <div className='iconimage'>
-            <img src="/operations.jpg" alt="operations Icon"/>
+            <img src="/operations.png" alt="operations Icon"/>
           </div>
           <div className='textportal'>
             <h3>Operations</h3>
