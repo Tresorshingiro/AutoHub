@@ -36,6 +36,9 @@ const Reception = () => {
         <div className='lg'>
           <h1>AutoHub</h1>
         </div>
+        <div className='placeholder'>
+          <h3>Reception</h3>
+        </div>
       </section>
     {/* Navigation Links */}
     <div className="nav-links">

@@ -12,6 +12,7 @@ body .special{
   padding:0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+  height: fit-content;
   background-color:#ffffff;
   text-align: center;
 }
@@ -226,4 +227,17 @@ button {
 .nav-links a.active-link {
   background-color: #23AE00;
   color:#fff
+}
+.placeholder{
+  position:absolute;
+  display: flex;
+  margin-left:500px;
+  margin-top: 44px;
+  padding:20px;
+  height:15px;
+  width:150px;
+  align-items: center;
+  background-color: #959393;
+  color: #23AE00;
+
 }
