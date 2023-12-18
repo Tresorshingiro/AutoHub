@@ -3,18 +3,8 @@ body {
   padding:0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
-  background-color: #AFFF9B;
   text-align: center;
   margin-top: 100px;
-}
-body .special{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  height: fit-content;
-  background-color:#ffffff;
-  text-align: center;
 }
 .logo{
   position:absolute;
@@ -22,7 +12,7 @@ body .special{
   margin-left: 500px;
   align-items: center;
   width:40%;
-  height:100px;
+  height:10vh;
   color:#ffffff;
   border-radius: 0px 0px 153px 153px;
   background-color:#23AE00;
@@ -36,7 +26,7 @@ body .special{
   padding: 20px;
   background-color: #ffffff;
   border-radius: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0.5rem 0.5rem 1.5rem 1.5rem rgba(0,0,0,.1);
 }
 
 .portal-container {
@@ -50,7 +40,7 @@ body .special{
   text-decoration: none;
   color:black;
   height: 130px;
-  min-width: 100px;
+  min-width: 95px;
   padding: 10px 12px;
   margin: 15px;
   cursor: pointer;
@@ -79,9 +69,11 @@ body .special{
 }
 
 .btn-container {
-  display: flex;
-  margin-top: 3rem;
+  display:flex;
   justify-content: space-between;
+  margin-left:120px;
+  margin-right: 120px;
+  margin-top: 3rem;
 }
 button {
   font-size: 14px;
@@ -105,9 +97,6 @@ button {
   font-size: 1rem;
   margin-top: 1rem; 
 }
-.btn:not(:last-child) {
-  margin-right: 28rem; 
-}
 .btn:hover {
   background-color: #afff9b;
   color: black;
@@ -126,7 +115,7 @@ button {
   gap:20px;
   background-color: #ffffff;
   border-radius: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0.5rem 0.5rem 1.5rem 1.5rem rgba(0,0,0,.1);
 }
 .signin-container a{
   text-decoration: none;
@@ -138,7 +127,7 @@ button {
 .signin-container input{
   height:30px;
 }
-.reception-container {
+.container {
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -191,7 +180,7 @@ button {
   padding: 10px;
 }
 
-.form {
+.box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -200,19 +189,27 @@ button {
   height: 550px;
   margin-left:450px ;
   padding: 60px;
+  box-shadow: 0.5rem  1.5rem rgba(0,0,0,.1);
   border: 1px solid #ddd;
   border-radius: 24px 0px 0px 24px;
   box-sizing: border-box;
 }
 
-.form label {
+.box label {
   display: flex;
   padding:10px;
 }
-
-.form button {
+.box button {
   display:flex;
   /* Additional styling for the button if needed */
+}
+.box .row{
+  padding:2px;
+  font-size: 1rem;
+  color:#333;
+  text-transform: none;
+  border:.1rem solid rgba(0,0,0,.1);
+  border-radius: .5rem;
 }
 .button{
   display: inline-block;
@@ -224,7 +221,7 @@ button {
   font-size: 1rem;
   margin-top: 1rem;
 }
-.nav-links a.active-link {
+.nav-links .button:hover {
   background-color: #23AE00;
   color:#fff
 }
@@ -237,7 +234,58 @@ button {
   height:15px;
   width:150px;
   align-items: center;
-  background-color: #959393;
+  background-color: rgba(0,0,0,.1);
   color: #23AE00;
 
+}
+.container .portal-container{
+  display: flex;
+  margin-left: 400px;
+}
+
+
+
+/* Original styles remain above this point */
+
+/* Media query for screens up to 768px wide */
+@media only screen and (max-width: 768px)  and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
+    height: auto; /* Adjust the height for smaller screens */
+    padding: 10px;
+  }
+
+  .nav-links {
+    position: static;
+    width: 100%;
+    top: 0;
+  }
+
+  .lg {
+    width: 100%;
+  }
+
+  .form {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .box {
+    margin-left: 0;
+    border-radius: 0;
+    padding: 20px; /* Adjust padding for smaller screens */
+  }
+
+  .btn-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .btn {
+    margin-right: 0;
+  }
 }

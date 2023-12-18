@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import '../../App.css';
 
-const Management = () => {
+const Inservice = () => {
     return(
         <div className="container">
         <section className="header">
@@ -12,7 +12,7 @@ const Management = () => {
          </section>
        {/* Navigation Links */}
        <div className="nav-links">
-         <Link to="/reception">
+         <Link to="/car-registration">
           <button className='button'>Car Registration</button>
          </Link>
          <Link to="/inservice">
@@ -22,8 +22,9 @@ const Management = () => {
            <button className='button'>Cleared Vehicles</button>
            </Link>
        </div>
+       <div className='box'></div>
        </div>
     );
 };
 
-export default Management;
+export default Inservice;

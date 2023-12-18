@@ -8,6 +8,7 @@ import Admin from './assets/components/Admin';
 import Management from './assets/components/Management';
 import Operations from './assets/components/Operations';
 import Owner from './assets/components/Owner';
+import Inservice from './assets/components/Inservice';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/management" element={<Management />} />
       <Route path="/operations" element={<Operations />} />
       <Route path="/owner" element={<Owner />} />
+      <Route path="/inservice" element={<Inservice/>}/>
       </Routes>
     </Router>
   );

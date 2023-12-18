@@ -43,10 +43,11 @@ const Portals = () => {
             <h3>Accountant</h3>
           </div>
         </Link>
+      </div>
       
   
       <div className='btn-container'>
-        <Link to="/signin">
+        <Link to="/admin">
         <button className='btn'>
           Administration 
         </button>
@@ -57,7 +58,6 @@ const Portals = () => {
         </button>
         </Link>
 
-      </div>
       </div>
     </div>
   </div>

@@ -4,8 +4,7 @@ import '../../App.css';
 
 const Operations = () => {
     return(
-      <div className='special'>
-        <div className="reception-container">
+        <div className="container">
         <section className="header">
            <div className='lg'>
              <h1>AutoHub</h1>
@@ -14,17 +13,16 @@ const Operations = () => {
        {/* Navigation Links */}
        <div className="nav-links">
          <Link to="/service">
-          <button className='btn'>In-Service Vehicles</button>
+          <button className='button'>In-Service Vehicles</button>
          </Link>
          <Link to="/quotation">
-          <button className='btn'>Quotation List</button>
+          <button className='button'>Quotation List</button>
            </Link>
          <Link to="/cleared">
-           <button className='btn'>Cleared Vehicles</button>
+           <button className='button'>Cleared Vehicles</button>
            </Link>
        </div>
        </div>
-  </div>
     );
 };
 
