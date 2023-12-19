@@ -9,17 +9,30 @@ const Owner = () => {
            <div className='lg'>
              <h1>AutoHub</h1>
            </div>
+           <div className='placeholder'>
+             <h3>Owner</h3>
+           </div>
+           <div className="user-icon">
+          <img src="/user.png" alt="User Icon" />
+        </div>
          </section>
        {/* Navigation Links */}
        <div className="nav-links">
-         <Link to="/reception/car-registration">
-          <button className='button'>Car Registration</button>
+       <div className="user-icon">
+          <img src="/user.png" alt="User Icon" />
+          <h2>Owner</h2>
+        </div>
+         <Link to="/#">
+          <button className='button'>Manage Users</button>
          </Link>
-         <Link to="/reception/in-service-vehicles">
-          <button className='button'>In-service Vehicles</button>
+         <Link to="/#">
+          <button className='button'>Manage Services</button>
            </Link>
-         <Link to="/reception/cleared-vehicles">
-           <button className='button'>Cleared Vehicles</button>
+         <Link to="/#">
+           <button className='button'>Updates</button>
+           </Link>
+           <Link to="/#">
+            <button className='button'>Users</button>
            </Link>
        </div>
        </div>
