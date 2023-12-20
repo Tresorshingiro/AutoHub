@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import '../../App.css';
 
 const Management = () => {
@@ -22,15 +21,9 @@ const Management = () => {
           <img src="/user.png" alt="User Icon" />
           <h2>Management</h2>
         </div>
-         <Link to="/reception">
           <button className='button'>Car Registration</button>
-         </Link>
-         <Link to="/inservice">
           <button className='button'>In-service Vehicles</button>
-           </Link>
-         <Link to="/cleared-vehicles">
            <button className='button'>Cleared Vehicles</button>
-           </Link>
        </div>
        </div>
     );

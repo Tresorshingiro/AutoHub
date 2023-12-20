@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import '../../App.css';
 
 const Owner = () => {
@@ -22,18 +21,10 @@ const Owner = () => {
           <img src="/user.png" alt="User Icon" />
           <h2>Owner</h2>
         </div>
-         <Link to="/#">
           <button className='button'>Manage Users</button>
-         </Link>
-         <Link to="/#">
           <button className='button'>Manage Services</button>
-           </Link>
-         <Link to="/#">
            <button className='button'>Updates</button>
-           </Link>
-           <Link to="/#">
             <button className='button'>Users</button>
-           </Link>
        </div>
        </div>
     );

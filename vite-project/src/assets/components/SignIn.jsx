@@ -12,11 +12,9 @@ const SignIn = () =>{
             <input type="password"name="password"id="password"/>
             <br/>
             <a href="#">Forgot Password</a>
-            <Link to="/reception">
                 <div className='btn'>
                     Sign In
                 </div>
-            </Link>
         </div>
     );
 };

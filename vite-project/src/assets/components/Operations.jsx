@@ -22,15 +22,9 @@ const Operations = () => {
           <img src="/user.png" alt="User Icon" />
           <h2>Operations</h2>
         </div>
-         <Link to="/service">
           <button className='button'>In-Service Vehicles</button>
-         </Link>
-         <Link to="/quotation">
           <button className='button'>Quotation List</button>
-           </Link>
-         <Link to="/cleared">
            <button className='button'>Cleared Vehicles</button>
-           </Link>
        </div>
        </div>
     );
