@@ -10,6 +10,9 @@ const Reception = () => {
     owner: '',
     date: '',
     engine: '',
+    Tel:'',
+    email:'',
+    model:'',
   });
 
   // Define a function to handle changes in the form
@@ -64,10 +67,19 @@ const Reception = () => {
         <input type="text" name="plateNo" placeholder='Plate No'className='row' value={vehicleInfo.plateNo} onChange={handleChange}/>
         </label>
         <label>
+        <input type="text" name="engine" placeholder='Engine'className='row' value={vehicleInfo.engine} onChange={handleChange}/>
+        </label>
+        <label>
+        <input type="text"name="Model" placeholder='Model Year'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        </label>
+        <label>
         <input type="text"name="owner" placeholder='Owner'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
         </label>
         <label>
-        <input type="text" name="engine" placeholder='Engine'className='row' value={vehicleInfo.engine} onChange={handleChange}/>
+        <input type="telephone"name="Tel" placeholder='Tel'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        </label>
+        <label>
+        <input type="email"name="email" placeholder='Email'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
         </label>
         <label>
         <input type="date" name="date"className='row'  value={vehicleInfo.date} onChange={handleChange}/>

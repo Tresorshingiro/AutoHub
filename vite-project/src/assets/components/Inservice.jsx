@@ -47,9 +47,11 @@ const Inservice = ({ inServiceVehicles }) => {
                 <td></td>
                 <td></td>
                 <td>
+                  <div className='tbtn'>
                   <button>View</button>
                   <button>Edit</button>
                   <button>Delete</button>
+                  </div>
                 </td>
               </tr>
           </tbody>
