@@ -54,10 +54,10 @@ const Admin = () => {
           <div className='iconimage'>
             <img src="/Accountant.png" alt="Accountant Icon"/>
           </div>
-          </div>
           <div className='textportal'>
             <h3>Accountant</h3>
           </div>
+        </div>
         </div>
       </div>
    
