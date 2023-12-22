@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 
-const View = () => {
+const Update = () => {
     return(
         <div className="container">
         <section className="header">
@@ -66,9 +66,12 @@ const View = () => {
         </div>
         </div>
         </div>
+        <div className='button'>
+        <button>Update</button>
+        </div>
        </div>
        </div>
     );
 };
 
-export default View;
+export default Update;

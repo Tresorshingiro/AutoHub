@@ -70,16 +70,16 @@ const Reception = () => {
         <input type="text" name="engine" placeholder='Engine'className='row' value={vehicleInfo.engine} onChange={handleChange}/>
         </label>
         <label>
-        <input type="text"name="Model" placeholder='Model Year'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        <input type="text"name="Model" placeholder='Model Year'className='row' value={vehicleInfo.model} onChange={handleChange}/>
         </label>
         <label>
         <input type="text"name="owner" placeholder='Owner'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
         </label>
         <label>
-        <input type="telephone"name="Tel" placeholder='Tel'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        <input type="telephone"name="Tel" placeholder='Tel'className='row' value={vehicleInfo.Tel} onChange={handleChange}/>
         </label>
         <label>
-        <input type="email"name="email" placeholder='Email'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        <input type="email"name="email" placeholder='Email'className='row' value={vehicleInfo.email} onChange={handleChange}/>
         </label>
         <label>
         <input type="date" name="date"className='row'  value={vehicleInfo.date} onChange={handleChange}/>

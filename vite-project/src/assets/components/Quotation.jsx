@@ -1,8 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import '../../App.css';
 
-const Operations = () => {
+const Quotation = () => {
     return(
         <div className="container">
         <section className="header">
@@ -30,13 +29,10 @@ const Operations = () => {
        <table>
           <thead>
             <tr>
-              <th>Vehicle Brand</th>
-              <th>Type</th>
-              <th>Plate No</th>
-              <th>Owner</th>
-              <th>Date</th>
-              <th>Engine</th>
-              <th>Action</th>
+              <th>PlateNO</th>
+              <th>Property of</th>
+              <th>Furniture to Buy</th>
+              <th>Amount Billed</th>
             </tr>
           </thead>
           <tbody>
@@ -45,15 +41,13 @@ const Operations = () => {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <div className='tbtn'>
-                  <button>View</button>
-                  <button>Add Quotation</button>
-                  </div>
-                </td>
               </tr>
+            <tr>
+                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
           </tbody>
         </table>
        </div>
@@ -61,4 +55,4 @@ const Operations = () => {
     );
 };
 
-export default Operations;
+export default Quotation;

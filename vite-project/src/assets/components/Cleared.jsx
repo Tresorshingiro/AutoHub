@@ -28,3 +28,5 @@ const Cleared = () => {
       </div>  
     );
 };
+
+export default Cleared;
