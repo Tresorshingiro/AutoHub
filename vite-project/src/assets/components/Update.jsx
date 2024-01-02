@@ -66,8 +66,9 @@ const Update = () => {
         </div>
         </div>
         </div>
-        <div className='button'>
+        <div className='buttons'>
         <button>Update</button>
+        <button className='btn'>Cancel</button>
         </div>
        </div>
        </div>

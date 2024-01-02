@@ -91,13 +91,14 @@ button {
 }
 .btn {
   display: inline-block;
-  border-radius: 4rem;
+  border-radius: 1rem;
   background: #4caf50;
   color: #fff;
   padding: 0.4rem 3rem;
   cursor: pointer;
   font-size: 1rem;
-  margin-top: 1rem; 
+  margin-top: 0.3rem; 
+  align-items: center;
 }
 .btn:hover {
   background-color: #afff9b;
@@ -348,9 +349,15 @@ button {
   display: flex;
   justify-content: flex-start;
 }
+.buttons{
+  display:flex;
+  gap:20px;
+}
+.buttons button{
+  border-radius: 1rem;
+}
 
 
-/* Media query for screens up to 768px wide */
 @media only screen and (max-width: 768px)  and (max-width: 1024px) {
   .container {
     flex-direction: column;
