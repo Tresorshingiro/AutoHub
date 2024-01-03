@@ -21,9 +21,13 @@ const Admin = () => {
           <img src="/user.png" alt="User Icon" />
           <h2>Admin</h2>
         </div>
-      <button className='button'>Car Registration</button>
-      <button className='button'>In-service Vehicles</button>
-       <button className='button'>Cleared Vehicles</button>
+      <button className='button'>Dashboard</button>
+      <button className='button'>Sales</button>
+      <button className='button'>Manage User</button>
+      <button className='button'>Manage Services</button>
+      <button className='button'>Prices</button>
+      <button className='button'>Customers</button>
+      <button className='button'>Suppliers</button>
    </div>
    <div className='portal-container'>
         <div className='portal'>
