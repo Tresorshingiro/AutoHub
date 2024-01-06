@@ -13,6 +13,7 @@ const Reception = () => {
     Tel:'',
     email:'',
     model:'',
+    insuranceType: '',
   });
 
   // Define a function to handle changes in the form
@@ -81,6 +82,13 @@ const Reception = () => {
         <label>
         <input type="email"name="email" placeholder='Email'className='row' value={vehicleInfo.email} onChange={handleChange}/>
         </label>
+        <label>
+            <select name="insuranceType" value={vehicleInfo.insuranceType} onChange={handleChange} className='row' >
+              <option value="">Select Insurance Type</option>
+              <option value="selfInsured">Self Insured</option>
+              <option value="contractInsured">Contract Insured</option>
+            </select>
+          </label>
         <label>
         <input type="date" name="date"className='row'  value={vehicleInfo.date} onChange={handleChange}/>
         </label>

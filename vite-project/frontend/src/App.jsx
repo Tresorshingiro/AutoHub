@@ -12,6 +12,7 @@ import Inservice from './assets/components/Inservice';
 import View from './assets/components/View';
 import Update from './assets/components/Update';
 import Quotation from './assets/components/Quotation';
+import QuotationList from './assets/components/QuotationList';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
       <Route path="/view" element={<View/>}/>
       <Route path="/update"element={<Update/>}/>
       <Route path="/quotation"element={<Quotation/>}/>
+      <Route path="/quotationlist"element={<QuotationList/>}/>
       </Routes>
     </Router>
   );
