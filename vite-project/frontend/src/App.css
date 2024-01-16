@@ -73,8 +73,8 @@ body {
 .btn-container {
   display:flex;
   justify-content: space-between;
-  margin-left:120px;
-  margin-right: 120px;
+  margin-left:160px;
+  margin-right: 160px;
   margin-top: 2rem;
 }
 button {
@@ -91,10 +91,10 @@ button {
 }
 .btn {
   display: inline-block;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   background: #4caf50;
   color: #fff;
-  padding: 0.4rem 3rem;
+  padding: 0.5rem;
   cursor: pointer;
   font-size: 1rem;
   margin-top: 0.3rem; 
@@ -357,26 +357,41 @@ button {
   border-radius: 1rem;
 }
 .add-quotation {
+  display: flex;
   margin-top: 0;
 }
 
-.add-quotation label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+.addquota {
+  height: 60%;
+  min-width: 250px;
+  padding:25px;
+  margin:50px;
+  border:1px solid #3cd052;
+  border-radius: 25px;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 20px 20px 30px rgba(0,0,0,0.02);
+  transition: 0.2s ease;
 }
 
-.add-quotation input {
+.addquota input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 5px;
+  padding: 5px;
+  margin-bottom: 15px;
   border: 1px solid #ced4da;
   border-radius: 5px;
+}
+
+.addquota label {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; /* Align elements in each box from top to bottom */
 }
 
 .added-services {
   margin-top: 5px;
 }
+
 
 table {
   width: 100%;
@@ -392,6 +407,9 @@ th, td {
   padding: 10px;
   text-align: left;
 }
+
+
+
 
 
 

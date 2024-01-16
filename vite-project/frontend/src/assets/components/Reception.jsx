@@ -7,7 +7,7 @@ const Reception = () => {
     brand: '',
     type: '',
     plateNo: '',
-    owner: '',
+    CustomerName: '',
     date: '',
     engine: '',
     Tel:'',
@@ -74,7 +74,7 @@ const Reception = () => {
         <input type="text"name="Model" placeholder='Model Year'className='row' value={vehicleInfo.model} onChange={handleChange}/>
         </label>
         <label>
-        <input type="text"name="owner" placeholder='Owner'className='row' value={vehicleInfo.owner} onChange={handleChange}/>
+        <input type="text"name="owner" placeholder='Customer Name'className='row' value={vehicleInfo.CustomerName} onChange={handleChange}/>
         </label>
         <label>
         <input type="telephone"name="Tel" placeholder='Tel'className='row' value={vehicleInfo.Tel} onChange={handleChange}/>
