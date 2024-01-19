@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Portals from './assets/components/Portals';
-import SignIn from './assets/components/SignIn';
-import Reception from './assets/components/Reception';
-import Accountant from './assets/components/Accountant';
-import Admin from './assets/components/Admin';
-import Management from './assets/components/Management';
-import Operations from './assets/components/Operations';
-import Owner from './assets/components/Owner';
-import Inservice from './assets/components/Inservice';
-import View from './assets/components/View';
-import Update from './assets/components/Update';
-import Quotation from './assets/components/Quotation';
-import QuotationList from './assets/components/QuotationList';
+import Portals from './assets/pages/Portals';
+import SignIn from './assets/pages/SignIn';
+import Reception from './assets/pages/Reception';
+import Accountant from './assets/pages/Accountant';
+import Admin from './assets/pages/Admin';
+import Management from './assets/pages/Management';
+import Operations from './assets/pages/Operations';
+import Owner from './assets/pages/Owner';
+import Inservice from './assets/pages/Inservice';
+import View from './assets/pages/View';
+import Update from './assets/pages/Update';
+import Quotation from './assets/pages/Quotation';
+import QuotationList from './assets/pages/QuotationList';
 
 const App = () => {
   return (
