@@ -84,8 +84,9 @@ const Quotation = () => {
         <button className='button'>Cleared Vehicles</button>
       </div>
       <div className='box'>
+      <h3>Add Quotation</h3>
         <div className='add-quotation'>
-          <h3>Add Quotation</h3>
+          <div className='addquota'>
           <label>
             <input
               type="date"
@@ -130,7 +131,10 @@ const Quotation = () => {
               placeholder='Description'
             />
           </label>
+          </div>
+          <div className='addquota'>
           <label>
+            Quantity:
             <input
               type="number"
               name="quantity"
@@ -140,6 +144,7 @@ const Quotation = () => {
             />
           </label>
           <label>
+            Unit Price:
             <input
               type="number"
               name="unitPrice"
@@ -157,9 +162,9 @@ const Quotation = () => {
               onChange={handleServiceChange}
             />
           </label>
-          <button type="button" onClick={handleAddService}>Add Service</button>
+          </div>
         </div>
-
+        <button type="button" onClick={handleAddService}>Add Service</button>
         {/* Display added services in a table */}
         {quotationInfo.services.length > 0 && (
           <div className="added-services">

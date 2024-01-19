@@ -32,7 +32,7 @@ const Inservice = ({ inServiceVehicles }) => {
               <th>Vehicle Brand</th>
               <th>Type</th>
               <th>Plate No</th>
-              <th>Owner</th>
+              <th>Customer Name</th>
               <th>Date</th>
               <th>Engine</th>
               <th>Action</th>

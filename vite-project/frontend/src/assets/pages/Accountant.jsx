@@ -21,10 +21,10 @@ const Accountant = () => {
           <img src="/user.png" alt="User Icon" />
           <h2>Accountant</h2>
         </div>
-          <button className='button'>Car Registration</button>
-          <button className='button'>In-service Vehicles</button>
-           <button className='button'>Cleared Vehicles</button>
+          <button className='button'>Payment Portal</button>
+          <button className='button'>Suppliers Management</button>
        </div>
+       <div className='box'></div>
        </div>
     );
 };
