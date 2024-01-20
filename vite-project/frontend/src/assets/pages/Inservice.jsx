@@ -21,9 +21,18 @@ const Inservice = ({ inServiceVehicles }) => {
           <img src="/user.png" alt="User Icon" />
           <h2>Reception</h2>
         </div>
-          <button className='button'>Car Registration</button>
-          <button className='button'>In-service Vehicles</button>
-           <button className='button'>Cleared Vehicles</button>
+          <button className='button'>
+            <img src='/registration.png'/>
+            Car Registration
+            </button>
+          <button className='button'>
+            <img src='/clipboard.png'/>
+            In-service Vehicles
+            </button>
+           <button className='button'>
+            <img src='/mark.png'/>
+            Cleared Vehicles
+            </button>
        </div>
        <div className='box'>
        <table>
@@ -48,9 +57,18 @@ const Inservice = ({ inServiceVehicles }) => {
                 <td></td>
                 <td>
                   <div className='tbtn'>
-                  <button>View</button>
-                  <button>Edit</button>
-                  <button>Delete</button>
+                  <button>
+                    <img src='/view.png'/>
+                    View
+                  </button>
+                  <button>
+                    <img src='/edit.png'/>
+                    Edit
+                  </button>
+                  <button>
+                    <img src='/delete.png'/>
+                    Delete
+                  </button>
                   </div>
                 </td>
               </tr>

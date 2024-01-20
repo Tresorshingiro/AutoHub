@@ -197,9 +197,14 @@ const Quotation = () => {
                   </tr>
                 ))}
                 <tr>
-                <div>
-              <strong>Total Price:</strong> ${calculateTotalPrice()}
-            </div>
+                <td>
+              <strong>Total Price:</strong>
+               </td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td>${calculateTotalPrice()}</td>
                 </tr>
               </tbody>
             </table>
