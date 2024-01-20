@@ -408,6 +408,23 @@ th, td {
   text-align: left;
 }
 
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid #ff3859;
+  color: #ff3859;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+div.success {
+  padding: 10px;
+  background: #effff0;
+  border: 1px solid #4fff38;
+  color: #4fff38;
+  border-radius: 4px;
+  margin: 20px 0;
+}
 
 
 

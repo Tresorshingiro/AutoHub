@@ -32,4 +32,4 @@ const receptionCar = new Schema({
     }
 }, {timestamps: true})
 
-module.exports = mongoose.model('receptionCar', receptionCar)
+module.exports = mongoose.model('receptionCar', receptionCar) // Collection name

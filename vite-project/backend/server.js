@@ -2,11 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const port = process.env.PORT;
-const userRoutes = require('./routes/cars_routes');
+const PORT = process.env.PORT;
+const cars_routes = require('./routes/cars_routes');
 
 //initialise the app
 const app = express();
+
+// Enbale CORS
+app.use(cors());
 
 // Middleware
 app.use(express.json())
@@ -16,13 +19,13 @@ app.use((req, res, next) => {
 })
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api/vehicles', cars_routes);
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         // Listen for requests
-        app.listen(port, () => console.log(`Connected to DB & listening on port ${port}`));
+        app.listen(PORT, () => console.log(`Connected to DB & listening on port ${PORT}`));
     })
     .catch(console.error);
 
