@@ -1,26 +1,24 @@
 const express = require('express')
+const {
+    getAllCars,
+    getOneCar,
+    createVehicle, 
+    deleteVehicle 
+} = require('../controllers/cars_controllers')
 
 const router = express.Router()
 
 // GET all users
-router.get('/', (req, res) => {
-    res.json({mssg: "GET all cars"})
-})
+router.get('/', getAllCars)
 
 // GET a single user
-router.get('/:id', (req, res) => {
-    res.json({mssg: 'GET a single car'})
-})
+router.get('/:id', getOneCar)
 
 // Post a new user
-router.post('/', (req, res) => {
-    res.json({mssg: 'POST a single car'})
-})
+router.post('/', createVehicle)
 
 // Delete a user
-router.delete('/:id', (req, res) => {
-    res.json({mssg: "DELETE a single car"})
-})
+router.delete('/:id', deleteVehicle)
 
 // Create a user
 router.patch('/:id', (req, res) => {

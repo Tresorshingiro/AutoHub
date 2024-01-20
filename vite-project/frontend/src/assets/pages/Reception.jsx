@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import ReceptionForm from '../components/receptionForm';
 
@@ -36,7 +36,7 @@ const Reception = () => {
           </button>
       </div>
     <div className='box'>
-      {<ReceptionForm />}
+      <ReceptionForm />
     </div>
  </div>
 );
