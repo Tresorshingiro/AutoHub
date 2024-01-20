@@ -10,6 +10,7 @@ const ReceptionForm = () => {
     const [telephone, setTelephone] = useState('')
     const [email, setEmail] = useState('')
     const [description, setDescription] = useState('')
+    const [success, setSuccess] = useState(null)
     const [error, setError] = useState(null);
 
   // Define a function to handle form submission
@@ -32,6 +33,7 @@ const ReceptionForm = () => {
       const errorData = await response.json(); // If error response contains JSON data
       console.error('Error Details:', errorData);
       setError(errorData);
+      setSuccess(null)
     }
     if(response.ok) {
       const json = await response.json()
@@ -44,6 +46,7 @@ const ReceptionForm = () => {
       setEmail('')
       setDescription('')
       setError(null)
+      setSuccess('Vehicle added successfully')
       console.log('new Vehicle added', json)
     }
   }
@@ -130,6 +133,7 @@ const ReceptionForm = () => {
         <br/>
         <button>Save</button>
         {error && <div className="error">{error.error}</div>}
+        {success && <div className="success">{success}</div>}
       </form>
   );
 }
