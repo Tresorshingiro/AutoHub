@@ -129,7 +129,7 @@ const ReceptionForm = () => {
 
         <br/>
         <button>Save</button>
-        {error && <div>{error.error}</div>}
+        {error && <div className="error">{error.error}</div>}
       </form>
   );
 }
