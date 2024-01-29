@@ -13,6 +13,7 @@ import View from './assets/pages/View';
 import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
+import Cleared from './assets/pages/Cleared';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
       <Route path="/update"element={<Update/>}/>
       <Route path="/quotation"element={<Quotation/>}/>
       <Route path="/quotationlist"element={<QuotationList/>}/>
+      <Route path="/cleared"element={<Cleared/>}/>
       </Routes>
     </Router>
   );

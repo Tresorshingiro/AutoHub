@@ -1,4 +1,5 @@
 import React from 'react';
+import ReceptionNav from '../components/receptionNav';
 import '../../App.css';
 
 const Cleared = () => {
@@ -15,23 +16,8 @@ const Cleared = () => {
           <img src="/user.png" alt="User Icon" />
          </div>
         </section>
-        <div className="nav-links">
-        <div className="user-icon">
-          <img src="/user.png" alt="User Icon" />
-          <h2>Reception</h2>
-        </div>
-         <button className='button'>
-          <img src='/registration.png'/>
-          Car Registration
-          </button>
-         <button className='button'>
-          <img src='clipboard.png'/>
-          In-service Vehicles
-          </button>
-          <button className='button'>
-            <img src='/mark.png'/>
-            Cleared Vehicles
-            </button>
+       <div className="nav-links">
+        <ReceptionNav/>
       </div>
       <div className='box'></div>
       </div>  

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Quotation from './Quotation';
 import '../../App.css';
+import QuotationNav from '../components/quotationNav';
 
 const QuotationList = () => {
  const [quotations, setQuotations] = useState([]);
@@ -49,13 +50,7 @@ const QuotationList = () => {
     </section>
     {/* Navigation Links */}
     <div className="nav-links">
-      <div className="user-icon">
-        <img src="/user.png" alt="User Icon" />
-        <h2>Operations</h2>
-      </div>
-      <button className='button'>In-Service Vehicles</button>
-      <button className='button'>Quotation List</button>
-      <button className='button'>Cleared Vehicles</button>
+      <QuotationNav/>
     </div>
     <div className='box'>
     <div className="quotation-list">

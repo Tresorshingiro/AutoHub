@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const cars_routes = require('./routes/cars_routes');
+const CarModel = require('./models/Reception_car');
 
 //initialise the app
 const app = express();
@@ -20,6 +21,13 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/vehicles', cars_routes);
+
+
+app.get('/getReceptioncars', (req, res)=>{
+    CarModel.find()
+    .then(car_data => res.json(car_data))
+    .catch(err => res.json(err))
+})
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

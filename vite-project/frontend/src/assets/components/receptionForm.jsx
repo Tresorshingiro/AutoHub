@@ -57,7 +57,7 @@ const ReceptionForm = () => {
         <input 
           type="text" 
           name="owner" 
-          placeholder='Vehicle Owner'
+          placeholder='Customer Name'
           className='row'
           onChange={(e) => setOwner(e.target.value)}
           value={owner}

@@ -224,7 +224,7 @@ button {
   width: 110vw;
   height: fit-content;
   margin-left:400px ;
-  padding: 60px;
+  padding: 30px;
   box-shadow: 0.5rem  1.5rem rgba(0,0,0,.1);
   border: 1px solid #ddd;
   border-radius: 24px 0px 0px 24px;
@@ -265,10 +265,13 @@ button {
   height: 20px; 
   margin-right: 3px; 
 }
-.nav-links .button:hover {
+.nav-links .button:hover,
+.nav-links .button:active,
+.nav-links .button.active-link {
   background-color: #23AE00;
-  color:#fff
+  color: #fff;
 }
+
 .placeholder{
   position:absolute;
   display: flex;
@@ -312,17 +315,18 @@ tr:nth-child(even) {
   display:flex;
   gap:2px;
 }
+.view{
+  background-color: #23AE00;
+}
+.delete{
+  background-color:red ;
+}
 .tbtn img{ 
   width: 20px;
   height: 20px; 
   margin-right: 3px;
 }
-.tbtn :first-child{
-  background-color: #4caf50;
-}
-.tbtn  :last-child{
-  background-color: #003239;
-}
+
 td button {
   display: inline-block;
   padding: 4px 8px;
@@ -334,7 +338,6 @@ td button {
   box-sizing: border-box;
   white-space: nowrap;
 }
-
 button {
   background-color: #003239;
   color: white;
