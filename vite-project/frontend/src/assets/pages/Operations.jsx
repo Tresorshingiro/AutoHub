@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import QuotationNav from '../components/quotationNav';
 import '../../App.css';
 
 const Operations = () => {
@@ -18,13 +18,7 @@ const Operations = () => {
          </section>
        {/* Navigation Links */}
        <div className="nav-links">
-       <div className="user-icon">
-          <img src="/user.png" alt="User Icon" />
-          <h2>Operations</h2>
-        </div>
-          <button className='button'>In-Service Vehicles</button>
-          <button className='button'>Quotation List</button>
-           <button className='button'>Cleared Vehicles</button>
+        <QuotationNav/>
        </div>
        <div className='box'>
        <table>
