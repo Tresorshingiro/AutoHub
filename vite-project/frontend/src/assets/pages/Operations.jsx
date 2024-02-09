@@ -3,37 +3,33 @@ import {Link} from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios'; // Don't forget to import axios
 import '../../App.css';
+import { useEffect, useState } from 'react';
 
 const Operations = () => {
-  const [receptioncars, setReceptioncars] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [vehicles, setVehicles] = useState([])
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/getReceptioncars');
-        setReceptioncars(response.data);
-      } catch (err) {
-        setError(err.message || 'An error occurred while fetching data.');
-      } finally {
-        setLoading(false);
+    const fetchVehicles = async () => {
+      const response = await fetch('http://localhost:3000/api/vehicles/')
+      const json = await response.json()
+
+      if (response.ok){
+        setVehicles(json)
       }
-    };
+    }
+    fetchVehicles()
+  }, [])
 
-    fetchData();
-  }, []);
-
-  return (
-    <div className="container">
-      <section className="header">
-        <div className='lg'>
-          <h1>AutoHub</h1>
-        </div>
-        <div className='placeholder'>
-          <h3>Operations</h3>
-        </div>
-        <div className="user-icon">
+    return(
+        <div className="container">
+        <section className="header">
+           <div className='lg'>
+             <h1>AutoHub</h1>
+           </div>
+           <div className='placeholder'>
+            <h3>Operations</h3>
+           </div>
+           <div className="user-icon">
           <img src="/user.png" alt="User Icon" />
         </div>
       </section>
@@ -46,39 +42,31 @@ const Operations = () => {
           <thead>
             <tr>
               <th>Vehicle Brand</th>
-              <th>Plate No</th>
               <th>Owner</th>
+              <th>Plate No</th>
               <th>Date</th>
-              <th>Engine</th>
+              <th>insurance</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {receptioncars.map(receptioncar => (
-              <tr key={receptioncar._id}>
-                <td>{receptioncar.brand}</td>
-                <td>{receptioncar.plate}</td>
-                <td>{receptioncar.owner}</td>
-                <td>{new Date(receptioncar.createdAt).toLocaleDateString()}</td>
-                <td>{receptioncar.engine}</td>
-                <td>
-                  <div className='tbtn'>
-                  <Link to={`/view/${receptioncars._id}`} className='vw'>
-                        <button>
-                          <img src='/view.png' alt='View Icon' />
-                          View
-                        </button>
-                      </Link>
-                      <Link to='/quotation' className='quota'>
-                        <button className='btn'>
-                          <img src='/add.png' alt='add Icon' />
-                          Add Quotation
-                        </button>
-                      </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
+          {vehicles.map(vehicle => {
+              return (
+                <tr key={vehicle._id}>
+                  <td>{vehicle.brand}</td>
+                  <td>{vehicle.owner}</td>
+                  <td>{vehicle.plate}</td>
+                  <td>{vehicle.createdAt}</td>
+                  <td>{vehicle.insurance}</td>
+                  <td>
+                    <div className='tbtn'>
+                    <button>View</button>
+                    <button>Add Quotation</button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
