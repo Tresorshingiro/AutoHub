@@ -180,7 +180,7 @@ button {
 .nav-links {
   position: fixed;
   left: 0;
-  top: 100px; /* Adjusted the top value */
+  top: 100px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -318,8 +318,17 @@ tr:nth-child(even) {
 .view{
   background-color: #23AE00;
 }
+.vw{
+  text-decoration: none;
+}
+.edt{
+  text-decoration: none;
+}
 .delete{
   background-color:red ;
+}
+.quota{
+  text-decoration: none;
 }
 .tbtn img{ 
   width: 20px;
@@ -429,55 +438,7 @@ th, td {
   padding: 10px;
   text-align: left;
 }
-/* Add these styles to your existing CSS */
 
-/* Style for the dropdown container */
-.dropdown {
-  position: relative;
-  display: flex;
-}
-.dropbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-/* Style for the dropdown content (hidden by default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 0; /* Adjusted top position to align with the button */
-  left: 70%; /* Position dropdown to the right of the button */
-  width:110px;
-  background-color: #AFFF9B;
-  border-radius: 14px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-/* Style for dropdown options */
-.dropdown-content button {
-  color: black;
-  padding: 6px 12px;
-  text-decoration: none;
-  display: block;
-  border: none;
-  background-color: #AFFF9B;
-  width: 100%;
-  text-align: left;
-}
-
-/* Change color on hover */
-.dropdown-content button:hover {
-  background-color: #23AE00;
-}
-
-/* Show the dropdown content on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
 div.error {
   padding: 10px;
@@ -496,6 +457,59 @@ div.success {
   border-radius: 4px;
   margin: 20px 0;
 }
+.add{
+  display: flex;
+  gap:5px;
+}
+.addbtn{
+  width:5px;
+  height:5px;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+}
+.addbtn img{
+  width: 20px;
+  height: 20px; 
+}
+
+.addsupplier {
+  width: 100%;
+  max-width: 400px;
+  padding: 50px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.addsupplier label {
+  display: flex;
+  margin-bottom: 3px;
+  font-weight: bold;
+}
+
+.addsupplier input,
+.addsupplier textarea {
+  width: 60%;
+  padding: 5px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addsupplier button {
+  background-color: #003239;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addsupplier button:hover {
+  background-color: #23AE00;
+}
+
 
 
 

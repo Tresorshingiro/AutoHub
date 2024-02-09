@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import '../../App.css';
 
@@ -12,7 +13,7 @@ const Quotation = () => {
   });
 
   const [newService, setNewService] = useState({
-    description: '',
+    furniture: '',
     quantity: 0,
     unitPrice: 0,
     vatIncluded: false,
@@ -39,7 +40,7 @@ const Quotation = () => {
     });
 
     setNewService({
-      description: '',
+      furniture: '',
       quantity: 0,
       unitPrice: 0,
       vatIncluded: false,
@@ -120,10 +121,10 @@ const Quotation = () => {
           <label>
             <textarea
               type="text"
-              name="description"
+              name="furniture"
               value={newService.description}
               onChange={handleServiceChange}
-              placeholder='Description'
+              placeholder='Furniture to buy'
             />
           </label>
           </div>
@@ -169,11 +170,11 @@ const Quotation = () => {
                 <tr>
                   <th>Plate No</th>
                   <th>Customer Name</th>
-                  <th>Description</th>
+                  <th>Furniture to buy</th>
                   <th>Quantity</th>
                   <th>Unit Price</th>
-                  <th>Total Price</th>
                   <th>VAT</th>
+                  <th>Total Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -181,20 +182,21 @@ const Quotation = () => {
                   <tr key={index}>
                     <td>{quotationInfo.plateNo}</td>
                     <td>{quotationInfo.customerName}</td>
-                    <td>{service.description}</td>
+                    <td>{service.furniture}</td>
                     <td>{service.quantity}</td>
                     <td>{service.unitPrice}</td>
+                    <td>{service.vatIncluded ? '18%' : 'N/A'}</td>
                     <td>
                       {service.vatIncluded ? 'Included' : 'Excluded'}
                       : ${(parseFloat(service.unitPrice) * parseFloat(service.quantity)).toFixed(2)}
                     </td>
-                    <td>{service.vatIncluded ? '18%' : 'N/A'}</td>
                   </tr>
                 ))}
                 <tr>
                 <td>
               <strong>Total Price:</strong>
                </td>
+               <td></td>
                <td></td>
                <td></td>
                <td></td>

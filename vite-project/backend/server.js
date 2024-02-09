@@ -28,6 +28,11 @@ app.get('/getReceptioncars', (req, res)=>{
     .then(car_data => res.json(car_data))
     .catch(err => res.json(err))
 })
+app.post('/addSupplier', (req, res) => {
+    const supplierData = req.body;
+    res.json({ message: 'Supplier added successfully' });
+  });
+  
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

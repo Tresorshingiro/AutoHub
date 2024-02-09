@@ -9,10 +9,10 @@ const QuotationNav = () => {
         <img src="/user.png" alt="User Icon" />
         <h2>Operations</h2>
       </div>
-      <NavLink to='/inservice' activeClassName="active-link">
+      <NavLink to='/operations' activeClassName="active-link">
         <button className='button'>
             <img src='/clipboard.png'/>
-            In-Service Vehicles
+            Add Quotation
         </button>
       </NavLink>
       <NavLink to='/quotationlist' activeClassName="active-link">

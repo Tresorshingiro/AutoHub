@@ -69,13 +69,13 @@ const Inservice = () => {
                   <td>{receptioncar.engine}</td>
                   <td>
                     <div className='tbtn'>
-                      <Link to={`/view/${receptioncar._id}`}>
+                      <Link to={`/view/${receptioncars._id}`} className='vw'>
                         <button className='view'>
                           <img src='/view.png' alt='View Icon' />
                           View
                         </button>
                       </Link>
-                      <Link to={`/update/${receptioncar._id}`}>
+                      <Link to={`/update/${receptioncars._id}`} className='edt'>
                         <button className='edit'>
                           <img src='/edit.png' alt='Edit Icon' />
                           Edit

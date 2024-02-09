@@ -14,6 +14,14 @@ import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
 import Cleared from './assets/pages/Cleared';
+import AddSupplier from './assets/pages/AddSupplier';
+import AddStock from './assets/pages/AddStock';
+import AddPurchase from './assets/pages/AddPurchase';
+import SupplierList from './assets/pages/SupplierList';
+import StockList from './assets/pages/StockList';
+import PurchaseList from './assets/pages/PurchaseList';
+import Invoice from './assets/pages/invoice';
+import AddInvoices from './assets/pages/AddInvoice';
 
 const App = () => {
   return (
@@ -28,11 +36,19 @@ const App = () => {
       <Route path="/operations" element={<Operations />} />
       <Route path="/owner" element={<Owner />} />
       <Route path="/inservice" element={<Inservice/>}/>
-      <Route path="/view" element={<View/>}/>
+      <Route path="/view/:id" element={<View/>}/>
       <Route path="/update"element={<Update/>}/>
       <Route path="/quotation"element={<Quotation/>}/>
       <Route path="/quotationlist"element={<QuotationList/>}/>
       <Route path="/cleared"element={<Cleared/>}/>
+      <Route path="/AddSupplier"element={<AddSupplier/>}/>
+      <Route path="/AddStock"element={<AddStock/>}/>
+      <Route path="/AddPurchase"element={<AddPurchase/>}/>
+      <Route path="/suppliers"element={<SupplierList/>}/>
+      <Route path="/stock"element={<StockList/>}/>
+      <Route path="/purchase"element={<PurchaseList/>}/>
+      <Route path="/Invoice"element={<Invoice/>}/>
+      <Route path="/AddInvoice"element={<AddInvoices/>}/>
       </Routes>
     </Router>
   );

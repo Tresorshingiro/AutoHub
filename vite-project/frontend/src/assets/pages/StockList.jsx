@@ -1,8 +1,9 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
 
-const Accountant = () => {
+const StockList = () => {
   return (
     <div className="container">
       <section className="header">
@@ -20,9 +21,16 @@ const Accountant = () => {
       <div className='nav-links'>
        <AccountantNav/>
       </div>
-      <div className='box'></div>
+      <div className='box'>
+      <div className='add'>
+        <h3>Add Stock</h3>
+        <Link to='/AddStock'>
+        <button className='addbtn'> <img src='/add.png'/> </button>
+        </Link>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Accountant;
+export default StockList;
