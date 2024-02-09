@@ -29,7 +29,23 @@ const receptionCar = new Schema({
     },
     description: {
         type: String,
+    },
+    createdAt: {
+        type: String,
+        default: () => {
+            const currentDate = new Date();
+            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
+            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
+        }
+    },
+    updatedAt: {
+        type: String,
+        default: () => {
+            const currentDate = new Date();
+            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
+            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
+        }
     }
-}, {timestamps: true})
+});
 
 module.exports = mongoose.model('receptionCar', receptionCar) // Collection name
