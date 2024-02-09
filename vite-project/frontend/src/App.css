@@ -224,7 +224,7 @@ button {
   width: 110vw;
   height: fit-content;
   margin-left:400px ;
-  padding: 60px;
+  padding: 30px;
   box-shadow: 0.5rem  1.5rem rgba(0,0,0,.1);
   border: 1px solid #ddd;
   border-radius: 24px 0px 0px 24px;
@@ -250,6 +250,8 @@ button {
 
 .button{
   display: inline-block;
+  margin-left: 10%;
+  width:70%;
   border-radius: 4rem;
   background: #003239;
   color: #fff;
@@ -258,10 +260,18 @@ button {
   font-size: 1rem;
   margin-top: 1rem;
 }
-.nav-links .button:hover {
-  background-color: #23AE00;
-  color:#fff
+.button img {
+  width: 20px;
+  height: 20px; 
+  margin-right: 3px; 
 }
+.nav-links .button:hover,
+.nav-links .button:active,
+.nav-links .button.active-link {
+  background-color: #23AE00;
+  color: #fff;
+}
+
 .placeholder{
   position:absolute;
   display: flex;
@@ -305,12 +315,18 @@ tr:nth-child(even) {
   display:flex;
   gap:2px;
 }
-.tbtn :first-child{
-  background-color: #4caf50;
+.view{
+  background-color: #23AE00;
 }
-.tbtn  :last-child{
-  background-color: #003239;
+.delete{
+  background-color:red ;
 }
+.tbtn img{ 
+  width: 20px;
+  height: 20px; 
+  margin-right: 3px;
+}
+
 td button {
   display: inline-block;
   padding: 4px 8px;
@@ -322,7 +338,6 @@ td button {
   box-sizing: border-box;
   white-space: nowrap;
 }
-
 button {
   background-color: #003239;
   color: white;
@@ -335,15 +350,16 @@ button {
 }
 
 .details .pro{
-  height: 70%;
+  height: 60%;
   min-width: 250px;
-  border:1px solid #cce7d0;
+  padding:25px;
+  margin:50px;
+  border:1px solid #3cd052;
   border-radius: 25px;
   cursor: pointer;
-  background-color: #ddd;
+  background-color: #fff;
   box-shadow: 20px 20px 30px rgba(0,0,0,0.02);
   transition: 0.2s ease;
-  position: relative;
 }
 .pro label{
   display: flex;
@@ -351,7 +367,13 @@ button {
 }
 .buttons{
   display:flex;
+  padding: 30px;
   gap:20px;
+}
+.buttons img{
+  width: 20px;
+  height: 20px; 
+  margin-right: 3px;
 }
 .buttons button{
   border-radius: 1rem;
@@ -406,6 +428,55 @@ table, th, td {
 th, td {
   padding: 10px;
   text-align: left;
+}
+/* Add these styles to your existing CSS */
+
+/* Style for the dropdown container */
+.dropdown {
+  position: relative;
+  display: flex;
+}
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for the dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 0; /* Adjusted top position to align with the button */
+  left: 70%; /* Position dropdown to the right of the button */
+  width:110px;
+  background-color: #AFFF9B;
+  border-radius: 14px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Style for dropdown options */
+.dropdown-content button {
+  color: black;
+  padding: 6px 12px;
+  text-decoration: none;
+  display: block;
+  border: none;
+  background-color: #AFFF9B;
+  width: 100%;
+  text-align: left;
+}
+
+/* Change color on hover */
+.dropdown-content button:hover {
+  background-color: #23AE00;
+}
+
+/* Show the dropdown content on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 div.error {

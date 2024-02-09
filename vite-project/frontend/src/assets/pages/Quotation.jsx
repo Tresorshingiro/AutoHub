@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import QuotationNav from '../components/quotationNav';
 import '../../App.css';
 
 const Quotation = () => {
@@ -75,13 +76,7 @@ const Quotation = () => {
       </section>
       {/* Navigation Links */}
       <div className="nav-links">
-        <div className="user-icon">
-          <img src="/user.png" alt="User Icon" />
-          <h2>Operations</h2>
-        </div>
-        <button className='button'>In-Service Vehicles</button>
-        <button className='button'>Quotation List</button>
-        <button className='button'>Cleared Vehicles</button>
+        <QuotationNav/>
       </div>
       <div className='box'>
       <h3>Add Quotation</h3>
@@ -197,9 +192,14 @@ const Quotation = () => {
                   </tr>
                 ))}
                 <tr>
-                <div>
-              <strong>Total Price:</strong> ${calculateTotalPrice()}
-            </div>
+                <td>
+              <strong>Total Price:</strong>
+               </td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td>${calculateTotalPrice()}</td>
                 </tr>
               </tbody>
             </table>
