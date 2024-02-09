@@ -3,9 +3,13 @@ const mongoose = require('mongoose')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
-    const vehicleData = await Car_data.find({}).sort({createdAt: -1})
+    try {
+        const vehicleData = await Car_data.find({}).sort({createdAt: -1})
 
-    res.status(200).json(vehicleData)
+        res.status(200).json(vehicleData)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // Getting a single user
