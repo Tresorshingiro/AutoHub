@@ -5,15 +5,42 @@ import axios from 'axios';
 import '../../App.css';
 
 const Inservice = () => {
-  const [receptioncars, setReceptioncars] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const deleteCar = async (id, brand, owner) => {
+    if(window.confirm(`Are you sure you wan't to delete the ${brand} of ${owner}`)) {
+
+      try {
+        const response = await fetch('http://localhost:3000/api/vehicles/' + id, {
+          method: 'DELETE'
+        })
+         
+        const json = await response.json()
+
+        if (response.ok) {
+          alert(`Deleted ${brand} of ${owner}`)
+          window.location.reload()
+        } else {
+          // Errors occuring in the deletion process
+          console.error(json.error); // log error message
+          alert(`Failed to delete the vehicle due to ${json.error}`)
+        }
+
+      } catch(error) {
+        // For network errors or other exceptions
+        console.error('An error occured: ', error)
+        alert('An error occured while deleting the vehicle')
+      }
+    }      
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/getReceptioncars');
-        setReceptioncars(response.data);
+        const response = await axios.get('http://localhost:3000/api/vehicles/');
+        setVehicles(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
       } finally {
@@ -55,33 +82,33 @@ const Inservice = () => {
                 <th>Plate No</th>
                 <th>Customer Name</th>
                 <th>Date</th>
-                <th>Engine</th>
+                <th>Insurance</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {receptioncars.map(receptioncar => (
-                <tr key={receptioncar._id}>
-                  <td>{receptioncar.brand}</td>
-                  <td>{receptioncar.plate}</td>
-                  <td>{receptioncar.owner}</td>
-                  <td>{new Date(receptioncar.createdAt).toLocaleDateString()}</td>
-                  <td>{receptioncar.engine}</td>
+              {vehicles.map(vehicle => (
+                <tr key={vehicle._id}>
+                  <td>{vehicle.brand}</td>
+                  <td>{vehicle.plate}</td>
+                  <td>{vehicle.owner}</td>
+                  <td>{vehicle.createdAt}</td>
+                  <td>{vehicle.insurance}</td>
                   <td>
                     <div className='tbtn'>
-                      <Link to={`/view/${receptioncars._id}`} className='vw'>
+                      <Link to={`/view/${vehicle._id}`} className='vw'>
                         <button className='view'>
                           <img src='/view.png' alt='View Icon' />
                           View
                         </button>
                       </Link>
-                      <Link to={`/update/${receptioncars._id}`} className='edt'>
+                      <Link to={`/update/${vehicle._id}`} className='edt'>
                         <button className='edit'>
                           <img src='/edit.png' alt='Edit Icon' />
                           Edit
                         </button>
                       </Link>
-                      <button className='delete'>
+                      <button className='delete' onClick={() => deleteCar(vehicle._id, vehicle.brand, vehicle.owner)}>
                         <img src='/delete.png' alt='Delete Icon' />
                         Delete
                       </button>

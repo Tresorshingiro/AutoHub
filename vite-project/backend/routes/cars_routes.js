@@ -3,7 +3,8 @@ const {
     getAllCars,
     getOneCar,
     createVehicle, 
-    deleteVehicle 
+    deleteVehicle, 
+    updateVehicle
 } = require('../controllers/cars_controllers')
 
 const router = express.Router()
@@ -21,8 +22,6 @@ router.post('/', createVehicle)
 router.delete('/:id', deleteVehicle)
 
 // Create a user
-router.patch('/:id', (req, res) => {
-    res.json({mssg: 'UPDATE a single car'})
-})
+router.patch('/:id', updateVehicle)
 
 module.exports = router

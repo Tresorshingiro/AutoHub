@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios'; // Don't forget to import axios
 import '../../App.css';
-import { useEffect, useState } from 'react';
 
 const Operations = () => {
   const [vehicles, setVehicles] = useState([])
