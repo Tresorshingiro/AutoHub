@@ -9,19 +9,19 @@ const ReceptionNav = () => {
           <img src="/user.png" alt="User Icon" />
             <h2>Reception</h2>
         </div>
-        <NavLink to='/reception' activeClassName="active-link">
+        <NavLink to='/reception' activeclassname="active-link">
         <button className='button'>
           <img src='/registration.png'/>
           Car Registration
           </button>
         </NavLink>
-        <NavLink to='/inservice' activeClassName="active-link">
+        <NavLink to='/inservice' activeclassname="active-link">
           <button className='button'>
             <img src='/clipboard.png'/>
             In-service Vehicles
             </button>
         </NavLink>
-        <NavLink to='/cleared' activeClassName="active-link">
+        <NavLink to='/cleared' activeclassname="active-link">
           <button className='button'>
             <img src='/mark.png'/>
             Cleared Vehicles
