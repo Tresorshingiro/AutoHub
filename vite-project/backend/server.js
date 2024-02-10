@@ -21,12 +21,6 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/vehicles', cars_routes);
 
-app.post('/addSupplier', (req, res) => {
-    const supplierData = req.body;
-    res.json({ message: 'Supplier added successfully' });
-});
-  
-
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
