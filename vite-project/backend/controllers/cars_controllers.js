@@ -8,7 +8,7 @@ const getAllCars = async (req, res) => {
     res.status(200).json(vehicleData)
 }
 
-// Getting a single user
+// Getting a single car
 const getOneCar = async (req, res) => {
     const { id } = req.params
 
@@ -38,7 +38,7 @@ const createVehicle = async (req, res) => {
     }
 }
 
-// Deleting a car details
+// Deleting a car
 const deleteVehicle = async (req, res) => {
     const { id } = req.params
 
@@ -46,11 +46,38 @@ const deleteVehicle = async (req, res) => {
         return res.status(404).json({error: 'No such Vehicle'})
     }
 
+    const vehicle = await Car_data.findOneAndDelete({_id: id})
+
+    if(!vehicle) {
+        return res.status(404).json({error: 'No such Vehicle'})
+    }
+    res.status(200).json(vehicle)
+}
+
+// Update a car
+
+const updateVehicle = async (req, res) => {
+    const { id } = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such Vehicle'})
+    }
+
+    const vehicle = await Car_data.findOneAndUpdate({_id: id}, {
+        ...req.body
+    })
+
+    if(!vehicle) {
+        return res.status(404).json({error: 'No such Vehicle'})
+    }
+
+    res.status(200).json(vehicle)
 }
 
 module.exports = {
     getAllCars,
     getOneCar,
     createVehicle,
-    deleteVehicle
+    deleteVehicle,
+    updateVehicle
 }

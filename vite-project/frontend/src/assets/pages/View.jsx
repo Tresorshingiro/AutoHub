@@ -20,7 +20,7 @@ const View = () => {
     const fetchData = async () => {
       try {
         console.log('ID from URL:', id);
-        const response = await axios.get(`http://localhost:3000/getReceptioncars/${id}`);
+        const response = await axios.get(`http://localhost:3000//api/vehicles/${id}`);
         const data = response.data;
         
         console.log('ID from URL:', id);
