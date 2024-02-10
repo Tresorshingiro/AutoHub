@@ -5,36 +5,20 @@ import axios from 'axios';
 import '../../App.css';
 
 const View = () => {
-  const {id} = useParams(); 
-  const [receptioncars, setReceptioncars] = useState({
-    owner: '',
-    telephone: '',
-    email: '',
-    brand: '',
-    plate: '',
-    engine:'',
-    model:'',
-  });
+  const { id } = useParams(); 
+  const [vehicle, setVehicles] = useState(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log('ID from URL:', id);
-        const response = await axios.get(`http://localhost:3000//api/vehicles/${id}`);
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`);
         const data = response.data;
         
         console.log('ID from URL:', id);
         console.log('API response:', data);
 
-        setReceptioncars({
-          owner: data.owner,
-          telephone: data.telephone,
-          email: data.email,
-          brand: data.brand,
-          plate: data.plate,
-          engine: data.engine,
-          model: data.model,
-        });
+        setVehicles(data);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -62,45 +46,51 @@ const View = () => {
       <div className="nav-links">
         <ReceptionNav/>
       </div>
-      <div className='box'>
-        <div className='pro-container'>
-          <div className='details'>
-            <h4>Customer Details</h4>
-            <div className='pro'>
-              <form method='post'>
-                <label>
-                  Owner: <input type="text" name="owner" value={receptioncars.owner} readOnly />
-                </label>
-                <label>
-                  Tel: <input type="tel" name="tel" value={receptioncars.telephone} readOnly />
-                </label>
-                <label>
-                  Email: <input type="email" name="email" value={receptioncars.email} readOnly />
-                </label>
-              </form>
+      {/* Conditionally render based on whether vehicle is defined */}
+      {vehicle && (
+        <div className='box'>
+          <div className='pro-container'>
+            <div className='details'>
+              <h4>Customer Details</h4>
+              <div className='pro'>
+                <form method='post'>
+                  <label>
+                    Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
+                  </label>
+                  <label>
+                    Tel: <input type="tel" name="tel" value={vehicle.telephone} readOnly />
+                  </label>
+                  <label>
+                    Email: <input type="email" name="email" value={vehicle.email} readOnly />
+                  </label>
+                  <label>
+                    Description: <input type="text" name="text" value={vehicle.description} readOnly />
+                  </label>
+                </form>
+              </div>
             </div>
-          </div>
-          <div className='details'>
-            <h4>Vehicle Details</h4>
-            <div className='pro'>
-              <form method='post'>
-                <label>
-                  Brand: <input type="text" name="brand" value={receptioncars.brand} readOnly />
-                </label>
-                <label>
-                  PlateNO: <input type="text" name="plate" value={receptioncars.plate} readOnly />
-                </label>
-                <label>
-                  Engine: <input type="text" name="engine" value={receptioncars.engine} readOnly />
-                </label>
-                <label>
-                  Model Year: <input type="text" name="model" value={receptioncars.model} readOnly />
-                </label>
-              </form>
+            <div className='details'>
+              <h4>Vehicle Details</h4>
+              <div className='pro'>
+                <form method='post'>
+                  <label>
+                    Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
+                  </label>
+                  <label>
+                    PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
+                  </label>
+                  <label>
+                    Engine: <input type="text" name="engine" value={vehicle.engine} readOnly />
+                  </label>
+                  <label>
+                    Model Year: <input type="text" name="model" value={vehicle.model} readOnly />
+                  </label>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
