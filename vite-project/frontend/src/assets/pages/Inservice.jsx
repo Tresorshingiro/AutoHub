@@ -65,7 +65,7 @@ const Inservice = () => {
                   <td>{receptioncar.brand}</td>
                   <td>{receptioncar.plate}</td>
                   <td>{receptioncar.owner}</td>
-                  <td>{new Date(receptioncar.createdAt).toLocaleDateString()}</td>
+                  <td>{receptioncar.createdAt}</td>
                   <td>{receptioncar.engine}</td>
                   <td>
                     <div className='tbtn'>
