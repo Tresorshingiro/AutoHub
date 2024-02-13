@@ -25,7 +25,7 @@ const receptionCar = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
