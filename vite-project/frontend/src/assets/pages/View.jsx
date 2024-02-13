@@ -53,7 +53,7 @@ const View = () => {
             <div className='details'>
               <h4>Customer Details</h4>
               <div className='pro'>
-                <form method='post'>
+                <form  method='post'>
                   <label>
                     Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
                   </label>

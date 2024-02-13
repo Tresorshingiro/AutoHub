@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
+import axios from 'axios';
 import '../../App.css';
 
 const Quotation = () => {
+  const { id } = useParams(); 
+  const [vehicle, setVehicles] = useState(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('ID from URL:', id);
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`);
+        const data = response.data;
+        
+        console.log('ID from URL:', id);
+        console.log('API response:', data);
+
+        setVehicles(data);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        console.error('Error details:', error.response);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   const [quotationInfo, setQuotationInfo] = useState({
     date: '',
     plateNo: '',
@@ -79,6 +104,7 @@ const Quotation = () => {
       <div className="nav-links">
         <QuotationNav/>
       </div>
+      {vehicle && (
       <div className='box'>
       <h3>Add Quotation</h3>
         <div className='add-quotation'>
@@ -95,7 +121,7 @@ const Quotation = () => {
             <input
               type="text"
               name="plateNo"
-              value={quotationInfo.plateNo}
+              value={vehicle.plate}
               onChange={handleQuotationChange}
               placeholder='PlateNo'
             />
@@ -104,7 +130,7 @@ const Quotation = () => {
             <input
               type="text"
               name="customerName"
-              value={quotationInfo.customerName}
+              value={vehicle.owner}
               onChange={handleQuotationChange}
               placeholder='Customer Name'
             />
@@ -113,7 +139,7 @@ const Quotation = () => {
             <input
               type="text"
               name="vehicleBrand"
-              value={quotationInfo.vehicleBrand}
+              value={vehicle.brand}
               onChange={handleQuotationChange}
               placeholder='Vehicle Brand'
             />
@@ -122,7 +148,7 @@ const Quotation = () => {
             <textarea
               type="text"
               name="furniture"
-              value={newService.description}
+              value={quotationInfo.furniture}
               onChange={handleServiceChange}
               placeholder='Furniture to buy'
             />
@@ -168,6 +194,7 @@ const Quotation = () => {
             <table>
               <thead>
                 <tr>
+                  <th>Date</th>
                   <th>Plate No</th>
                   <th>Customer Name</th>
                   <th>Furniture to buy</th>
@@ -180,8 +207,9 @@ const Quotation = () => {
               <tbody>
                 {quotationInfo.services.map((service, index) => (
                   <tr key={index}>
-                    <td>{quotationInfo.plateNo}</td>
-                    <td>{quotationInfo.customerName}</td>
+                    <td>{quotationInfo.date}</td>
+                    <td>{vehicle.plate}</td>
+                    <td>{vehicle.owner}</td>
                     <td>{service.furniture}</td>
                     <td>{service.quantity}</td>
                     <td>{service.unitPrice}</td>
@@ -201,6 +229,7 @@ const Quotation = () => {
                <td></td>
                <td></td>
                <td></td>
+               <td></td>
                <td>${calculateTotalPrice()}</td>
                 </tr>
               </tbody>
@@ -214,6 +243,7 @@ const Quotation = () => {
         <button>Print</button>
         </div>
       </div>
+      )}
     </div>
   );
 };
