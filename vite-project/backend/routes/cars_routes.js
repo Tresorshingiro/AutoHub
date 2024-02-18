@@ -9,19 +9,19 @@ const {
 
 const router = express.Router()
 
-// GET all users
+// GET all cars
 router.get('/', getAllCars)
 
-// GET a single user
+// GET a single car
 router.get('/:id', getOneCar)
 
-// Post a new user
+// Post a new car
 router.post('/', createVehicle)
 
-// Delete a user
+// Delete a car
 router.delete('/:id', deleteVehicle)
 
-// Create a user
+// Update a car
 router.patch('/:id', updateVehicle)
 
 module.exports = router

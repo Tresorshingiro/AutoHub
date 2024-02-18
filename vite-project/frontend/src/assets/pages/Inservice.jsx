@@ -9,32 +9,48 @@ const Inservice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const deleteCar = async (id, brand, owner) => {
-    if(window.confirm(`Are you sure you wan't to delete the ${brand} of ${owner}`)) {
-
+  const deleteCar = async (vehicle) => {
+    if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
       try {
-        const response = await fetch('http://localhost:3000/api/vehicles/' + id, {
+        const deleteResponse = await fetch('http://localhost:3000/api/vehicles/' + vehicle._id, {
           method: 'DELETE'
-        })
-         
-        const json = await response.json()
-
-        if (response.ok) {
-          alert(`Deleted ${brand} of ${owner}`)
-          window.location.reload()
+        });
+        
+        const json = await deleteResponse.json();
+  
+        if (deleteResponse.status === 200) {
+          const clearVehicle = await axios.post('http://localhost:3000/api/cleared/vehicles', {
+            brand: vehicle.brand,
+            owner: vehicle.owner,
+            plate: vehicle.plate,
+            insurance: vehicle.insurance,
+            telephone: vehicle.telephone,
+            email: vehicle.email,
+            description: vehicle.description,
+            createdAt: vehicle.createdAt
+          });
+  
+          if (clearVehicle.status === 200) {
+            alert(`Deleted ${vehicle.brand} of ${vehicle.owner}`);
+            // Remove the vehicle from the state
+            setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== vehicle._id));
+  
+          } else {
+            // Errors in moving the deleted car to cleared vehicles
+            alert(`Failed to move ${vehicle.brand} of ${vehicle.owner} to cleared vehicles`);
+          }
         } else {
-          // Errors occuring in the deletion process
-          console.error(json.error); // log error message
-          alert(`Failed to delete the vehicle due to ${json.error}`)
+          // Errors occurring in the deletion process
+          console.error(json.error); // Log error message
+          alert(`Failed to delete the vehicle due to ${json.error}`);
         }
-
-      } catch(error) {
+      } catch (error) {
         // For network errors or other exceptions
-        console.error('An error occured: ', error)
-        alert('An error occured while deleting the vehicle')
+        console.error('An error occurred: ', error);
+        alert('An error occurred while deleting the vehicle');
       }
-    }      
-  }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,7 +124,7 @@ const Inservice = () => {
                           Edit
                         </button>
                       </Link>
-                      <button className='delete' onClick={() => deleteCar(vehicle._id, vehicle.brand, vehicle.owner)}>
+                      <button className='delete' onClick={() => deleteCar(vehicle)}>
                         <img src='/delete.png' alt='Delete Icon' />
                         Delete
                       </button>
