@@ -37,7 +37,7 @@ const App = () => {
       <Route path="/owner" element={<Owner />} />
       <Route path="/inservice" element={<Inservice/>}/>
       <Route path="/view/:id" element={<View/>}/>
-      <Route path="/update"element={<Update/>}/>
+      <Route path="/update/:id"element={<Update/>}/>
       <Route path="/quotation/:id"element={<Quotation/>}/>
       <Route path="/quotationlist"element={<QuotationList/>}/>
       <Route path="/cleared"element={<Cleared/>}/>

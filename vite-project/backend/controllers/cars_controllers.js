@@ -27,10 +27,10 @@ const getOneCar = async (req, res) => {
 
 // Creating a car details
 const createVehicle = async (req, res) => {
-    const { owner, brand, plate, insurance, telephone, email, description } = req.body
+    const { owner, brand, type, plate, insurance, telephone, email, description } = req.body
 
     try {
-        const vehicle = await Car_data.create({owner, brand, plate, insurance, telephone, email, description})
+        const vehicle = await Car_data.create({owner, brand, type, plate, insurance, telephone, email, description})
         res.status(200).json(vehicle)
     } catch(error) {
         console.error('Error:', error)

@@ -5,6 +5,7 @@ const ReceptionForm = () => {
     // Define vehicleInfo state using the useState hook
     const [owner, setOwner] = useState('')
     const [brand, setBrand] = useState('')
+    const [type, setType] = useState('')
     const [plate, setPlate] = useState('')
     const [insurance, setInsurance] = useState('')
     const [telephone, setTelephone] = useState('')
@@ -18,11 +19,11 @@ const ReceptionForm = () => {
     e.preventDefault()
 
     // Perform actions with vehicleInfo data, e.g., send it to a server
-    const vehicle = { owner, brand, plate, insurance, telephone, email, description }
+    const vehicle = { owner, brand,type, plate, insurance, telephone, email, description }
 
     const response = await fetch('http://localhost:3000/api/vehicles/', {
       method: 'POST',
-      body: JSON.stringify({owner, brand, plate, insurance, telephone, email, description}),
+      body: JSON.stringify({owner, brand, type, plate, insurance, telephone, email, description}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -40,6 +41,7 @@ const ReceptionForm = () => {
 
       setOwner('')
       setBrand('')
+      setType('')
       setPlate('')
       setInsurance('')
       setTelephone('')
@@ -72,6 +74,17 @@ const ReceptionForm = () => {
           className='row'
           onChange={(e) => setBrand(e.target.value)}
           value={brand}
+        />
+        </label>
+
+        <label>
+        <input 
+          type="text" 
+          name="type" 
+          placeholder='Vehicle Type'
+          className='row'
+          onChange={(e) => setType(e.target.value)}
+          value={type}
         />
         </label>
 
