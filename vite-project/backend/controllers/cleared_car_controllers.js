@@ -58,9 +58,26 @@ const updateClearedCar = async (req, res) => {
     res.status(200).json(vehicle)
 }
 
+// Deleting a cleared car
+const deleteClearedCar = async (req, res) => {
+    const { id } = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such Vehicle'})
+    }
+
+    const vehicle = await Cleared_cars.findOneAndDelete({_id: id})
+
+    if(!vehicle) {
+        return res.status(404).json({error: 'No such Vehicle'})
+    }
+    res.status(200).json(vehicle)
+}
+
 module.exports = {
     getClearedCars,
     getOneClearedCar,
     addToClearedCars,
-    updateClearedCar
+    updateClearedCar,
+    deleteClearedCar
 }
