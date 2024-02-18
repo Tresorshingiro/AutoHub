@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const cars_routes = require('./routes/cars_routes');
+const cleared_car_routes = require('./routes/cleared_car_routes');
 
 //initialise the app
 const app = express();
@@ -20,12 +21,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/vehicles', cars_routes);
-
-app.post('/addSupplier', (req, res) => {
-    const supplierData = req.body;
-    res.json({ message: 'Supplier added successfully' });
-});
-  
+app.use('/api/cleared/vehicles', cleared_car_routes);
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

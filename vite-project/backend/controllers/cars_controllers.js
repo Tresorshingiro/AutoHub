@@ -1,4 +1,4 @@
-const Car_data = require('../models/Reception_car')
+const Car_data = require('../models/Reception_car_model')
 const mongoose = require('mongoose')
 
 // Getting all car details
