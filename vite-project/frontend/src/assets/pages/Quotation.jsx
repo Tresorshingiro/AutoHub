@@ -66,6 +66,7 @@ const Quotation = () => {
         brand: vehicle.brand,
         owner: vehicle.owner,
         plate: vehicle.plate,
+        createdAt: vehicle.createdAt,
         furniture: newService.furniture,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
