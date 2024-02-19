@@ -269,7 +269,7 @@ button {
 .nav-links .button:active,
 .nav-links .button.active-link {
   background-color: #23AE00;
-  color: #fff;
+  color:#003239;
 }
 
 .placeholder{
@@ -401,34 +401,31 @@ button {
 
 .add-quotation {
   display: flex;
-  margin-top: 0;
+  width:100%;
+  gap:80px;
 }
 
 .addquota {
-  height: 60%;
-  min-width: 250px;
-  padding:25px;
-  margin:50px;
+  width: 100%;
+  max-width: 500px;
+  padding: 50px;
+  background-color: #f4f4f4;
   border:1px solid #3cd052;
-  border-radius: 25px;
-  cursor: pointer;
-  background-color: #fff;
-  box-shadow: 20px 20px 30px rgba(0,0,0,0.02);
-  transition: 0.2s ease;
+  border-radius: 8px;
 }
 
 .addquota input {
-  width: 100%;
+  width: 60%;
   padding: 5px;
-  margin-bottom: 15px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .addquota label {
-  margin-bottom: 10px;
   display: flex;
-  flex-direction: column; /* Align elements in each box from top to bottom */
+  margin-bottom: 3px;
+  font-weight: bold;
 }
 
 .added-services {
@@ -520,6 +517,7 @@ div.success {
 
 .addsupplier button:hover {
   background-color: #23AE00;
+  color:#003239;
 }
 
 

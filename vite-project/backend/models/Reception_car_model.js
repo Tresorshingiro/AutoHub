@@ -49,7 +49,8 @@ const receptionCar = new Schema({
             currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
             return currentDate.toISOString().slice(0, -5); // Remove milliseconds
         }
-    }
+    },
+    date: 
 });
 
 module.exports = mongoose.model('receptionCar', receptionCar) // Collection name

@@ -103,11 +103,11 @@ const Update = () => {
                     Model Year: <input type="text" name="model" value={vehicle.model} onChange={handleInputChange} />
                   </label>
                   <div className='buttons'>
-                    <button type="submit">
+                    <button type="submit" onClick={() => navigate.push(`/view/${id}`)}>
                       <img src='/arrow.png' alt='Update Icon' />
                       Update
                     </button>
-                    <button className='btn' onClick={() => navigate.push(`/view/${id}`)}>Cancel</button>
+                    <button className='btn'>Cancel</button>
                   </div>
                 </form>
               </div>

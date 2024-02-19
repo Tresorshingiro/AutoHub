@@ -137,6 +137,7 @@ const Quotation = () => {
         <div className='add-quotation'>
           <form className='addquota'>
           <label>
+            Date:
             <input
               type="text"
               name="date"
@@ -145,6 +146,7 @@ const Quotation = () => {
             />
           </label>
           <label>
+            PlateNo:
             <input
               type="text"
               name="plateNo"
@@ -154,6 +156,7 @@ const Quotation = () => {
             />
           </label>
           <label>
+            Customer Name:
             <input
               type="text"
               name="customerName"
@@ -163,6 +166,7 @@ const Quotation = () => {
             />
           </label>
           <label>
+            Vehicle Brand:
             <input
               type="text"
               name="vehicleBrand"
@@ -172,6 +176,7 @@ const Quotation = () => {
             />
           </label>
           <label>
+            Furniture to buy:
             <textarea
               type="text"
               name="furniture"
