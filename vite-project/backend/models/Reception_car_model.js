@@ -50,7 +50,6 @@ const receptionCar = new Schema({
             return currentDate.toISOString().slice(0, -5); // Remove milliseconds
         }
     },
-    date: 
 });
 
 module.exports = mongoose.model('receptionCar', receptionCar) // Collection name
