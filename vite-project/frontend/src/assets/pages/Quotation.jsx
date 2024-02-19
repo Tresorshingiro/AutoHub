@@ -6,7 +6,9 @@ import '../../App.css';
 
 const Quotation = () => {
   const { id } = useParams(); 
-  const [vehicle, setVehicles] = useState(undefined);
+  const [vehicle, setVehicles] = useState(undefined);  
+  const [success, setSuccess] = useState(null)
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,19 +60,44 @@ const Quotation = () => {
     });
   };
 
-  const handleAddService = () => {
-    setQuotationInfo({
-      ...quotationInfo,
-      services: [...quotationInfo.services, newService],
-    });
-
-    setNewService({
-      furniture: '',
-      quantity: 0,
-      unitPrice: 0,
-      vatIncluded: false,
-    });
+  const handleAddService = async (vehicle, newService) => {
+    try {
+      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
+        brand: vehicle.brand,
+        owner: vehicle.owner,
+        plate: vehicle.plate,
+        furniture: newService.furniture,
+        quantity: newService.quantity,
+        unitPrice: newService.unitPrice,
+        vatInclude: newService.vatIncluded
+      });
+  
+      if (quotationResponse.status === 200) {
+        setQuotationInfo({
+          ...quotationInfo,
+          services: [...quotationInfo.services, newService],
+        });
+  
+        setNewService({
+          furniture: '',
+          quantity: 0,
+          unitPrice: 0,
+          vatIncluded: false,
+        });
+      } else {
+        console.error('Error:', quotationResponse.statusText);
+        const errorData = quotationResponse.data; // Directly access response data
+        console.error('Error Details:', errorData);
+        setError(errorData);
+        setSuccess(null);
+      }
+    } catch (error) {
+      console.error('An error occurred while adding service:', error);
+      setError('An error occurred while adding service');
+      setSuccess(null);
+    }
   };
+  
 
   const calculateTotalPrice = () => {
     return quotationInfo.services.reduce((total, service) => {
@@ -112,9 +139,9 @@ const Quotation = () => {
           <label>
             Date:
             <input
-              type="date"
+              type="text"
               name="date"
-              value={quotationInfo.date}
+              value={vehicle.createdAt}
               onChange={handleQuotationChange}
             />
           </label>
@@ -153,7 +180,7 @@ const Quotation = () => {
             <textarea
               type="text"
               name="furniture"
-              value={quotationInfo.furniture}
+              value={newService.furniture}
               onChange={handleServiceChange}
               placeholder='Furniture to buy'
             />
@@ -191,7 +218,7 @@ const Quotation = () => {
           </label>
           </form>
         </div>
-        <button type="button" onClick={handleAddService}>Add Service</button>
+        <button type="button" onClick={() => handleAddService(vehicle, newService)}>Add Service</button>
         {/* Display added services in a table */}
         {quotationInfo.services.length > 0 && (
           <div className="added-services">
@@ -212,7 +239,7 @@ const Quotation = () => {
               <tbody>
                 {quotationInfo.services.map((service, index) => (
                   <tr key={index}>
-                    <td>{quotationInfo.date}</td>
+                    <td>{vehicle.createdAt}</td>
                     <td>{vehicle.plate}</td>
                     <td>{vehicle.owner}</td>
                     <td>{service.furniture}</td>
