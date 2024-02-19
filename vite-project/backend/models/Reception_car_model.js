@@ -11,6 +11,10 @@ const receptionCar = new Schema({
         type: String,
         required: true
     },
+    type: {
+        type:String,
+        required:true
+    },
     plate: {        
         type: String,
         required: true

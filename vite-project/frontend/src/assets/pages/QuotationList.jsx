@@ -4,37 +4,6 @@ import '../../App.css';
 import QuotationNav from '../components/quotationNav';
 
 const QuotationList = () => {
- const [quotations, setQuotations] = useState([]);
-
- useEffect(() => {
-    fetchQuotations();
- }, []);
-
- const fetchQuotations = async () => {
-    // Replace with your API call to fetch quotations
-    const response = await fetch('/api/quotations');
-    const data = await response.json();
-    setQuotations(data);
- };
- const handleView = (quotation) => {
-    setSelectedQuotation(quotation);
- };
-
- const handleEdit = (quotation) => {
-    // Navigate to the EditQuotation component
- };
- const handleApproval = async (quotation) => {
-    // Update the state of the quotation to 'approved'
-    // Replace with your own API call implementation
-    const response = await fetch(`/api/quotations/${quotation.id}/approve`, {
-      method: 'PUT',
-    });
-
-    if (response.ok) {
-      setQuotations(quotations.filter(q => q.id !== quotation.id));
-    }
- };
-
  return (
     <div className="container">
     <section className="header">
@@ -58,27 +27,32 @@ const QuotationList = () => {
       <table>
         <thead>
           <tr>
-            <th>Plate No</th>
-            <th>Customer Name</th>
-            <th>Vehicle Brand</th>
-            <th>Date</th>
-            <th>Action</th>
+          <th>Date</th>
+          <th>Plate No</th>
+          <th>Customer Name</th>
+          <th>Furniture to buy</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>VAT</th>
+          <th>Total Price</th>
+          <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {quotations.map((quotation, index) => (
-            <tr key={index}>
-              <td>{quotation.plateNo}</td>
-              <td>{quotation.customerName}</td>
-              <td>{quotation.vehicleBrand}</td>
-              <td>{quotation.date}</td>
-              <td>
-                <button onClick={() => handleView(quotation)}>View</button>
-                <button onClick={() => handleEdit(quotation)}>Edit</button>
-                <button onClick={() => handleApproval(quotation)}>Approval</button>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td className='tbtn'>
+                <button>Edit</button>
+                <button>Approval</button>
               </td>
             </tr>
-          ))}
         </tbody>
       </table>
     </div>

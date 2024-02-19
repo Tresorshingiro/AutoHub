@@ -51,9 +51,17 @@ const View = () => {
         <div className='box'>
           <div className='pro-container'>
             <div className='details'>
-              <h4>Customer Details</h4>
-              <div className='pro'>
-                <form method='post'>
+              <div className='addsupplier'>
+                <form  method='post'>
+                 <label>
+                    PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
+                  </label>
+                  <label>
+                    Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
+                  </label>
+                  <label>
+                    Type: <input type="text" name="type" value={vehicle.type} readOnly />
+                  </label>
                   <label>
                     Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
                   </label>
@@ -66,19 +74,7 @@ const View = () => {
                   <label>
                     Description: <input type="text" name="text" value={vehicle.description} readOnly />
                   </label>
-                </form>
-              </div>
-            </div>
-            <div className='details'>
-              <h4>Vehicle Details</h4>
-              <div className='pro'>
-                <form method='post'>
-                  <label>
-                    Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
-                  </label>
-                  <label>
-                    PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
-                  </label>
+
                   <label>
                     Engine: <input type="text" name="engine" value={vehicle.engine} readOnly />
                   </label>

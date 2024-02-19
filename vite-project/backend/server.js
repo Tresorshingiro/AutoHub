@@ -5,6 +5,7 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 const cars_routes = require('./routes/cars_routes');
 const cleared_car_routes = require('./routes/cleared_car_routes');
+const supplierRoutes = require('./routes/supplierRoutes');
 
 //initialise the app
 const app = express();
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/vehicles', cars_routes);
 app.use('/api/cleared/vehicles', cleared_car_routes);
+app.use('/api/suppliers', supplierRoutes);
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

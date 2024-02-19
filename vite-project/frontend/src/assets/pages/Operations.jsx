@@ -59,8 +59,15 @@ const Operations = () => {
                   <td>{vehicle.insurance}</td>
                   <td>
                     <div className='tbtn'>
-                    <button>View</button>
+                    <Link to={`/view/${vehicle._id}`} className='vw'>
+                        <button className='view'>
+                          <img src='/view.png' alt='View Icon' />
+                          View
+                        </button>
+                      </Link>
+                    <Link to={`/quotation/${vehicle._id}`}className='adquota'>
                     <button>Add Quotation</button>
+                    </Link>
                     </div>
                   </td>
                 </tr>
