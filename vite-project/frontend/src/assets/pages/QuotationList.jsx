@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import '../../App.css';
-import { Link } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios';
 
 const QuotationList = () => {
-  const [quotations, setQuotations] = useState([]); // Fix variable name to match the state
+  const [Quotations, setQuotations] = useState([]); // Fix variable name to match the state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/quotations/vehicle/');
+        const response = await axios.get('http://localhost:3000/api/quotations/vehicles/');
         setQuotations(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -65,23 +64,25 @@ const QuotationList = () => {
                 </tr>
               </thead>
               <tbody>
-                {Quotations.map(quotations => (
-                  <tr key={quotations._id}>
-                    <td>{quotations.createdAt}</td>
-                    <td>{quotations.plate}</td>
-                    <td>{quotations.owner}</td>
-                    <td>{quotations.quantity}</td>
-                    <td>{quotations.unitPrice}</td>
-                    <td>{quotations.vatIncluded}</td>
+                {Quotations.map(quotation => (
+                  <tr key={quotation._id}>
+                    <td>{quotation.createdAt}</td>
+                    <td>{quotation.plate}</td>
+                    <td>{quotation.owner}</td>
+                    <td>{quotation.quantity}</td>
+                    <td>{quotation.unitPrice}</td>
+                    <td>{quotation.vatIncluded}</td>
+                    <td></td>
+                    <td></td>
                     <td>
                       <div className='tbtn'>
-                        <Link to={`/view/${quotations._id}`} className='vw'>
+                        <Link to={`/view/${quotation._id}`} className='vw'>
                           <button className='view'>
                             <img src='/view.png' alt='View Icon' />
                             View
                           </button>
                         </Link>
-                        <Link to={`/update/${quotations._id}`} className='edt'>
+                        <Link to={`/update/${quotation._id}`} className='edt'>
                           <button className='edit'>
                             <img src='/edit.png' alt='Edit Icon' />
                             Approval
