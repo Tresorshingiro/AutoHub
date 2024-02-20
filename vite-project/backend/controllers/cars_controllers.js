@@ -59,19 +59,22 @@ const deleteVehicle = async (req, res) => {
 const updateVehicle = async (req, res) => {
     const { id } = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such Vehicle'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid Vehicle ID' })
     }
 
-    const vehicle = await Car_data.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
+    try {
+        const updatedVehicle = await Car_data.findByIdAndUpdate(id, req.body, { new: true })
 
-    if(!vehicle) {
-        return res.status(404).json({error: 'No such Vehicle'})
+        if (!updatedVehicle) {
+            return res.status(404).json({ error: 'Vehicle not found' })
+        }
+
+        res.status(200).json(updatedVehicle)
+    } catch (error) {
+        console.error('Error updating vehicle:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
     }
-
-    res.status(200).json(vehicle)
 }
 
 module.exports = {
