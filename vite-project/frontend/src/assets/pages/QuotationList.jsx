@@ -42,8 +42,8 @@ const QuotationList = () => {
         <QuotationNav />
       </div>
       <div className='box'>
+      <h2>Quotation List</h2>
         <div className="quotation-list">
-          <h2>Quotation List</h2>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -69,11 +69,11 @@ const QuotationList = () => {
                     <td>{quotation.createdAt}</td>
                     <td>{quotation.plate}</td>
                     <td>{quotation.owner}</td>
+                    <td>{quotation.furniture}</td>
                     <td>{quotation.quantity}</td>
                     <td>{quotation.unitPrice}</td>
                     <td>{quotation.vatIncluded}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{quotation.total}</td>
                     <td>
                       <div className='tbtn'>
                         <Link to={`/view/${quotation._id}`} className='vw'>
