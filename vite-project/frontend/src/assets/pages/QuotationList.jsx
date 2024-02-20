@@ -116,8 +116,6 @@ const QuotationList = () => {
                     <td>{quotation.quantity}</td>
                     <td>{quotation.unitPrice}</td>
                     <td>{quotation.vatIncluded ? 'Yes' : 'No'}</td>
-                    <td></td>
-                    <td>{quotation.vatIncluded}</td>
                     <td>{quotation.total}</td>
                    <td>
                       <div className='tbtn'>
