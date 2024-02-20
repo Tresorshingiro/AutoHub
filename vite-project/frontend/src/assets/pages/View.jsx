@@ -74,13 +74,6 @@ const View = () => {
                   <label>
                     Description: <input type="text" name="text" value={vehicle.description} readOnly />
                   </label>
-
-                  <label>
-                    Engine: <input type="text" name="engine" value={vehicle.engine} readOnly />
-                  </label>
-                  <label>
-                    Model Year: <input type="text" name="model" value={vehicle.model} readOnly />
-                  </label>
                 </form>
               </div>
             </div>

@@ -14,8 +14,6 @@ const Update = () => {
     brand: '',
     type: '',
     plate: '',
-    engine: '',
-    model: '',
   });
 
   useEffect(() => {
@@ -45,7 +43,7 @@ const Update = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/vehicles/${id}`, vehicle);
+      const response = await axios.patch(`http://localhost:3000/api/vehicles/${id}`, vehicle);
       console.log('Vehicle updated successfully:', response.data);
       // Redirect to the view page or any other page after successful update
       navigate(`/view/${id}`);
@@ -94,12 +92,6 @@ const Update = () => {
                   </label>
                   <label>
                     Plate NO: <input type="text" name="plate" value={vehicle.plate} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Engine: <input type="text" name="engine" value={vehicle.engine} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Model Year: <input type="text" name="model" value={vehicle.model} onChange={handleInputChange} />
                   </label>
                   <div className='buttons'>
                     <button type="submit">
