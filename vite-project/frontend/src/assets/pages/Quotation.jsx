@@ -220,7 +220,7 @@ const Quotation = () => {
           </label>
           </form>
         </div>
-        <button type="button" onClick={() => handleAddService(vehicle, newService)}>Add Service</button>
+        <button type="button" className='addservice'onClick={() => handleAddService(vehicle, newService)}>Add Service</button>
         {/* Display added services in a table */}
         {quotationInfo.services.length > 0 && (
           <div className="added-services">

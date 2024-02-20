@@ -9,13 +9,11 @@ const Update = () => {
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState({
     owner: '',
-    tel: '',
+    telephone: '',
     email: '',
     brand: '',
     type: '',
     plate: '',
-    engine: '',
-    model: '',
   });
 
   useEffect(() => {
@@ -25,7 +23,6 @@ const Update = () => {
         const data = response.data;
 
         setVehicle(data);
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -46,10 +43,10 @@ const Update = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/vehicles/${id}`, vehicle);
+      const response = await axios.patch(`http://localhost:3000/api/vehicles/${id}`, vehicle);
       console.log('Vehicle updated successfully:', response.data);
       // Redirect to the view page or any other page after successful update
-      history.push(`/view/${id}`);
+      navigate(`/view/${id}`);
     } catch (error) {
       console.error('Error updating vehicle:', error);
     }
@@ -82,7 +79,7 @@ const Update = () => {
                     Owner: <input type="text" name="owner" value={vehicle.owner} onChange={handleInputChange} />
                   </label>
                   <label>
-                    Tel: <input type="tel" name="tel" value={vehicle.telephone} onChange={handleInputChange} />
+                    Tel: <input type="tel" name="telephone" value={vehicle.telephone} onChange={handleInputChange} />
                   </label>
                   <label>
                     Email: <input type="email" name="email" value={vehicle.email} onChange={handleInputChange} />
@@ -94,20 +91,16 @@ const Update = () => {
                     Type: <input type="text" name="type" value={vehicle.type} onChange={handleInputChange} />
                   </label>
                   <label>
-                    PlateNO: <input type="text" name="plateNo" value={vehicle.plate} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Engine: <input type="text" name="engine" value={vehicle.engine} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Model Year: <input type="text" name="model" value={vehicle.model} onChange={handleInputChange} />
+                    Plate NO: <input type="text" name="plate" value={vehicle.plate} onChange={handleInputChange} />
                   </label>
                   <div className='buttons'>
-                    <button type="submit" onClick={() => navigate.push(`/view/${id}`)}>
+                    <button type="submit">
                       <img src='/arrow.png' alt='Update Icon' />
                       Update
                     </button>
-                    <button className='btn'>Cancel</button>
+                    <button type="button" className='btn' onClick={() => navigate(`/view/${id}`)}>
+                      Cancel
+                    </button>
                   </div>
                 </form>
               </div>
