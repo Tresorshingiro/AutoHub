@@ -41,8 +41,8 @@ const Quotation = () => {
 
   const [newService, setNewService] = useState({
     furniture: '',
-    quantity: 0,
-    unitPrice: 0,
+    quantity: '',
+    unitPrice: '',
     vatIncluded: false,
   });
 

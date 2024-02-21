@@ -59,7 +59,10 @@ body {
 .portal:hover {
   background-color: #4caf50;
 }
-
+.portal a{
+  text-decoration: none;
+  color:black;
+}
 .portal img {
   width: 100%;
   border-radius: 5px;
@@ -69,7 +72,6 @@ body {
 .textportal {
   margin-top: 10px;
 }
-
 .btn-container {
   display:flex;
   justify-content: space-between;

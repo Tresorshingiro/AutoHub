@@ -54,7 +54,7 @@ const ReceptionForm = () => {
   }
 
   return(
-    <form onSubmit={handleSubmit}>
+    <form className="addsupplier" onSubmit={handleSubmit}>
         <label>
         <input 
           type="text" 
