@@ -21,12 +21,12 @@ const ReceptionNav = () => {
             In-service Vehicles
             </button>
         </NavLink>
-        <NavLink to='/cleared' activeclassname="active-link">
+        {/*<NavLink to='/cleared' activeclassname="active-link">
           <button className='button'>
             <img src='/mark.png'/>
             Cleared Vehicles
           </button>
-        </NavLink>
+    </NavLink>*/}
         </div> 
     );
 };

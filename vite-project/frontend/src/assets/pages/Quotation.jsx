@@ -196,7 +196,6 @@ const Quotation = () => {
               name="quantity"
               value={newService.quantity}
               onChange={handleServiceChange}
-              placeholder='Quantity'
             />
           </label>
           <label>
@@ -206,7 +205,6 @@ const Quotation = () => {
               name="unitPrice"
               value={newService.unitPrice}
               onChange={handleServiceChange}
-              placeholder='Unit Price'
             />
           </label>
           <label>

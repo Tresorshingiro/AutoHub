@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import QuotationNav from '../components/quotationNav';
 import ReceptionNav from '../components/receptionNav';
+
 import axios from 'axios';
 import '../../App.css';
 
@@ -64,7 +66,7 @@ return(
          </div>
         </section>
        <div className="nav-links">
-        <ReceptionNav/>
+        <QuotationNav/>
       </div>
       <div className='box'>
         <h2>Cleared Vehicles</h2>

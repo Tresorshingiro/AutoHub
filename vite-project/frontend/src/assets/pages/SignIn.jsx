@@ -7,9 +7,12 @@ const SignIn = () =>{
     return(
         <div className='signin-container'>
             <h1>Autohub</h1>
-            <h3>Username</h3>
-            <h5>Enter password</h5>
-            <input type="password"name="password"id="password"/>
+            <label>Username:
+            <input type="email"name="email"placeholder='Email'/>
+            </label>
+            <label>Password:
+            <input type="password"name="password"id="password"placeholder='Password'/>
+            </label>
             <br/>
             <a href="#">Forgot Password</a>
                 <div className='btn'>
