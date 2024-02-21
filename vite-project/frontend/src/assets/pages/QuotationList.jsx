@@ -3,59 +3,20 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import '../../App.css';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios';
+import approvedCar from '../components/functions/approvedCar';
+
+const sendLoc = "http://localhost:3000/api/cleared/vehicles";
+const getLoc = "http://localhost:3000/api/quotations/vehicles/"
 
 const QuotationList = () => {
   const [Quotations, setQuotations] = useState([]); // Fix variable name to match the state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const approvedCar = async (quotation) => {
-    if (window.confirm(`Are you sure you want to delete the ${quotation.brand} of ${quotation.owner}`)) {
-      try {
-        const deleteResponse = await fetch('http://localhost:3000/api/quotations/vehicles/' + vehicle._id, {
-          method: 'DELETE'
-        });
-        
-        const json = await deleteResponse.json();
-  
-        if (deleteResponse.status === 200) {
-          const clearVehicle = await axios.post('http://localhost:3000/api/cleared/vehicles', {
-            brand: quotation.brand,
-            owner: quotation.owner,
-            plate: quotation.plate,
-            insurance: quotation.insurance,
-            telephone: quotation.telephone,
-            email: quotation.email,
-            description: quotation.description,
-            createdAt: quotation.createdAt
-          });
-  
-          if (clearVehicle.status === 200) {
-            alert(`Deleted ${quotation.brand} of ${quotation.owner}`);
-            // Remove the vehicle from the state
-            setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== quotation._id));
-  
-          } else {
-            // Errors in moving the deleted car to cleared vehicles
-            alert(`Failed to move ${quotation.brand} of ${quotation.owner} to cleared vehicles`);
-          }
-        } else {
-          // Errors occurring in the deletion process
-          console.error(json.error); // Log error message
-          alert(`Failed to delete the quotation due to ${json.error}`);
-        }
-      } catch (error) {
-        // For network errors or other exceptions
-        console.error('An error occurred: ', error);
-        alert('An error occurred while deleting the quotation');
-      }
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/quotations/vehicles/');
+        const response = await axios.get(getLoc);
         setQuotations(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -125,12 +86,10 @@ const QuotationList = () => {
                             View
                           </button>
                         </Link>
-                        <Link to={`/update/${quotation._id}`} className='edt'>
-                          <button className='edit' onClick={() => approvedCar(quotation)}>
+                          <button className='edit' onClick={() => approvedCar(quotation, setQuotations, getLoc, sendLoc)}>
                             <img src='/edit.png' alt='Edit Icon' />
                             Approval
                           </button>
-                        </Link>
                       </div>
                     </td>
                   </tr>

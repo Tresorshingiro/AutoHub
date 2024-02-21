@@ -1,4 +1,5 @@
 const express = require('express');
+// controller functions
 const {
   getAllSuppliers,
   getSupplierById,
