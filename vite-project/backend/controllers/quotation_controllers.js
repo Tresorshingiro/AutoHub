@@ -27,10 +27,10 @@ const getOneQuotation = async (req, res) => {
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {
-    const {owner, brand, plate, furniture, quantity, unitPrice, vatIncluded, createdAt } = req.body
+    const {owner, brand, plate, type, furniture, quantity, unitPrice, vatIncluded, createdAt } = req.body
 
     try {
-        const quotation = await Quotations.create({owner, brand, plate, furniture, quantity, unitPrice, vatIncluded, createdAt})
+        const quotation = await Quotations.create({owner, brand, plate, type, furniture, quantity, unitPrice, vatIncluded, createdAt})
         res.status(200).json(quotation)
     } catch(error) {
         console.error('Error:', error)

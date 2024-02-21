@@ -66,11 +66,12 @@ const Quotation = () => {
         brand: vehicle.brand,
         owner: vehicle.owner,
         plate: vehicle.plate,
+        type: vehicle.type,
         createdAt: vehicle.createdAt,
         furniture: newService.furniture,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
-        vatInclude: newService.vatIncluded
+        vatIncluded: newService.vatIncluded
       });
   
       if (quotationResponse.status === 200) {
