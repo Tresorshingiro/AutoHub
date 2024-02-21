@@ -71,7 +71,7 @@ const deleteQuotation = async (req, res) => {
     if(!quotation) {
         return res.status(404).json({error: 'No such Quotation'})
     }
-    res.status(200).json(vehicle)
+    res.status(200).json(quotation)
 }
 
 module.exports = {

@@ -19,36 +19,27 @@ const clearedCar = new Schema({
         type: String,
         required: true
     },
-    insurance: {
+    furniture: {
         type: String,
         required: true
     },
-    telephone: {
+    quantity: {
         type: Number,
         required: true
     },
-    email: {
-        type: String,
-        required: true,
+    unitPrice: {
+        type: Number,
+        required: true
     },
-    description: {
-        type: String,
+    vatIncluded: {
+        type: Boolean,
+        default: false
     },
     createdAt: {
-        type: String,
-        default: () => {
-            const currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
-            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
-        }
+        type: String
     },
     updatedAt: {
-        type: String,
-        default: () => {
-            const currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
-            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
-        }
+        type: String
     }
 });
 

@@ -27,10 +27,10 @@ const getOneClearedCar = async (req, res) => {
 
 // Adding a car to the cleared list
 const addToClearedCars = async (req, res) => {
-    const { owner, brand, plate, insurance, telephone, email, description } = req.body
+    const { owner, brand, plate, type, insurance, telephone, email, description, furniture, quantity, unitPrice, vatIncluded, createdAt } = req.body
 
     try {
-        const vehicle = await Cleared_cars.create({owner, brand, plate, insurance, telephone, email, description})
+        const vehicle = await Cleared_cars.create({owner, brand, plate, type, insurance, telephone, email, description,furniture,quantity, unitPrice, vatIncluded, createdAt})
         res.status(200).json(vehicle)
     } catch(error) {
         console.error('Error:', error)

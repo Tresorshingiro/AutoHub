@@ -3,59 +3,19 @@ import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
 import '../../App.css';
+import deleteCar from '../components/functions/deleteCar';
+
+const getLoc = "http://localhost:3000/api/vehicles/";
 
 const Inservice = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const deleteCar = async (vehicle) => {
-    if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
-      try {
-        const deleteResponse = await fetch('http://localhost:3000/api/vehicles/' + vehicle._id, {
-          method: 'DELETE'
-        });
-        
-        const json = await deleteResponse.json();
-  
-        if (deleteResponse.status === 200) {
-          const clearVehicle = await axios.post('http://localhost:3000/api/cleared/vehicles', {
-            brand: vehicle.brand,
-            owner: vehicle.owner,
-            plate: vehicle.plate,
-            insurance: vehicle.insurance,
-            telephone: vehicle.telephone,
-            email: vehicle.email,
-            description: vehicle.description,
-            createdAt: vehicle.createdAt
-          });
-  
-          if (clearVehicle.status === 200) {
-            alert(`Deleted ${vehicle.brand} of ${vehicle.owner}`);
-            // Remove the vehicle from the state
-            setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== vehicle._id));
-  
-          } else {
-            // Errors in moving the deleted car to cleared vehicles
-            alert(`Failed to move ${vehicle.brand} of ${vehicle.owner} to cleared vehicles`);
-          }
-        } else {
-          // Errors occurring in the deletion process
-          console.error(json.error); // Log error message
-          alert(`Failed to delete the vehicle due to ${json.error}`);
-        }
-      } catch (error) {
-        // For network errors or other exceptions
-        console.error('An error occurred: ', error);
-        alert('An error occurred while deleting the vehicle');
-      }
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/vehicles/');
+        const response = await axios.get(getLoc);
         setVehicles(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -124,7 +84,7 @@ const Inservice = () => {
                           Edit
                         </button>
                       </Link>
-                      <button className='delete' onClick={() => deleteCar(vehicle)}>
+                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
                         <img src='/delete.png' alt='Delete Icon' />
                         Delete
                       </button>
