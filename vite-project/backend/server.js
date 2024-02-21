@@ -6,9 +6,10 @@ const PORT = process.env.PORT;
 const cars_routes = require('./routes/cars_routes');
 const cleared_car_routes = require('./routes/cleared_car_routes');
 const supplierRoutes = require('./routes/supplierRoutes');
+const quotationRoutes = require('./routes/quotation_routes');
 const purchaseRoute = require('./routes/purchaseRoute');
 const stockRoute = require('./routes/stockRoute');
-const quotationRoutes = require('./routes/quotation_routes')
+const userRoutes = require('./routes/userRoutes');
 
 //initialise the app
 const app = express();
@@ -18,17 +19,11 @@ app.use(cors());
 
 // Middleware
 app.use(express.json())
-app.use((req, res, next) => {
-    console.log(req.path, req.method)
-    next()
-})
 
 // Routes
 app.use('/api/vehicles', cars_routes);
 app.use('/api/cleared/vehicles', cleared_car_routes);
 app.use('/api/suppliers', supplierRoutes);
-app.use('/api/purchase', purchaseRoute);
-app.use('/api/stock', stockRoute);
 app.use('/api/quotations/vehicles', quotationRoutes)
 
 // Connect to mongoDB
