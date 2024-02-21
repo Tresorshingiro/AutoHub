@@ -4,8 +4,8 @@ const mongoose =require('mongoose');
 // Get all suppliers
 const getAllPurchase = async (req, res) => {
   try {
-    const Purchase = await Purchase.find();
-    res.json(Purchase);
+    const purchase = await Purchase.find();
+    res.json(purchase);
   } catch (error) {
     console.error('Error getting suppliers:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -16,11 +16,11 @@ const getAllPurchase = async (req, res) => {
 const getPurchaseById = async (req, res) => {
   const { id } = req.params;
   try {
-    const Purchase = await Purchase.findById(id);
-    if (!Purchase) {
+    const purchase = await Purchase.findById(id);
+    if (!purchase) {
       return res.status(404).json({ error: 'Supplier not found' });
     }
-    res.json(Purchase);
+    res.json(purchase);
   } catch (error) {
     console.error('Error getting supplier by ID:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -29,9 +29,9 @@ const getPurchaseById = async (req, res) => {
 
 // Create a new supplier
 const createPurchase = async (req, res) => {
-  const Purchase = req.body;
+  const purchase = req.body;
   try {
-    const newPurchase = await Supplier.create(Purchase);
+    const newPurchase = await Purchase.create(purchase);
     res.status(201).json(newPurchase);
   } catch (error) {
     console.error('Error creating supplier:', error);

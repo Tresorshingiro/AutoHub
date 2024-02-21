@@ -94,7 +94,7 @@ const Update = () => {
                     Plate NO: <input type="text" name="plate" value={vehicle.plate} onChange={handleInputChange} />
                   </label>
                   <div className='buttons'>
-                    <button type="submit">
+                    <button type="submit" className='btn'>
                       <img src='/arrow.png' alt='Update Icon' />
                       Update
                     </button>

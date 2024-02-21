@@ -3,32 +3,45 @@ import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
 
 const AddStock = () => {
-  const [stockData, setStockData] = useState({
-    itemName: '',
-    quantity: 0,
-    unitPrice: 0,
-    category: '',
-  });
+  const [itemName, setItemName] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setStockData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Send a POST request to add new stock
-      const response = await axios.post('http://localhost:3000/addStock', stockData);
-      console.log('Stock added successfully:', response.data);
+      const response = await fetch('http://localhost:3000/api/stock/', {
+        method: 'POST',
+        body: JSON.stringify({ itemName, quantity, unitPrice, category }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
+      if (!response.ok) {
+        console.error('Error:', response.statusText);
+        const errorData = await response.json(); // If error response contains JSON data
+        console.error('Error Details:', errorData);
+        throw new Error(errorData.error);
+      }
+
+      const json = await response.json();
+
+      setItemName('');
+      setQuantity('');
+      setUnitPrice('');
+      setCategory('');
+      setError(null);
+      setSuccess('Stock added successfully');
+      console.log('new Stock added', json);
     } catch (error) {
-      console.error('Error adding stock:', error);
+      console.error('Caught an error:', error.message);
+      setError(error.message);
+      setSuccess(null);
     }
   };
   return (
@@ -53,21 +66,23 @@ const AddStock = () => {
         <form className='addsupplier' onSubmit={handleSubmit}>
           <label>
             Item Name:
-            <input type="text" name="itemName" value={stockData.itemName} onChange={handleInputChange} required />
+            <input type="text" name="itemName" value={itemName} onChange={(e) => setItemName(e.target.value)} required />
           </label>
           <label>
             Quantity:
-            <input type="number" name="quantity" value={stockData.quantity} onChange={handleInputChange} required />
+            <input type="number" name="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
           </label>
           <label>
             Unit Price:
-            <input type="number" name="unitPrice" value={stockData.unitPrice} onChange={handleInputChange} required />
+            <input type="number" name="unitPrice" value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} required />
           </label>
           <label>
             Category:
-            <input type="text" name="category" value={stockData.category} onChange={handleInputChange} required />
+            <input type="text" name="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
           </label>
           <button type="submit">Add Stock</button>
+          {error && <div className="error">{error}</div>}
+          {success && <div className="success">{success}</div>}
         </form>
       </div>
     </div>
