@@ -71,8 +71,7 @@ const Quotation = () => {
         furniture: newService.furniture,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
-        vatIncluded: newService.vatIncluded,
-        createdAt: vehicle.createdAt
+        vatIncluded: newService.vatIncluded
       });
   
       if (quotationResponse.status === 200) {
