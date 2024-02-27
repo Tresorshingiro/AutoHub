@@ -59,7 +59,7 @@ const QuotationList = () => {
                   <th>Date</th>
                   <th>Plate No</th>
                   <th>Customer Name</th>
-                  <th>Furniture to buy</th>
+                  <th>Parts to buy</th>
                   <th>Quantity</th>
                   <th>Unit Price</th>
                   <th>VAT</th>

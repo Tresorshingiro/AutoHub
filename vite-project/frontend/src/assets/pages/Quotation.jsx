@@ -178,13 +178,13 @@ const Quotation = () => {
             />
           </label>
           <label>
-            Furniture to buy:
+            Parts to buy:
             <textarea
               type="text"
               name="furniture"
               value={newService.furniture}
               onChange={handleServiceChange}
-              placeholder='Furniture to buy'
+              placeholder='Parts to buy'
             />
           </label>
           </form>
@@ -229,7 +229,7 @@ const Quotation = () => {
                   <th>Date</th>
                   <th>Plate No</th>
                   <th>Customer Name</th>
-                  <th>Furniture to buy</th>
+                  <th>Parts to buy</th>
                   <th>Quantity</th>
                   <th>Unit Price</th>
                   <th>VAT</th>
