@@ -13,7 +13,7 @@ import View from './assets/pages/View';
 import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
-import Cleared from './assets/pages/Cleared';
+import Cleared from './assets/components/cleared';
 import AddSupplier from './assets/pages/AddSupplier';
 import AddStock from './assets/pages/AddStock';
 import AddPurchase from './assets/pages/AddPurchase';
@@ -22,6 +22,7 @@ import StockList from './assets/pages/StockList';
 import PurchaseList from './assets/pages/PurchaseList';
 import Invoice from './assets/pages/invoice';
 import AddInvoices from './assets/pages/AddInvoice';
+import AddItem from './assets/pages/AddItem';
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
       <Route path="/purchase"element={<PurchaseList/>}/>
       <Route path="/Invoice"element={<Invoice/>}/>
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
+      <Route path="/AddItem"element={<AddItem/>}/>
       </Routes>
     </Router>
   );

@@ -225,7 +225,10 @@ button {
   margin: 0;
   color:#23AE00;
 }
-
+.button.active {
+  background-color: #23AE00;
+  color: #003239;
+}
 
 .box {
   display: flex;

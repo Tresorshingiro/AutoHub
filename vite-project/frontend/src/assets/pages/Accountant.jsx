@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
+import Cleared from '../components/cleared';
 
 const Accountant = () => {
   return (
@@ -20,7 +21,9 @@ const Accountant = () => {
       <div className='nav-links'>
        <AccountantNav/>
       </div>
-      <div className='box'></div>
+      <div className='box'>
+        <Cleared/>
+      </div>
     </div>
   );
 };
