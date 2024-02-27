@@ -18,7 +18,12 @@ const app = express();
 app.use(cors());
 
 // Middleware
-app.use(express.json())
+app.use(express.json());
+
+app.use((req, res, next) => {
+    console.log(req.path, req.method)
+    next()
+})
 
 // Routes
 app.use('/api/vehicles', cars_routes);
@@ -27,6 +32,8 @@ app.use('/api/suppliers', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchase', purchaseRoute);
 app.use('/api/stock',stockRoute);
+app.use('/api/quotations/vehicles', quotationRoutes);
+app.use('/api/users', userRoutes)
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)
