@@ -31,8 +31,7 @@ const Cleared = () => {
 
     fetchData();
 
-    // Update currentPage based on the current route
-   {/* const path = location.pathname.toLowerCase();
+    const path = location.pathname.toLowerCase();
     if (path.includes('reception')) {
       setCurrentPage('reception');
     } else if (path.includes('operations')) {
@@ -44,69 +43,58 @@ const Cleared = () => {
     }
   }, [location.pathname]);
 
-  const renderNavBar = () => {
-    if (currentPage === 'reception') {
-      return <ReceptionNav />;
-    } else if (currentPage === 'operations') {
-      return <QuotationNav />;
-    } else if (currentPage === 'accountant') {
-      return <AccountantNav />;
-    }*/}
-}, [])
-
   return (
     <div>
-      {/*{renderNavBar()}*/}
-        <h2>Cleared Vehicles</h2>
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>Error: {error}</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Vehicle Brand</th>
-                <th>Plate No</th>
-                <th>Customer Name</th>
-                <th>Date</th>
-                <th>Insurance</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehicles.map(vehicle => (
-                <tr key={vehicle._id}>
-                  <td>{vehicle.brand}</td>
-                  <td>{vehicle.plate}</td>
-                  <td>{vehicle.owner}</td>
-                  <td>{vehicle.createdAt}</td>
-                  <td>{vehicle.insurance}</td>
-                  <td>
-                    <div className='tbtn'>
-                      <Link to={`/view/${vehicle._id}`} className='vw'>
-                        <button className='view'>
-                          <img src='/view.png' alt='View Icon' />
-                          View
-                        </button>
-                      </Link>
-                      <Link to={`/update/${vehicle._id}`} className='edt'>
-                        <button className='edit'>
-                          <img src='/edit.png' alt='Edit Icon' />
-                          Edit
-                        </button>
-                      </Link>
-                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
-                        <img src='/delete.png' alt='Delete Icon' />
-                        Delete
+      <h2>Cleared Vehicles</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Vehicle Brand</th>
+              <th>Plate No</th>
+              <th>Customer Name</th>
+              <th>Date</th>
+              <th>Insurance</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vehicles.map(vehicle => (
+              <tr key={vehicle._id}>
+                <td>{vehicle.brand}</td>
+                <td>{vehicle.plate}</td>
+                <td>{vehicle.owner}</td>
+                <td>{vehicle.createdAt}</td>
+                <td>{vehicle.insurance}</td>
+                <td>
+                  <div className='tbtn'>
+                    <Link to={`/Approved/${vehicle._id}`} className='vw'>
+                      <button className='view'>
+                        <img src='/view.png' alt='View Icon' />
+                        Approved
                       </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+                    </Link>
+                    <Link to={`/invoice/${vehicle._id}`} className='edt'>
+                      <button className='edit'>
+                        <img src='/edit.png' alt='Edit Icon' />
+                        Create Invoice
+                      </button>
+                    </Link>
+                    {/*<button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
+                      <img src='/delete.png' alt='Delete Icon' />
+                      Delete
+            </button>*/}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

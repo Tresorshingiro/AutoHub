@@ -10,6 +10,18 @@ const QuotationNav = () => {
   };
   return (
     <div>
+     <section className="header">
+        <div className='lg'>
+             <h1>AutoHub</h1>
+           </div>
+           <div className='placeholder'>
+            <h3>Operations</h3>
+           </div>
+           <div className="user-icon">
+          <img src="/user.png" alt="User Icon" />
+        </div>
+      </section>
+      <div className="nav-links">
       <div className="user-icon">
         <img src="/user.png" alt="User Icon" />
         <h2>Operations</h2>
@@ -38,6 +50,7 @@ const QuotationNav = () => {
           Add Item
           </button>
       </NavLink>
+      </div>
     </div>
   );
 }

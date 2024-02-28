@@ -23,6 +23,7 @@ import PurchaseList from './assets/pages/PurchaseList';
 import Invoice from './assets/pages/invoice';
 import AddInvoices from './assets/pages/AddInvoice';
 import AddItem from './assets/pages/AddItem';
+import Approved from './assets/pages/Approved';
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
       <Route path="/Invoice"element={<Invoice/>}/>
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
       <Route path="/AddItem"element={<AddItem/>}/>
+      <Route path="/Approved/:id"element={<Approved/>}/>
       </Routes>
     </Router>
   );

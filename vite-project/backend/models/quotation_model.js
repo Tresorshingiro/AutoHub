@@ -19,6 +19,10 @@ const quotedCar = new Schema({
         type: String,
         required: true
     },
+    description:{
+        type:String,
+        required: true
+    },
     furniture: {
         type: String,
         required: true
@@ -35,6 +39,10 @@ const quotedCar = new Schema({
         type: Boolean,
         default: false
     },
+    total_price: {
+        type: Number,
+        required: true,
+      },
     createdAt: {
         type: String
     },

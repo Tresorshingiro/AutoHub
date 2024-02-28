@@ -10,7 +10,7 @@ const ReceptionForm = () => {
     const [insurance, setInsurance] = useState('')
     const [telephone, setTelephone] = useState('')
     const [email, setEmail] = useState('')
-    const [description, setDescription] = useState('')
+    const [service, setService] = useState('');
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState(null);
 
@@ -19,11 +19,11 @@ const ReceptionForm = () => {
     e.preventDefault()
 
     // Perform actions with vehicleInfo data, e.g., send it to a server
-    const vehicle = { owner, brand,type, plate, insurance, telephone, email, description }
+    const vehicle = { owner, brand,type, plate, insurance, telephone, email, service }
 
     const response = await fetch('http://localhost:3000/api/vehicles/', {
       method: 'POST',
-      body: JSON.stringify({owner, brand, type, plate, insurance, telephone, email, description}),
+      body: JSON.stringify({owner, brand, type, plate, insurance, telephone, email, service}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -46,6 +46,7 @@ const ReceptionForm = () => {
       setInsurance('')
       setTelephone('')
       setEmail('')
+      setService('')
       setDescription('')
       setError(null)
       setSuccess('Vehicle added successfully')
@@ -133,14 +134,12 @@ const ReceptionForm = () => {
         </label>
 
         <label>
-        <input 
-          type="text" 
-          name="description" 
-          placeholder='Description'
-          className='row' 
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-        />
+        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
+          <option value="">Select Service</option>
+          <option value="Service A">Service A</option>
+          <option value="Service B">Service B</option>
+          <option value="Service C">Service C</option>
+        </select>
         </label>
 
         <br/>

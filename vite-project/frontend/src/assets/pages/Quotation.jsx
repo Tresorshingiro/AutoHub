@@ -41,9 +41,11 @@ const Quotation = () => {
 
   const [newService, setNewService] = useState({
     furniture: '',
+    description:'',
     quantity: '',
     unitPrice: '',
     vatIncluded: false,
+    total_price:true,
   });
 
   const handleQuotationChange = (e) => {
@@ -67,11 +69,14 @@ const Quotation = () => {
         owner: vehicle.owner,
         plate: vehicle.plate,
         type: vehicle.type,
+        service:vehicle.service,
         createdAt: vehicle.createdAt,
         furniture: newService.furniture,
+        description: newService.description,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
-        vatIncluded: newService.vatIncluded
+        vatIncluded: newService.vatIncluded,
+        total_price: calculateTotalPrice()
       });
   
       if (quotationResponse.status === 200) {
@@ -82,6 +87,7 @@ const Quotation = () => {
   
         setNewService({
           furniture: '',
+          description:'',
           quantity: 0,
           unitPrice: 0,
           vatIncluded: false,
@@ -118,21 +124,7 @@ const Quotation = () => {
 
   return (
     <div className="container">
-      <section className="header">
-        <div className='lg'>
-          <h1>AutoHub</h1>
-        </div>
-        <div className='placeholder'>
-          <h3>Operations</h3>
-        </div>
-        <div className="user-icon">
-          <img src="/user.png" alt="User Icon" />
-        </div>
-      </section>
-      {/* Navigation Links */}
-      <div className="nav-links">
         <QuotationNav/>
-      </div>
       {vehicle && (
       <div className='box'>
       <h3>Add Quotation</h3>
@@ -178,6 +170,26 @@ const Quotation = () => {
             />
           </label>
           <label>
+            Category:
+            <input
+            type="text"
+            name="service"
+            value={vehicle.service}
+            onChange={handleQuotationChange}
+            placeholder='Service Category'
+            />
+          </label>
+          <label>
+            Description:
+            <textarea
+            text="text"
+            name="description"
+            value={newService.description}
+            onChange={handleServiceChange}
+            placeholder='Description'
+            />
+          </label>
+          <label>
             Parts to buy:
             <textarea
               type="text"
@@ -213,12 +225,12 @@ const Quotation = () => {
               type="checkbox"
               name="vatIncluded"
               checked={newService.vatIncluded}
-              onChange={handleServiceChange}
+              onChange={() => setNewService({ ...newService, vatIncluded: !newService.vatIncluded })}
             />
           </label>
           </form>
         </div>
-        <button type="button" className='addservice'onClick={() => handleAddService(vehicle, newService)}>Add Service</button>
+        <button type="button" className='addservice'onClick={() => handleAddService(vehicle, newService, calculateTotalPrice)}>Add Service</button>
         {/* Display added services in a table */}
         {quotationInfo.services.length > 0 && (
           <div className="added-services">

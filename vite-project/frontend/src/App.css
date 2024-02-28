@@ -35,10 +35,11 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 40px;
 }
 
 .portal {
-  width: 14%;
+  width: 12%;
   text-decoration: none;
   color:black;
   height: 130px;
@@ -194,7 +195,7 @@ button {
   top: 100px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   width: 25%;
   height: 100vh;
   padding-top: 50px;
@@ -205,7 +206,7 @@ button {
   text-decoration: none;
   color: #fff;
   font-weight: bold;
-  padding: 10px;
+  padding: 5px;
 }
 
 .nav-links .user-icon {
@@ -224,6 +225,14 @@ button {
 .nav-links .user-icon h2 {
   margin: 0;
   color:#23AE00;
+}
+.nav-links button{
+  padding: 10px;
+}
+.nav-links .button img{
+  position: fixed;
+  display:flex;
+  margin-left: 25px;
 }
 .button.active {
   background-color: #23AE00;
@@ -514,7 +523,7 @@ div.success {
 }
 
 .addsupplier input,
-.addsupplier textarea {
+.addsupplier textarea ,select{
   width: 60%;
   padding: 5px;
   margin-bottom: 8px;

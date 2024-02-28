@@ -44,8 +44,9 @@ const receptionCar = new Schema({
     type: String,
     required: true,
   },
-  description: {
+  service: {
     type: String,
+    enum:['Service A','Service B','Service C'],
   },
   createdAt: {
     type: String,

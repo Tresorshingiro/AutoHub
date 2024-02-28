@@ -52,23 +52,19 @@ const Portals = () => {
           </div>
           </Link>
         </div>
+        <div className='portal'>
+          <Link to='/signin'>
+          <div className='iconimage'>
+            <img src="/user.png" alt="Accountant Icon"/>
+          </div>
+          <div className='textportal'>
+            <h3>Admin</h3>
+          </div>
+          </Link>
+        </div>
       </div>
-  
-      <div className='btn-container'>
-      <Link to='/signin'>
-        <button className='btn'>
-          Administration 
-        </button>
-        </Link>
-        <Link to='/signin'>
-        <button className='btn'>
-          Owner
-        </button>
-        </Link>
-
       </div>
     </div>
-  </div>
   );
 };
 
