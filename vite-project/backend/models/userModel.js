@@ -37,7 +37,7 @@ userSchema.statics.signup = async function (role, username, email, password) {
     }
 
     if (!validator.isStrongPassword(password)) {
-        throw Error('Password not strong enough')
+        throw Error('Password not strong enough, (use 8+ digits of capital and small letters, number, and symbol)')
     }
 
     const emailExist = await this.findOne({email})
@@ -57,6 +57,27 @@ userSchema.statics.signup = async function (role, username, email, password) {
     
         return user;
     }
+}
+
+userSchema.statics.login = async function (role, email, password) {
+    // validation
+    if (!role || !email || !password) {
+        throw Error('All fields must be complete')
+    }
+
+    const user = await this.findOne({email})
+
+    if (!user) {
+        throw Error('Incorrect email')
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+
+    if (!match) {
+        throw Error('Incorrect password')
+    }
+
+    return user;
 }
 
 module.exports = mongoose.model('User', userSchema)
