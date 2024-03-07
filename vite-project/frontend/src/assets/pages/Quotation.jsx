@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios';
+import PrintModal from '../components/PrintModal';
 import '../../App.css';
 
 const Quotation = () => {
@@ -9,6 +10,7 @@ const Quotation = () => {
   const [vehicle, setVehicles] = useState(undefined);  
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null);
+  const [showPrintModal, setShowPrintModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +85,7 @@ const Quotation = () => {
         setQuotationInfo({
           ...quotationInfo,
           services: [...quotationInfo.services, newService],
+          total_price: calculateTotalPrice(),
         });
   
         setNewService({
@@ -120,6 +123,14 @@ const Quotation = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Submitted Quotation Info:', quotationInfo);
+  };
+
+  const handleClosePrintModal = () => {
+    setShowPrintModal(false); 
+  };
+  const handlePrint = () => {
+    console.log("Print button clicked");
+    setShowPrintModal(true);
   };
 
   return (
@@ -281,14 +292,20 @@ const Quotation = () => {
           </div>
         )}
 
+
         <br />
         <div className='buttons'>
-        <button type="submit" className='btn' onClick={handleSubmit}>Save</button>
-        <button>Print</button>
+            <button type="submit" onClick={handlePrint}>Save</button>
+          </div>
+
+          {/* Display the print modal when showPrintModal is true */}
+          {showPrintModal && (
+            <PrintModal onClose={handleClosePrintModal} vehicle={vehicle} services={quotationInfo.services} total_price={quotationInfo.total_price} />
+          )}
         </div>
+  )
+}
       </div>
-      )}
-    </div>
   );
 };
 

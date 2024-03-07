@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ReceptionNav from '../components/receptionNav';
 import '../../App.css';
 import { useParams } from 'react-router-dom';
+import QuotationNav from '../components/quotationNav';
 
 const Approved = () => {
   const { id } = useParams();
@@ -29,7 +29,7 @@ const Approved = () => {
 
   return (
     <div className='container'>
-      <ReceptionNav />
+      <QuotationNav />
       <div className='box'>
         <table>
           <thead>
@@ -55,6 +55,7 @@ const Approved = () => {
               <td>{vehicle?.quantity}</td>
               <td>{vehicle?.unitPrice}</td>
               <td>{vehicle?.vatIncluded}</td>
+              <td>{vehicle?.total_price}</td>
               {/* You can add more fields as needed */}
             </tr>
           </tbody>

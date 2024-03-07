@@ -24,6 +24,7 @@ import Invoice from './assets/pages/invoice';
 import AddInvoices from './assets/pages/AddInvoice';
 import AddItem from './assets/pages/AddItem';
 import Approved from './assets/pages/Approved';
+import PrintModal from './assets/components/PrintModal';
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
       <Route path="/AddItem"element={<AddItem/>}/>
       <Route path="/Approved/:id"element={<Approved/>}/>
+      <Route path="/printmodel"element={<PrintModal/>}/>
       </Routes>
     </Router>
   );

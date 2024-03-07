@@ -25,6 +25,9 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc) => {
           const deleteResponse = await fetch(getLoc + quotation._id, {
             method: 'DELETE'
           });
+          const deleteReception = await fetch('http://localhost:3000/api/vehicles/' + quotation._id, {
+            method: 'DELETE'
+          });
   
           const json = await deleteResponse.json();
   

@@ -54,22 +54,24 @@ const Cleared = () => {
         <table>
           <thead>
             <tr>
+              <th>Date</th>
               <th>Vehicle Brand</th>
               <th>Plate No</th>
               <th>Customer Name</th>
-              <th>Date</th>
-              <th>Insurance</th>
+              <th>VAT</th>
+              <th>Total Price</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {vehicles.map(vehicle => (
               <tr key={vehicle._id}>
+                <td>{vehicle.createdAt}</td>
                 <td>{vehicle.brand}</td>
                 <td>{vehicle.plate}</td>
                 <td>{vehicle.owner}</td>
-                <td>{vehicle.createdAt}</td>
-                <td>{vehicle.insurance}</td>
+                <td>{vehicle.vatInclude}</td>
+                <td>{vehicle.total_price}</td>
                 <td>
                   <div className='tbtn'>
                     <Link to={`/Approved/${vehicle._id}`} className='vw'>

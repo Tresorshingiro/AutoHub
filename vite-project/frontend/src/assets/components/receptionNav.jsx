@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { FaFile } from 'react-icons/fa';
+import { FaTools } from 'react-icons/fa';
+import { FaCheckCircle } from 'react-icons/fa';
 import '../../App.css';
 
 const ReceptionNav = () => {
@@ -33,7 +36,7 @@ const ReceptionNav = () => {
         onClick={() => handleButtonClick('registration')}
       >
         <button className={`button ${activeButton === 'registration' ? 'active' : ''}`}>
-          <img src='/registration.png'/>
+          <FaFile  className={activeButton === 'registration' ? 'black-on-click' : ''}/>
           Car Registration
         </button>
       </NavLink>
@@ -43,7 +46,7 @@ const ReceptionNav = () => {
         onClick={() => handleButtonClick('inservice')}
       >
         <button className={`button ${activeButton === 'inservice' ? 'active' : ''}`}>
-          <img src='/clipboard.png'/>
+          <FaTools className={activeButton === 'inservice' ? 'black-on-click' : ''}/>
           In-service Vehicles
         </button>
       </NavLink>
@@ -53,7 +56,7 @@ const ReceptionNav = () => {
         onClick={() => handleButtonClick('cleared')}
       >
         <button className={`button ${activeButton === 'cleared' ? 'active' : ''}`}>
-          <img src='/mark.png'/>
+          <FaCheckCircle className={activeButton ==='cleared' ? 'black-on-click' : ''}/>
           Cleared Vehicles
         </button>
       </NavLink>

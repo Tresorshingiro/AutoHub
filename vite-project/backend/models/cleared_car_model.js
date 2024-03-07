@@ -35,6 +35,10 @@ const clearedCar = new Schema({
         type: Boolean,
         default: false
     },
+    total_price:{
+        type:Number,
+        required:true,
+    },
     createdAt: {
         type: String
     },

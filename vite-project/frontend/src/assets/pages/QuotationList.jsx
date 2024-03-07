@@ -63,7 +63,7 @@ const QuotationList = () => {
                     <td>{quotation.quantity}</td>
                     <td>{quotation.unitPrice}</td>
                     <td>{quotation.vatIncluded ? 'Yes' : 'No'}</td>
-                    <td>{quotation.total}</td>
+                    <td>{quotation.total_price}</td>
                    <td>
                       <div className='tbtn'>
                         <Link to={`/view/${quotation._id}`} className='vw'>

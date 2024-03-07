@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
+import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle} from 'react-icons/fa';
 import '../../App.css';
 
 const QuotationNav = () => {
@@ -28,25 +29,25 @@ const QuotationNav = () => {
       </div>
       <NavLink to='/operations' activeclassname="active-link"  onClick={() => handleButtonClick('operations')}>
         <button className={`button ${activeButton === 'operations' ? 'active' : ''}`}>
-            <img src='/inventory.png'/>
+          <FaQuoteLeft className={activeButton ==='operations' ? 'black-on-click' : ''}/>
             Add Quotation
         </button>
       </NavLink>
       <NavLink to='/quotationlist' activeclassname="active-link" onClick={() => handleButtonClick('quotationlist')}>
         <button className={`button ${activeButton === 'quotationlist' ? 'active' : ''}`}>
-            <img src='/list.png'/>
+            <FaList className={activeButton === 'quotationlist' ? 'black-on-click' : ''}/>
             Quotation List
         </button>
       </NavLink>
       <NavLink to='/cleared' activeclassname="active-link" onClick={() => handleButtonClick('cleared')}>
         <button className={`button ${activeButton === 'cleared' ? 'active' : ''}`}>
-        <img src='/mark.png'/>
+        <FaCheckCircle className={activeButton ==='cleared' ? 'black-on-click' : ''}/>
             Cleared Vehicles
         </button>
       </NavLink>
       <NavLink to='/additem' activeclassname="active-link" onClick={() => handleButtonClick('additem')}>
         <button className={`button ${activeButton === 'additem' ? 'active' : ''}`}>
-          <img src='/add.png'/>
+          <FaPlus className={activeButton === 'additem' ? 'black-on-click' : ''}/>
           Add Item
           </button>
       </NavLink>

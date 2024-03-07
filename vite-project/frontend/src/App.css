@@ -234,6 +234,11 @@ button {
   display:flex;
   margin-left: 25px;
 }
+.nav-links .button svg{
+  position: fixed;
+  display:flex;
+  margin-left: 25px;
+}
 .button.active {
   background-color: #23AE00;
   color: #003239;
@@ -283,10 +288,10 @@ button {
   font-size: 1rem;
   margin-top: 1rem;
 }
-.button img {
-  width: 20px;
-  height: 20px; 
-  margin-right: 3px; 
+.button svg {
+  width: 15px;
+  height: 15px; 
+  margin-right: 8px; 
 }
 .nav-links .button:hover,
 .nav-links .button:active,
@@ -545,8 +550,78 @@ div.success {
   color:#003239;
 }
 
+.print-modal {
+  position: fixed;
+  width:60%;
+  top: 40%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0.5rem  1.5rem rgba(0,0,0,.1);
+  z-index: 1000;
+}
+.print-header{
+  position: relative;
+  display:flex;
+  padding-left: 10px;
+  color:#23AE00;
+}
+.print-list ol{
+  display:flex;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.black-on-click {
+  color: black;
+}
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #cce7d0;
+  min-width: 160px;
+  right:0;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  color: #23AE00;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown span {
+  padding: 5px 10px;
+  display: inline-block;
+}
+
+.dropdown-icon-container {
+  position: absolute;
+  left:250px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dropdown-icon {
+  margin-left: 0;
+}
 
 
 
