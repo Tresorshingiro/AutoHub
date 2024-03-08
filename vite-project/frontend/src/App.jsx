@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Portals from './assets/pages/Portals';
 import SignIn from './assets/pages/SignIn';
+import SignUp from './assets/components/SignupForm';
 import Reception from './assets/pages/Reception';
 import Accountant from './assets/pages/Accountant';
 import Admin from './assets/pages/Admin';
@@ -29,6 +30,7 @@ const App = () => {
       <Routes>
       <Route path="/" element={<Portals />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/reception" element={<Reception />} />
       <Route path="/accountant" element={<Accountant />} />
       <Route path="/admin" element={<Admin />} />
