@@ -11,8 +11,9 @@ const Portals = () => {
     <div className="login-container">
       <h2>Login</h2>
       <div className='portal-container'>
+
         <div className='portal'>
-          <Link to='/signin'>
+        <Link to={`/signin?role=Reception`}>
           <div className='iconimage'>
             <img src="/Reception.png" alt="Reception Icon"/>
           </div>
@@ -21,8 +22,9 @@ const Portals = () => {
           </div>
           </Link>
         </div>
+
         <div className='portal'>
-          <Link to='/signin'>
+        <Link to={`/signin?role=Operations`}>
           <div className='iconimage'>
             <img src="/operations.png" alt="operations Icon"/>
           </div>
@@ -33,7 +35,7 @@ const Portals = () => {
         </div>
         
         <div className='portal'>
-          <Link to='/signin'>
+        <Link to={`/signin?role=Management`}>
           <div className='iconimage'>
             <img src="/Management.png" alt="Management Icon"/>
           </div>
@@ -42,8 +44,9 @@ const Portals = () => {
           </div>
           </Link>
         </div>
+
         <div className='portal'>
-          <Link to='/signin'>
+        <Link to={`/signin?role=Accountant`}>
           <div className='iconimage'>
             <img src="/Accountant.png" alt="Accountant Icon"/>
           </div>
@@ -52,23 +55,20 @@ const Portals = () => {
           </div>
           </Link>
         </div>
-      </div>
-  
-      <div className='btn-container'>
-      <Link to='/signin'>
-        <button className='btn'>
-          Administration 
-        </button>
-        </Link>
-        <Link to='/signin'>
-        <button className='btn'>
-          Owner
-        </button>
-        </Link>
 
+        <div className='portal'>
+        <Link to={`/signin?role=Admin`}>
+          <div className='iconimage'>
+            <img src="/user.png" alt="Accountant Icon"/>
+          </div>
+          <div className='textportal'>
+            <h3>Admin</h3>
+          </div>
+          </Link>
+        </div>
+      </div>
       </div>
     </div>
-  </div>
   );
 };
 

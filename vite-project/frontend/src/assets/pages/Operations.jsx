@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
-import axios from 'axios'; // Don't forget to import axios
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const Operations = () => {
   const [vehicles, setVehicles] = useState([])
+  const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      const response = await fetch('http://localhost:3000/api/vehicles/')
+      const response = await fetch('http://localhost:3000/api/vehicles/', {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      })
       const json = await response.json()
 
       if (response.ok){
         setVehicles(json)
       }
     }
-    fetchVehicles()
-  }, [])
+
+    if (user) {
+      fetchVehicles()
+    }
+
+  }, [user])
 
     return(
         <div className="container">

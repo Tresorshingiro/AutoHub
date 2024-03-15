@@ -3,18 +3,25 @@ import { useParams } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext'
+
 
 const Quotation = () => {
   const { id } = useParams(); 
   const [vehicle, setVehicles] = useState(undefined);  
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null);
+  const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log('ID from URL:', id);
-        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`);
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         const data = response.data;
         
         console.log('ID from URL:', id);
@@ -28,8 +35,10 @@ const Quotation = () => {
       }
     };
 
-    fetchData();
-  }, [id]);
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
 
   const [quotationInfo, setQuotationInfo] = useState({
     date: '',
@@ -61,6 +70,11 @@ const Quotation = () => {
   };
 
   const handleAddService = async (vehicle, newService) => {
+    if (!user) {
+      setError('You must be logged in')
+      return
+    }
+
     try {
       const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
         brand: vehicle.brand,
@@ -72,6 +86,11 @@ const Quotation = () => {
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
       });
   
       if (quotationResponse.status === 200) {
@@ -113,6 +132,12 @@ const Quotation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setError('You must be logged in')
+      return
+    }
+    
     console.log('Submitted Quotation Info:', quotationInfo);
   };
 

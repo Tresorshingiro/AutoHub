@@ -4,6 +4,7 @@ import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const getLoc = "http://localhost:3000/api/vehicles/";
 
@@ -11,11 +12,17 @@ const Inservice = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const fetchData = async () => {
+
       try {
-        const response = await axios.get(getLoc);
+        const response = await axios.get(getLoc, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setVehicles(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -24,8 +31,11 @@ const Inservice = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData();
+    }
+
+  }, [user]);
 
   return (
     <div className="container">
@@ -84,7 +94,7 @@ const Inservice = () => {
                           Edit
                         </button>
                       </Link>
-                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
+                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
                         <img src='/delete.png' alt='Delete Icon' />
                         Delete
                       </button>
