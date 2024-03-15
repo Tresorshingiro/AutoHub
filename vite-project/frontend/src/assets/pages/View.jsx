@@ -34,6 +34,10 @@ const View = () => {
 
     if (user) {
       fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
     }
   }, [id, user]); // Include 'id' as a dependency in the useEffect dependencies array
 

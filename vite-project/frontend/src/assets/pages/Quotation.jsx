@@ -39,7 +39,12 @@ const Quotation = () => {
 
     if (user) {
       fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
     }
+    
   }, [user]);
 
   const [quotationInfo, setQuotationInfo] = useState({

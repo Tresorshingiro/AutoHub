@@ -36,6 +36,10 @@ const Cleared = () => {
 
     if (user) {
       fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
     }
 
     const path = location.pathname.toLowerCase();
