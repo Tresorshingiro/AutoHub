@@ -91,7 +91,8 @@ const Quotation = () => {
         description: newService.description,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
-        vatIncluded: newService.vatIncluded
+        vatIncluded: newService.vatIncluded,
+        total_price: calculateTotalPrice()
       },
       {
         headers: {

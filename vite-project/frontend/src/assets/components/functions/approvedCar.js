@@ -17,6 +17,7 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc, user) => {
           quantity: quotation.quantity,
           unitPrice: quotation.unitPrice,
           vatIncluded: quotation.vatIncluded,
+          total_price: quotation.total_price,
           createdAt: quotation.createdAt
         },
         {
@@ -32,9 +33,6 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc, user) => {
             headers: {
             'Authorization': `Bearer ${user.token}`
             }
-          });
-          const deleteReception = await fetch('http://localhost:3000/api/vehicles/' + quotation._id, {
-            method: 'DELETE'
           });
   
           const json = await deleteResponse.json();
@@ -54,7 +52,7 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc, user) => {
       } catch (error) {
       // For network errors or other exceptions
         console.error('An error occurred: ', error);
-    alert('An error occurred while approving the quotation');
+        alert('An error occurred while approving the quotation');
     }
     }
 };
