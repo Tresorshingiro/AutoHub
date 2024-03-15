@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const approvedCar = async (quotation, setQuotations, getLoc, sendLoc) => {
+const approvedCar = async (quotation, setQuotations, getLoc, sendLoc, user) => {
     if (window.confirm(`Your going to approve this quotation of car ${quotation.brand} of ${quotation.owner}`)) {
       try {
         // Add the car to the cleared_vehicles collection
@@ -17,16 +17,22 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc) => {
           quantity: quotation.quantity,
           unitPrice: quotation.unitPrice,
           vatIncluded: quotation.vatIncluded,
+          total_price: quotation.total_price,
           createdAt: quotation.createdAt
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
         });
   
         if (clearVehicle.status === 200) {
           // If successfully added to cleared_vehicles, delete from quotationlist
           const deleteResponse = await fetch(getLoc + quotation._id, {
-            method: 'DELETE'
-          });
-          const deleteReception = await fetch('http://localhost:3000/api/vehicles/' + quotation._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+            'Authorization': `Bearer ${user.token}`
+            }
           });
   
           const json = await deleteResponse.json();
@@ -46,7 +52,7 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc) => {
       } catch (error) {
       // For network errors or other exceptions
         console.error('An error occurred: ', error);
-    alert('An error occurred while approving the quotation');
+        alert('An error occurred while approving the quotation');
     }
     }
 };

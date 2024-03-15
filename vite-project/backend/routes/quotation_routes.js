@@ -7,8 +7,12 @@ const {
     updateQuotation,
     deleteQuotation
 } = require('../controllers/quotation_controllers')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
+
+// Require Auth for all quotation routes
+router.use(requireAuth)
 
 // GET all cars quotations
 router.get('/', getQuotations)

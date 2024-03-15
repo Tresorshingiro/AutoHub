@@ -4,6 +4,7 @@ import '../../App.css';
 import QuotationNav from '../components/quotationNav';
 import axios from 'axios';
 import approvedCar from '../components/functions/approvedCar';
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const sendLoc = "http://localhost:3000/api/cleared/vehicles";
 const getLoc = "http://localhost:3000/api/quotations/vehicles/"
@@ -12,11 +13,16 @@ const QuotationList = () => {
   const [Quotations, setQuotations] = useState([]); // Fix variable name to match the state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(getLoc);
+        const response = await axios.get(getLoc, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setQuotations(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -25,8 +31,14 @@ const QuotationList = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
+    }
+  }, [user]);
 
   return (
     <div className="container">
@@ -72,7 +84,7 @@ const QuotationList = () => {
                             View
                           </button>
                         </Link>
-                          <button className='edit' onClick={() => approvedCar(quotation, setQuotations, getLoc, sendLoc)}>
+                          <button className='edit' onClick={() => approvedCar(quotation, setQuotations, getLoc, sendLoc, user)}>
                             <img src='/edit.png' alt='Edit Icon' />
                             Approval
                           </button>

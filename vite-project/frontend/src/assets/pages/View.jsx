@@ -3,16 +3,22 @@ import { useParams } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const View = () => {
   const { id } = useParams(); 
   const [vehicle, setVehicles] = useState(undefined);
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log('ID from URL:', id);
-        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`);
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         const data = response.data;
         
         console.log('ID from URL:', id);
@@ -26,8 +32,14 @@ const View = () => {
       }
     };
 
-    fetchData();
-  }, [id]); // Include 'id' as a dependency in the useEffect dependencies array
+    if (user) {
+      fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
+    }
+  }, [id, user]); // Include 'id' as a dependency in the useEffect dependencies array
 
   return (
     <div className="container">

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ReceptionNav from './receptionNav';
-import QuotationNav from './quotationNav';
-import AccountantNav from './AccountantNav';
-
+// import ReceptionNav from './receptionNav';
+// import QuotationNav from './quotationNav';
+// import AccountantNav from './AccountantNav';
 import axios from 'axios';
 import '../../App.css';
-import deleteCar from '../components/functions/deleteCar';
+// import deleteCar from '../components/functions/deleteCar';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
 
@@ -16,11 +16,16 @@ const Cleared = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState('cleared');
   const location = useLocation();
+  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(getLoc);
+        const response = await axios.get(getLoc, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setVehicles(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -29,7 +34,13 @@ const Cleared = () => {
       }
     };
 
-    fetchData();
+    if (user) {
+      fetchData();
+      setError(null)
+    } else {
+      setLoading(false)
+      setError('You must be logged in');
+    }
 
     const path = location.pathname.toLowerCase();
     if (path.includes('reception')) {
@@ -41,7 +52,7 @@ const Cleared = () => {
     } else {
       setCurrentPage('cleared');
     }
-  }, [location.pathname]);
+  }, [location.pathname, user]);
 
   return (
     <div>

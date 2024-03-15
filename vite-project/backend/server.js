@@ -32,7 +32,6 @@ app.use('/api/suppliers', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchase', purchaseRoute);
 app.use('/api/stock',stockRoute);
-app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/users', userRoutes)
 
 // Connect to mongoDB
