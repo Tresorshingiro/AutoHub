@@ -1,8 +1,11 @@
-const deleteCar = async (vehicle, setVehicles, getLoc) => {
+const deleteCar = async (vehicle, setVehicles, getLoc, user) => {
     if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
       try {
         const deleteResponse = await fetch(getLoc + vehicle._id, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
         });
         
         const json = await deleteResponse.json();

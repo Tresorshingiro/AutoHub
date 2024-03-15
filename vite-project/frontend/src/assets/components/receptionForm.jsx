@@ -1,5 +1,6 @@
 import { useState } from "react"
 import '../../App.css';
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const ReceptionForm = () => {  
     // Define vehicleInfo state using the useState hook
@@ -13,19 +14,26 @@ const ReceptionForm = () => {
     const [service, setService] = useState('');
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState(null);
+    const {user} = useAuthContext()
 
   // Define a function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Perform actions with vehicleInfo data, e.g., send it to a server
+    if (!user){
+      setError('You must be logged in')
+      return
+    }
+
+    // Send vehicleInfo to the server
     const vehicle = { owner, brand,type, plate, insurance, telephone, email, service }
 
     const response = await fetch('http://localhost:3000/api/vehicles/', {
       method: 'POST',
       body: JSON.stringify({owner, brand, type, plate, insurance, telephone, email, service}),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
       }
     });
 
@@ -47,7 +55,6 @@ const ReceptionForm = () => {
       setTelephone('')
       setEmail('')
       setService('')
-      setDescription('')
       setError(null)
       setSuccess('Vehicle added successfully')
       console.log('new Vehicle added', json)

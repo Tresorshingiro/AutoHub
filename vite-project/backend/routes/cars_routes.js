@@ -7,8 +7,12 @@ const {
     deleteVehicle, 
     updateVehicle
 } = require('../controllers/cars_controllers')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
+
+// Require Auth for all Reception car routes
+router.use(requireAuth)
 
 // GET all cars
 router.get('/', getAllCars)

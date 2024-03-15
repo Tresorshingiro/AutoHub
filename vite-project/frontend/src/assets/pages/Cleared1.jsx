@@ -1,11 +1,10 @@
 {/*import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
-import ReceptionNav from '../components/receptionNav';
-
 import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
 
@@ -13,11 +12,16 @@ const Cleared = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(getLoc);
+        const response = await axios.get(getLoc, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setVehicles(response.data);
       } catch (err) {
           setError(err.message || 'An error occurred while fetching data.');
@@ -26,8 +30,10 @@ const Cleared = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
 
 return(
         <div className='container'>
@@ -85,7 +91,7 @@ return(
                           Edit
                         </button>
                       </Link>
-                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
+                      <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
                         <img src='/delete.png' alt='Delete Icon' />
                         Delete
                       </button>
