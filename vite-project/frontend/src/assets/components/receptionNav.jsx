@@ -4,13 +4,21 @@ import { FaFile } from 'react-icons/fa';
 import { FaTools } from 'react-icons/fa';
 import { FaCheckCircle } from 'react-icons/fa';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 
 const ReceptionNav = () => {
   const [activeButton, setActiveButton] = useState('registration');
+  const { user } = useAuthContext()
+  const { logout } = useLogout()
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+
+  const handleLogout = (e) => {
+    logout();
+  }
 
   return (
       <div>
@@ -22,7 +30,9 @@ const ReceptionNav = () => {
           <h3>Reception</h3>
         </div>
         <div className="user-icon">
-        <img src="/user.png" alt="User Icon" />
+          {user && <div className='user-id'>{user.username}</div>}
+          <img src="/user.png" alt="User Icon" />
+          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>} 
         </div>
       </section>
     <div className="nav-links">

@@ -1,4 +1,7 @@
 const deleteCar = async (vehicle, setVehicles, getLoc, user) => {
+  if (!user) {
+    return
+  }
     if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
       try {
         const deleteResponse = await fetch(getLoc + vehicle._id, {

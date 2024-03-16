@@ -27,6 +27,7 @@ const Operations = () => {
     if (user) {
       fetchVehicles();
       setError(null)
+      setLoading(false)
     } else {
       setLoading(false)
       setError('You must be logged in');

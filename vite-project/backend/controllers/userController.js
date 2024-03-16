@@ -19,6 +19,7 @@ const loginUser = async (req, res) => {
     try {
         const { role, email, password } = req.body;
         const user = await User.login(role, email, password);
+        const username = user.username
         
         // Check if the user's role matches the role they are attempting to log in with
         if (user.role !== role) {
@@ -30,7 +31,7 @@ const loginUser = async (req, res) => {
 
         // create a token
         const token = createToken(user._id);
-        res.status(200).json({ email, token, role });
+        res.status(200).json({ username, email, token, role });
 
     } catch(error) {
         // Log error during login process

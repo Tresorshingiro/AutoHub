@@ -2,13 +2,22 @@ import React,{useState,useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle} from 'react-icons/fa';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 
 const QuotationNav = () => {
   const [activeButton, setActiveButton] = useState('operations');
+  const { user } = useAuthContext()
+  const { logout } = useLogout()
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+
+  const handleLogout = (e) => {
+    logout();
+  }
+
   return (
     <div>
      <section className="header">
@@ -19,7 +28,9 @@ const QuotationNav = () => {
             <h3>Operations</h3>
            </div>
            <div className="user-icon">
+          {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
+          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>} 
         </div>
       </section>
       <div className="nav-links">
