@@ -1,5 +1,6 @@
 import { useState } from "react"
 import '../../App.css';
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const ReceptionForm = () => {  
     // Define vehicleInfo state using the useState hook
@@ -13,46 +14,54 @@ const ReceptionForm = () => {
     const [service, setService] = useState('');
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState(null);
+    const {user} = useAuthContext()
 
   // Define a function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    // Perform actions with vehicleInfo data, e.g., send it to a server
-    const vehicle = { owner, brand,type, plate, insurance, telephone, email, service }
-
-    const response = await fetch('http://localhost:3000/api/vehicles/', {
-      method: 'POST',
-      body: JSON.stringify({owner, brand, type, plate, insurance, telephone, email, service}),
-      headers: {
-        'Content-Type': 'application/json'
+    e.preventDefault();
+  
+    if (!user) {
+      setError('You must be logged in');
+      return;
+    }
+  
+    const vehicle = { owner, brand, type, plate, insurance, telephone, email, service };
+  
+    try {
+      const response = await fetch('http://localhost:3000/api/vehicles/', {
+        method: 'POST',
+        body: JSON.stringify(vehicle),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'An error occurred while processing your request.');
+        setSuccess(null);
+      } else {
+        const json = await response.json();
+        setOwner('');
+        setBrand('');
+        setType('');
+        setPlate('');
+        setInsurance('');
+        setTelephone('');
+        setEmail('');
+        setService('');
+        setError(null);
+        setSuccess('Vehicle added successfully');
+        console.log('New vehicle added', json);
       }
-    });
-
-    if(!response.ok) {
-      console.error('Error:', response.statusText);
-      const errorData = await response.json(); // If error response contains JSON data
-      console.error('Error Details:', errorData);
-      setError(errorData);
-      setSuccess(null)
+    } catch (error) {
+      console.error('Error occurred:', error);
+      setError('An unexpected error occurred. Please try again later.');
+      setSuccess(null);
     }
-    if(response.ok) {
-      const json = await response.json()
-
-      setOwner('')
-      setBrand('')
-      setType('')
-      setPlate('')
-      setInsurance('')
-      setTelephone('')
-      setEmail('')
-      setService('')
-      setDescription('')
-      setError(null)
-      setSuccess('Vehicle added successfully')
-      console.log('new Vehicle added', json)
-    }
-  }
+  };
+  
 
   return(
     <form className="addsupplier" onSubmit={handleSubmit}>
@@ -144,7 +153,7 @@ const ReceptionForm = () => {
 
         <br/>
         <button>Save</button>
-        {error && <div className="error">{error.error}</div>}
+        {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}
       </form>
   );

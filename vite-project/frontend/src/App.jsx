@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Portals from './assets/pages/Portals';
 import SignIn from './assets/pages/SignIn';
+import SignUp from './assets/components/SignupForm';
 import Reception from './assets/pages/Reception';
 import Accountant from './assets/pages/Accountant';
 import Admin from './assets/pages/Admin';
@@ -29,20 +30,30 @@ import Expense from './assets/pages/Expense';
 import AddIncome from './assets/pages/AddIncome';
 import AddExpense from './assets/pages/AddExpense';
 import PrintModal from './assets/components/PrintModal';
+import { useAuthContext } from './assets/hooks/useAuthContext';
 
 const App = () => {
+  const { user } = useAuthContext()
+  const user_role = user?.role
+
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Portals />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/reception" element={<Reception />} />
-      <Route path="/accountant" element={<Accountant />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/management" element={<Management />} />
-      <Route path="/operations" element={<Operations />} />
+      <Route
+        path="/"
+        element = { 
+        // <Portals />
+          user ? <Navigate to={`/${user_role}`} /> : <Portals />
+        } />
+      <Route path="/signin" element={!user ? <SignIn /> : <Navigate to={`/${user_role}`}/>} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/reception" element={user ? <Reception /> : <Navigate to={"/"} />} />
+      <Route path="/accountant" element={user ? <Accountant /> : <Navigate to={"/"} />} />
+      <Route path="/admin" element={user ? <Admin /> : <Navigate to={"/"} />} />
+      <Route path="/management" element={user ? <Management /> : <Navigate to={"/"} />} />
+      <Route path="/operations" element={user ? <Operations /> : <Navigate to={"/"} />} />
       <Route path="/owner" element={<Owner />} />
-      <Route path="/inservice" element={<Inservice/>}/>
+      <Route path="/inservice" element={user && user.role !== "Accountant" ? <Inservice/> : <Navigate to={"/Accountant"} />}/>
       <Route path="/view/:id" element={<View/>}/>
       <Route path="/update/:id"element={<Update/>}/>
       <Route path="/quotation/:id"element={<Quotation/>}/>

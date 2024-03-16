@@ -1,21 +1,26 @@
 import React,{useState} from 'react';
-import {NavLink} from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight, FaFileAlt } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight } from 'react-icons/fa';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 
 const AccountantNav = () => {
   const [activeButton, setActiveButton] = useState('cleared');
   const [showInventoryDropdown, setShowInventoryDropdown] = useState(false);
-  const[showReportDropdown, setShowReportDropdown] = useState(false);
+  const { user } = useAuthContext()
+  const { logout } = useLogout()
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
+
   const toggleInventoryDropdown = () => {
     setShowInventoryDropdown(!showInventoryDropdown);
   };
-  const toggleReportDropdown = () => {
-    setShowReportDropdown(!showReportDropdown);
+
+  const handleLogout = (e) => {
+    logout();
   }
     return(
       <div>
@@ -27,7 +32,9 @@ const AccountantNav = () => {
           <h3>Accountant</h3>
         </div>
         <div className="user-icon">
+          {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
+          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>}
         </div>
       </section>
       <div className='nav-links'>
@@ -36,7 +43,7 @@ const AccountantNav = () => {
           <h2>Accountant</h2>
         </div>
         <NavLink
-        to='/cleared'
+        to='/accountant'
         activeclassname="active-link"
         onClick={() => handleButtonClick('cleared')}
       >

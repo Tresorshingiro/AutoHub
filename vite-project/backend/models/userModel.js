@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const validator = require('validator')
+const { formatDate } = require('../controllers/functions/formatDate')
 
 const userSchema = new Schema({
     role: {
@@ -22,6 +23,15 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    createdAt: {
+        type: String,
+        default: () => formatDate(new Date())
+    },
+    date: {
+        type: String,
+        get: formatDate, // Getter method to format the date when retrieving from the database
+        set: (val) => val // Setter method to handle date assignments (no need for modification here)
+    }
 })
 
 // Static signup method
@@ -37,7 +47,7 @@ userSchema.statics.signup = async function (role, username, email, password) {
     }
 
     if (!validator.isStrongPassword(password)) {
-        throw Error('Password not strong enough')
+        throw Error('Password not strong enough, (use 8+ digits of capital and small letters, number, and symbol)')
     }
 
     const emailExist = await this.findOne({email})
@@ -57,6 +67,33 @@ userSchema.statics.signup = async function (role, username, email, password) {
     
         return user;
     }
+}
+
+userSchema.statics.login = async function (role, email, password) {
+    // validation
+    if (!role) {
+        throw Error('role field must be complete')
+    }
+    if (!email) {
+        throw Error('email field must be complete')
+    }
+    if (!password) {
+        throw Error('password field must be complete')
+    }
+
+    const user = await this.findOne({email})
+
+    if (!user) {
+        throw Error('Incorrect email')
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+
+    if (!match) {
+        throw Error('Incorrect password')
+    }
+
+    return user;
 }
 
 module.exports = mongoose.model('User', userSchema)
