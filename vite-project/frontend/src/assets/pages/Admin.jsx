@@ -1,7 +1,16 @@
 import React from 'react';
 import '../../App.css';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 
 const Admin = () => {
+  const { user } = useAuthContext()
+  const { logout } = useLogout()
+
+  const handleLogout = (e) => {
+    logout();
+  }
+
   return(
     <div className="container">
     <section className="header">
@@ -12,7 +21,12 @@ const Admin = () => {
           <h3>Admin</h3>
         </div>
        <div className="user-icon">
+          {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
+          {user && 
+            <button onClick={handleLogout} 
+            className='btn' 
+            style={{backgroundColor: "red"}} >Logout</button>} 
         </div>
      </section>
    {/* Navigation Links */}

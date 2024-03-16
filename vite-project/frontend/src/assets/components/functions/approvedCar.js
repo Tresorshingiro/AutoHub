@@ -1,6 +1,9 @@
 import axios from "axios";
 
 const approvedCar = async (quotation, setQuotations, getLoc, sendLoc, user) => {
+  if (!user) {
+    return
+  }
     if (window.confirm(`Your going to approve this quotation of car ${quotation.brand} of ${quotation.owner}`)) {
       try {
         // Add the car to the cleared_vehicles collection
