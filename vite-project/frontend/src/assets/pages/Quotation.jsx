@@ -66,28 +66,34 @@ const Quotation = () => {
 
   const handleAddService = async (vehicle, newService) => {
     try {
+      // Add the new service to the quotation services
+      const updatedServices = [...quotationInfo.services, newService];
+    
+      // Calculate the total price based on updated services
+      const totalPrice = calculateTotalPrice(updatedServices);
+    
       const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
         brand: vehicle.brand,
         owner: vehicle.owner,
         plate: vehicle.plate,
         type: vehicle.type,
-        service:vehicle.service,
+        service: vehicle.service,
         createdAt: vehicle.createdAt,
         furniture: newService.furniture,
         description: newService.description,
         quantity: newService.quantity,
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
-        total_price: calculateTotalPrice()
+        total_price: totalPrice
       });
-  
+    
       if (quotationResponse.status === 200) {
         setQuotationInfo({
           ...quotationInfo,
-          services: [...quotationInfo.services, newService],
-          total_price: calculateTotalPrice(),
+          services: updatedServices,
+          total_price: totalPrice,
         });
-  
+    
         setNewService({
           furniture: '',
           description:'',
@@ -95,6 +101,9 @@ const Quotation = () => {
           unitPrice: 0,
           vatIncluded: false,
         });
+    
+        setSuccess('Service added successfully');
+        setError(null);
       } else {
         console.error('Error:', quotationResponse.statusText);
         const errorData = quotationResponse.data; // Directly access response data
@@ -109,16 +118,19 @@ const Quotation = () => {
     }
   };
   
+  
+  
 
-  const calculateTotalPrice = () => {
-    return quotationInfo.services.reduce((total, service) => {
+  const calculateTotalPrice = (updatedServices) => {
+    return updatedServices.reduce((total, service) => {
       const unitPrice = parseFloat(service.unitPrice) || 0;
       const quantity = parseFloat(service.quantity) || 0;
       const totalPrice = unitPrice * quantity;
-
+  
       return total + (service.vatIncluded ? totalPrice * 1.18 : totalPrice);
     }, 0).toFixed(2);
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -285,7 +297,7 @@ const Quotation = () => {
                <td></td>
                <td></td>
                <td></td>
-               <td>${calculateTotalPrice()}</td>
+               <td>${calculateTotalPrice(quotationInfo.services)}</td>
                 </tr>
               </tbody>
             </table>

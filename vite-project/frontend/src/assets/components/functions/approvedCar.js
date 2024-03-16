@@ -17,6 +17,7 @@ const approvedCar = async (quotation, setQuotations, getLoc, sendLoc) => {
           quantity: quotation.quantity,
           unitPrice: quotation.unitPrice,
           vatIncluded: quotation.vatIncluded,
+          total_price: quotation.total_price,
           createdAt: quotation.createdAt
         });
   

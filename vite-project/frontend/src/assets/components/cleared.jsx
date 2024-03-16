@@ -70,7 +70,7 @@ const Cleared = () => {
                 <td>{vehicle.brand}</td>
                 <td>{vehicle.plate}</td>
                 <td>{vehicle.owner}</td>
-                <td>{vehicle.vatInclude}</td>
+                <td>{vehicle.vatInclude ? 'Yes' : 'No'}</td>
                 <td>{vehicle.total_price}</td>
                 <td>
                   <div className='tbtn'>
@@ -80,7 +80,7 @@ const Cleared = () => {
                         Approved
                       </button>
                     </Link>
-                    <Link to={`/invoice/${vehicle._id}`} className='edt'>
+                    <Link to='/AddInvoice' className='edt'>
                       <button className='edit'>
                         <img src='/edit.png' alt='Edit Icon' />
                         Create Invoice

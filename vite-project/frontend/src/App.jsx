@@ -24,6 +24,10 @@ import Invoice from './assets/pages/invoice';
 import AddInvoices from './assets/pages/AddInvoice';
 import AddItem from './assets/pages/AddItem';
 import Approved from './assets/pages/Approved';
+import Income from './assets/pages/Income';
+import Expense from './assets/pages/Expense';
+import AddIncome from './assets/pages/AddIncome';
+import AddExpense from './assets/pages/AddExpense';
 import PrintModal from './assets/components/PrintModal';
 
 const App = () => {
@@ -54,6 +58,10 @@ const App = () => {
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
       <Route path="/AddItem"element={<AddItem/>}/>
       <Route path="/Approved/:id"element={<Approved/>}/>
+      <Route path="/income"element={<Income/>}/>
+      <Route path="/expense"element={<Expense/>}/>
+      <Route path="/AddIncome"element={<AddIncome/>}/>
+      <Route path="/AddExpense"element={<AddExpense/>}/>
       <Route path="/printmodel"element={<PrintModal/>}/>
       </Routes>
     </Router>

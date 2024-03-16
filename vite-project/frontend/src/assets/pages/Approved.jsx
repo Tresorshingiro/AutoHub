@@ -54,7 +54,7 @@ const Approved = () => {
               <td>{vehicle?.furniture}</td>
               <td>{vehicle?.quantity}</td>
               <td>{vehicle?.unitPrice}</td>
-              <td>{vehicle?.vatIncluded}</td>
+              <td>{vehicle?.vatIncluded ? 'Yes' : 'No'}</td>
               <td>{vehicle?.total_price}</td>
               {/* You can add more fields as needed */}
             </tr>
