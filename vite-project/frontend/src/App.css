@@ -623,7 +623,6 @@ div.success {
 .dropdown-icon {
   margin-left: 0;
 }
-
 @media print {
   body * {
     visibility: hidden;

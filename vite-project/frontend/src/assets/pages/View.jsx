@@ -8,6 +8,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const View = () => {
   const { id } = useParams(); 
   const [vehicle, setVehicles] = useState(undefined);
+  const [error, setError] = useState(null)
   const { user } = useAuthContext()
 
   useEffect(() => {
