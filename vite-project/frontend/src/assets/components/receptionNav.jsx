@@ -18,6 +18,7 @@ const ReceptionNav = () => {
 
   const handleLogout = (e) => {
     logout();
+    location.href = '/'
   }
 
   return (

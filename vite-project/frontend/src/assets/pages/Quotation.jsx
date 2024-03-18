@@ -86,6 +86,7 @@ const Quotation = () => {
 
     try {
       const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
+        worker_id: vehicle.worker_id,
         brand: vehicle.brand,
         owner: vehicle.owner,
         plate: vehicle.plate,

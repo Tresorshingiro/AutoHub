@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 // import AccountantNav from './AccountantNav';
 import axios from 'axios';
 import '../../App.css';
-// import deleteCar from '../components/functions/deleteCar';
+import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
@@ -65,7 +65,7 @@ const Cleared = () => {
         <table>
           <thead>
             <tr>
-              <th>Date</th>
+              <th>Approval Date</th>
               <th>Vehicle Brand</th>
               <th>Plate No</th>
               <th>Customer Name</th>
@@ -77,7 +77,7 @@ const Cleared = () => {
           <tbody>
             {vehicles.map(vehicle => (
               <tr key={vehicle._id}>
-                <td>{vehicle.createdAt}</td>
+                <td>{vehicle.approvedAt}</td>
                 <td>{vehicle.brand}</td>
                 <td>{vehicle.plate}</td>
                 <td>{vehicle.owner}</td>
@@ -97,10 +97,10 @@ const Cleared = () => {
                         Create Invoice
                       </button>
                     </Link>
-                    {/*<button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
+                    <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
                       <img src='/delete.png' alt='Delete Icon' />
                       Delete
-            </button>*/}
+            </button>
                   </div>
                 </td>
               </tr>

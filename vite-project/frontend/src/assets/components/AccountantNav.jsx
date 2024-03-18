@@ -21,6 +21,7 @@ const AccountantNav = () => {
 
   const handleLogout = (e) => {
     logout();
+    location.href = '/'
   }
     return(
       <div>

@@ -16,6 +16,7 @@ const QuotationNav = () => {
 
   const handleLogout = (e) => {
     logout();
+    location.href = '/'
   }
 
   return (

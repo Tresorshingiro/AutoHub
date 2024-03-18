@@ -9,6 +9,7 @@ const Admin = () => {
 
   const handleLogout = (e) => {
     logout();
+    location.href = '/'
   }
 
   return(

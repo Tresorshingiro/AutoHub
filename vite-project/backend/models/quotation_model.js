@@ -48,6 +48,10 @@ const quotedCar = new Schema({
     },
     updatedAt: {
         type: String
+    },
+    worker_id: {
+        type: String,
+        required: true
     }
 });
 

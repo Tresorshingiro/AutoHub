@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema
 
@@ -42,8 +43,13 @@ const clearedCar = new Schema({
     createdAt: {
         type: String
     },
-    updatedAt: {
-        type: String
+    approvedAt: {
+        type: String,
+        default: () => formatDate(new Date())
+    },
+    worker_id: {
+        type: String,
+        required: true
     }
 });
 

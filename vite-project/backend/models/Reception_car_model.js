@@ -40,14 +40,14 @@ const receptionCar = new Schema({
     type: String,
     default: () => formatDate(new Date())
   },
-  updatedAt: {
-    type: String,
-    default: () => formatDate(new Date())
-  },
   date: {
     type: String,
     get: formatDate, // Getter method to format the date when retrieving from the database
     set: (val) => val // Setter method to handle date assignments (no need for modification here)
+  },
+  worker_id: {
+    type: String,
+    required: true
   }
 });
 

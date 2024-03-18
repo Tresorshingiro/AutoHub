@@ -8,6 +8,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const View = () => {
   const { id } = useParams(); 
   const [vehicle, setVehicles] = useState(undefined);
+  const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true)
   const { user } = useAuthContext()
 
   useEffect(() => {
@@ -35,6 +37,7 @@ const View = () => {
     if (user) {
       fetchData();
       setError(null)
+      setLoading(false)
     } else {
       setLoading(false)
       setError('You must be logged in');
@@ -43,38 +46,46 @@ const View = () => {
 
   return (
     <div className="container">
-        <ReceptionNav/>
-      {vehicle && (
-        <div className='box'>
-          <div className='pro-container'>
-            <div className='details'>
-              <div className='addsupplier'>
-                <form  method='post'>
-                 <label>
-                    PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
-                  </label>
-                  <label>
-                    Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
-                  </label>
-                  <label>
-                    Type: <input type="text" name="type" value={vehicle.type} readOnly />
-                  </label>
-                  <label>
-                    Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
-                  </label>
-                  <label>
-                    Tel: <input type="tel" name="tel" value={vehicle.telephone} readOnly />
-                  </label>
-                  <label>
-                    Email: <input type="email" name="email" value={vehicle.email} readOnly />
-                  </label>
-                  <label>
-                    Service Category: <input type="text" name="text" value={vehicle.service} readOnly />
-                  </label>
-                </form>
+      <ReceptionNav/>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <div>
+          {vehicle && (
+            <div className='box'>
+              <div className='pro-container'>
+                <div className='details'>
+                  <div className='addsupplier'>
+                    <form  method='post'>
+                    <label>
+                        PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
+                      </label>
+                      <label>
+                        Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
+                      </label>
+                      <label>
+                        Type: <input type="text" name="type" value={vehicle.type} readOnly />
+                      </label>
+                      <label>
+                        Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
+                      </label>
+                      <label>
+                        Tel: <input type="tel" name="tel" value={vehicle.telephone} readOnly />
+                      </label>
+                      <label>
+                        Email: <input type="email" name="email" value={vehicle.email} readOnly />
+                      </label>
+                      <label>
+                        Service Category: <input type="text" name="text" value={vehicle.service} readOnly />
+                      </label>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

@@ -30,7 +30,8 @@ const addToClearedCars = async (req, res) => {
     const { owner, brand, plate, type, insurance, telephone, email, description, furniture, quantity, unitPrice, vatIncluded, total_price, createdAt } = req.body
 
     try {
-        const vehicle = await Cleared_cars.create({owner, brand, plate, type, insurance, telephone, email, description,furniture,quantity, unitPrice, vatIncluded, total_price, createdAt})
+        const worker_id = req.user._id
+        const vehicle = await Cleared_cars.create({ worker_id, owner, brand, plate, type, insurance, telephone, email, description,furniture,quantity, unitPrice, vatIncluded, total_price, createdAt})
         res.status(200).json(vehicle)
     } catch(error) {
         console.error('Error:', error)
