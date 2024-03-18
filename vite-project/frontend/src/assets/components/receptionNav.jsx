@@ -9,8 +9,13 @@ import { useLogout } from '../hooks/useLogout';
 
 const ReceptionNav = () => {
   const [activeButton, setActiveButton] = useState('registration');
+  const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const { user } = useAuthContext()
   const { logout } = useLogout()
+  
+  const toggleLogoutDropdown = () => {
+    setShowLogoutDropdown(!showLogoutDropdown);
+  };
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
@@ -30,10 +35,16 @@ const ReceptionNav = () => {
         <div className='placeholder'>
           <h3>Reception</h3>
         </div>
-        <div className="user-icon">
+        <div className="user-icon" onClick={toggleLogoutDropdown}>
           {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
-          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>} 
+          {showLogoutDropdown && (
+            <div className="dropdown-logout">
+              <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </section>
     <div className="nav-links">

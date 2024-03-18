@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { NavLink } from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight } from 'react-icons/fa';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt } from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
@@ -8,6 +8,7 @@ import { useLogout } from '../hooks/useLogout';
 const AccountantNav = () => {
   const [activeButton, setActiveButton] = useState('cleared');
   const [showInventoryDropdown, setShowInventoryDropdown] = useState(false);
+  const [showReportDropdown, setShowReportDropdown] = useState(false);
   const { user } = useAuthContext()
   const { logout } = useLogout()
 
@@ -18,7 +19,9 @@ const AccountantNav = () => {
   const toggleInventoryDropdown = () => {
     setShowInventoryDropdown(!showInventoryDropdown);
   };
-
+  const toggleReportDropdown = () => {
+    setShowReportDropdown(!showReportDropdown)
+  };
   const handleLogout = (e) => {
     logout();
     location.href = '/'
@@ -81,6 +84,24 @@ const AccountantNav = () => {
            <NavLink to="/stock" className='drop-links'>Stock</NavLink>
           </div>
            )}
+          </div>
+          <div className='dropdown'>
+            <button
+            className={`button ${showReportDropdown ? 'active' : ''}`}
+            onClick={toggleReportDropdown}
+            >
+              <FaFileAlt className={activeButton === 'reports' ? 'black-on-click' : ''}/>
+              Reports 
+              <span className='dropdown-icon-container'>
+                <FaCaretDown className='dropdown-icon'/>
+              </span>
+            </button>
+            {showReportDropdown && (
+              <div className='dropdown-content'>
+                <NavLink to="/income" className='drop-links'>Incomes</NavLink>
+                <NavLink to="/expense" className='drop-links'>Expenses</NavLink>
+              </div>
+            )}
           </div>
       </div>
       </div> 

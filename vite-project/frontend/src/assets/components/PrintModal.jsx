@@ -1,13 +1,14 @@
 import React from 'react';
 import '../../App.css';
 
-const PrintModal = ({ onClose, vehicle, services }) => {
+const PrintModal = ({ onClose, vehicle, services,total_price }) => {
   const handlePrint = () => {
     window.print();
   };
 
   return (
     <div className="print-modal">
+      <div id='print-content'>
       <div className='print-header'>
         <h1>AutoHub</h1>
       </div>
@@ -18,7 +19,6 @@ const PrintModal = ({ onClose, vehicle, services }) => {
         <ol>Kigali-Rwanda</ol>
       </ul>
       </div>
-      <div id="print-content">
         <table className="print-table">
           <thead>
             <tr>
@@ -42,9 +42,19 @@ const PrintModal = ({ onClose, vehicle, services }) => {
                 <td>{service.quantity}</td>
                 <td>{service.unitPrice}</td>
                 <td>{service.vatIncluded ? 'Yes' : 'No'}</td>
-                <td>{service.total_price}</td>
+                <td></td>
               </tr>
             ))}
+            <tr>
+              <td><strong>Total Price:</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{total_price}</td>
+            </tr>
           </tbody>
         </table>
       </div>

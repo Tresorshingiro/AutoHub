@@ -10,6 +10,9 @@ const quotationRoutes = require('./routes/quotation_routes');
 const purchaseRoute = require('./routes/purchaseRoute');
 const stockRoute = require('./routes/stockRoute');
 const userRoutes = require('./routes/userRoutes');
+const invoiceRoutes = require('./routes/invoiceRoutes');
+const incomeRoutes = require('./routes/incomeRoutes')
+const expenseRoutes = require('./routes/expenseRoutes')
 
 //initialise the app
 const app = express();
