@@ -64,19 +64,15 @@ const ReceptionForm = () => {
   
 
   return(
-    <form className="addsupplier" onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
+      <div>
+        <div>
+        <h3>Vehicle Details</h3>
+        </div>
+        <div className="fields">
+        <div className="input-field">
         <label>
-        <input 
-          type="text" 
-          name="owner" 
-          placeholder='Customer Name'
-          className='row'
-          onChange={(e) => setOwner(e.target.value)}
-          value={owner}
-        />
-        </label>
-
-        <label>
+          Vehicle Brand:
         <input 
           type="text" 
           name="brand" 
@@ -86,8 +82,10 @@ const ReceptionForm = () => {
           value={brand}
         />
         </label>
-
+        </div>
+        <div className="input-field">
         <label>
+          Type:
         <input 
           type="text" 
           name="type" 
@@ -97,8 +95,10 @@ const ReceptionForm = () => {
           value={type}
         />
         </label>
-
+        </div>
+        <div className="input-field">
         <label>
+          Plate NO:
         <input 
           type="text" 
           name="plate" 
@@ -108,8 +108,10 @@ const ReceptionForm = () => {
           value={plate}
         />
         </label>
-    
+        </div>
+        <div className="input-field">
         <label>
+          Insurance:
         <input 
           type="text" 
           name="insurance" 
@@ -119,8 +121,50 @@ const ReceptionForm = () => {
           value={insurance}
         />
         </label>
-            
+        </div>
+        <div className="input-field">
         <label>
+          Chassi NO:
+        <input 
+          type="text" 
+          name="insurance" 
+          placeholder='Chassi NO'
+          className='row' 
+          onChange={(e) => setInsurance(e.target.value)}
+          value={insurance}
+        />
+        </label>
+        </div>
+        <div className="input-field">
+        <label>
+          Service Category:
+        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
+          <option value="">Select Service</option>
+          <option value="Service A">Service A</option>
+          <option value="Service B">Service B</option>
+          <option value="Service C">Service C</option>
+        </select>
+        </label>
+        </div>
+      </div>
+        <h3>Customer Details</h3>
+      <div className="fields">
+       <div className="input-field">   
+      <label>
+          Customer Name:
+        <input 
+          type="text" 
+          name="owner" 
+          placeholder='Customer Name'
+          className='row'
+          onChange={(e) => setOwner(e.target.value)}
+          value={owner}
+        />
+        </label>
+        </div>
+        <div className="input-field">
+        <label>
+          Telephone:
         <input 
           type="number" 
           name="telephone" 
@@ -130,8 +174,23 @@ const ReceptionForm = () => {
           value={telephone}
         />
         </label>
-
+        </div>
+        <div className="input-field">
         <label>
+          TIN Number:
+        <input 
+          type="number" 
+          name="Tin Number" 
+          placeholder='Tin Number'
+          className='row' 
+          onChange={(e) => setTelephone(e.target.value)}
+          value={telephone}
+        />
+        </label>
+        </div>
+        <div className="input-field">
+        <label>
+          Email:
         <input 
           type="text" 
           name="email" 
@@ -141,20 +200,13 @@ const ReceptionForm = () => {
           value={email}
         />
         </label>
-
-        <label>
-        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
-          <option value="">Select Service</option>
-          <option value="Service A">Service A</option>
-          <option value="Service B">Service B</option>
-          <option value="Service C">Service C</option>
-        </select>
-        </label>
-
+        </div>
+      </div>
         <br/>
-        <button>Save</button>
+        <button className="large-btn">Save</button>
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}
+        </div>
       </form>
   );
 }

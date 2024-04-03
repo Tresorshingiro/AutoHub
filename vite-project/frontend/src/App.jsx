@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/pages/View';
+import View from './assets/components/View';
 import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
@@ -30,7 +30,10 @@ import Expense from './assets/pages/Expense';
 import AddIncome from './assets/pages/AddIncome';
 import AddExpense from './assets/pages/AddExpense';
 import PrintModal from './assets/components/PrintModal';
+import ClearedAccountant from './assets/pages/ClearedAccountant';
+import ViewOperations from './assets/pages/viewOperations';
 import { useAuthContext } from './assets/hooks/useAuthContext';
+import './App.css';
 
 const App = () => {
   const { user } = useAuthContext()
@@ -73,6 +76,8 @@ const App = () => {
       <Route path="/expense"element={<Expense/>}/>
       <Route path="/AddIncome"element={<AddIncome/>}/>
       <Route path="/AddExpense"element={<AddExpense/>}/>
+      <Route path="/accountantCleared"element={<ClearedAccountant/>}/>
+      <Route path="/viewOperations/:id"element={<ViewOperations/>}/>
       <Route path="/printmodel"element={<PrintModal/>}/>
       </Routes>
     </Router>

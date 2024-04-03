@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const View = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
+  console.log('Received Vehicle ID:', id); 
   const [vehicle, setVehicles] = useState(undefined);
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
   const { user } = useAuthContext()
 
   useEffect(() => {
@@ -43,41 +44,62 @@ const View = () => {
   }, [id, user]); // Include 'id' as a dependency in the useEffect dependencies array
 
   return (
-    <div className="container">
-        <ReceptionNav/>
-      {vehicle && (
-        <div className='box'>
-          <div className='pro-container'>
-            <div className='details'>
-              <div className='addsupplier'>
+   <div className="popup" id="popup">
+      <div className="popup-content">
+     <div className='fields'>
+       {vehicle && (
                 <form  method='post'>
+                 <div>
+                  <h3>Vehicle Details</h3>
+                 </div>
+                 <div className='input-field'>
+                  <label>
+                    Vehicle Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
+                  </label>
+                  </div>
+                <div className='input-field'>
                  <label>
                     PlateNO: <input type="text" name="plate" value={vehicle.plate} readOnly />
                   </label>
-                  <label>
-                    Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
-                  </label>
+                </div>
+                  <div className='input-field'>
                   <label>
                     Type: <input type="text" name="type" value={vehicle.type} readOnly />
                   </label>
-                  <label>
-                    Owner: <input type="text" name="owner" value={vehicle.owner} readOnly />
-                  </label>
-                  <label>
-                    Tel: <input type="tel" name="tel" value={vehicle.telephone} readOnly />
-                  </label>
-                  <label>
-                    Email: <input type="email" name="email" value={vehicle.email} readOnly />
-                  </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                        Insurance: <input type='text' name='insurance' value={vehicle.insurance} readOnly/>
+                    </label>
+                  </div>
+                  <div className='input-field'>
                   <label>
                     Service Category: <input type="text" name="text" value={vehicle.service} readOnly />
                   </label>
+                  </div>
+                  <div>
+                    <h3>Customer Details</h3>
+                  </div>
+                  <div className='input-field'>
+                  <label>
+                    Customer Name: <input type="text" name="owner" value={vehicle.owner} readOnly />
+                  </label>
+                  </div>
+                  <div className='input-field'>
+                  <label>
+                    Tel: <input type="tel" name="tel" value={vehicle.telephone} readOnly />
+                  </label>
+                  </div>
+                  <div className='input-field'>
+                  <label>
+                    Email: <input type="email" name="email" value={vehicle.email} readOnly />
+                  </label>
+                  </div>
+                  <button class="close-btn" id="closeBtn">Close</button>
                 </form>
-              </div>
-            </div>
-          </div>
-        </div>
       )}
+      </div>
+      </div>
     </div>
   );
 };

@@ -7,11 +7,10 @@ import axios from 'axios';
 import '../../App.css';
 // import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
-import ReceptionNav from './receptionNav';
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
 
-const Cleared = () => {
+const ClearedAccountant = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,8 +55,6 @@ const Cleared = () => {
   }, [location.pathname, user]);
 
   return (
-    <div className='container'>
-      <ReceptionNav/>
       <div className='box'>
       <h2>Cleared Vehicles</h2>
       {loading ? (
@@ -112,8 +109,7 @@ const Cleared = () => {
         </table>
       )}
     </div>
-  </div>
   );
 };
 
-export default Cleared;
+export default ClearedAccountant;
