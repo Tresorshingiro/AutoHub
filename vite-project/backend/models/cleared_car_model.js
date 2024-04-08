@@ -4,6 +4,16 @@ const { formatDate } = require('../controllers/functions/formatDate')
 const Schema = mongoose.Schema
 
 const clearedCar = new Schema({
+    // owner: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'clientModel',
+    //     required: true
+    // },
+    // car_data: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'carDatarModel',
+    //     required: true
+    // },
     owner: {
         type: String,
         required: true
@@ -18,6 +28,10 @@ const clearedCar = new Schema({
     },
     plate: {        
         type: String,
+        required: true
+    },
+    description:{
+        type:String,
         required: true
     },
     furniture: {

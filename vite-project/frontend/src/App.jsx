@@ -65,7 +65,7 @@ const App = () => {
       <Route path="/suppliers"element={<SupplierList/>}/>
       <Route path="/stock"element={<StockList/>}/>
       <Route path="/purchase"element={<PurchaseList/>}/>
-      <Route path="/Invoice"element={<Invoice/>}/>
+      <Route path="/Invoice"element={user && user.role == "Accountant" ? <Invoice/> : <Navigate to={'/'} /> }/>
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
       <Route path="/AddItem"element={<AddItem/>}/>
       <Route path="/Approved/:id"element={<Approved/>}/>

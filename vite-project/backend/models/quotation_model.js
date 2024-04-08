@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const quotedCar = new Schema({
+const QuotationSchema = new Schema({
     owner: {
         type: String,
         required: true
@@ -55,4 +55,4 @@ const quotedCar = new Schema({
     }
 });
 
-module.exports = mongoose.model('quotedCar', quotedCar) // Collection name
+module.exports = mongoose.model('Quotations', QuotationSchema) // Collection name
