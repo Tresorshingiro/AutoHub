@@ -8,7 +8,7 @@ import { useLogout } from '../hooks/useLogout';
 const QuotationNav = () => {
   const { user } = useAuthContext()
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const { logout } = useLogout()
 

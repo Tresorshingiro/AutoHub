@@ -6,7 +6,7 @@ import {FaEye, FaEdit, FaTrash} from 'react-icons/fa'
 import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
-import View from '../components/View'
+import View from '../components/View';
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const getLoc = "http://localhost:3000/api/vehicles/";

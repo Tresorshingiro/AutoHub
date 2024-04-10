@@ -5,7 +5,7 @@ import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
-const AccountantNav = () => {
+const AdminNav = () => {
   const [showInventoryDropdown, setShowInventoryDropdown] = useState(false);
   const [showReportDropdown, setShowReportDropdown] = useState(false);
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
@@ -47,47 +47,6 @@ const AccountantNav = () => {
           </div>
           <FaChevronRight className='toggle' onClick={toggleSidebar}/>
         </header>
-        <div className='menu-bar'>
-          <div className='menu'>
-            <ul className='menu-links'>
-              <li>
-              <NavLink to='/accountant' className='nav-link' activeClassName='active'>
-               <FaCheckCircle className='icon'/>
-                <span>Cleared Vehicles</span>
-              </NavLink>
-              </li>
-              <li>
-              <NavLink to='/invoice' className='nav-link' activeClassName='active'>
-                <FaFileInvoice className='icon'/>
-                <span>Add Invoice</span>
-              </NavLink>
-              </li>
-              <li>
-                <NavLink to='/suppliers' className='nav-link' activeClassName='active'>
-                  <FaTruck className='icon'/>
-                  <span>Suppliers</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/purchase' className='nav-link' activeClassName='active'>
-                  <FaShoppingCart className='icon'/>
-                  <span>Purchases</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/stock' className='nav-link' activeClassName='active'>
-                  <FaBox className='icon'/>
-                  <span>Stock</span>
-                </NavLink>
-              </li>
-              <li>
-              <NavLink to='/additem' className='nav-link' activeClassName='active'>
-                <FaPlus className='icon'/>
-                <span>Add Item</span>
-              </NavLink>
-              </li>
-            </ul>
-          </div>
         <div className="bottom-content">
               <li className="mode" onClick={toggleDarkMode}>
                   <div className="moon-sun">
@@ -102,7 +61,6 @@ const AccountantNav = () => {
                   </div>
               </li>
               </div>
-          </div>
       </nav>
       <div className='header-info'>
       <div className='search-box'>
@@ -135,4 +93,4 @@ const AccountantNav = () => {
     );
 };
 
-export default AccountantNav;
+export default AdminNav;

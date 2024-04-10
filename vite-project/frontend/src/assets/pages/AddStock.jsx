@@ -48,25 +48,35 @@ const AddStock = () => {
     <div className="container">
        <AccountantNav/>
       <div className='box'>
-      <h2>Add Stock</h2>
-        <form className='addsupplier' onSubmit={handleSubmit}>
+      <h2><span>Add</span> Stock</h2>
+        <form  onSubmit={handleSubmit}>
+          <div className='fields'>
+          <div className='input-field'>
           <label>
             Item Name:
-            <input type="text" name="itemName" value={itemName} onChange={(e) => setItemName(e.target.value)} required />
+            <input type="text" name="itemName" className='row' placeholder='Item Name' value={itemName} onChange={(e) => setItemName(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Quantity:
-            <input type="number" name="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
+            <input type="number" name="quantity" className='row' placeholder='Item Name' value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Unit Price:
-            <input type="number" name="unitPrice" value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} required />
+            <input type="number" name="unitPrice" className='row' placeholder='Unit Price' value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Category:
-            <input type="text" name="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
+            <input type="text" name="category" className='row' placeholder='Category' value={category} onChange={(e) => setCategory(e.target.value)} required />
           </label>
-          <button type="submit">Add Stock</button>
+          </div>
+          </div>
+          <button className='large-btn'>Add Stock</button>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </form>

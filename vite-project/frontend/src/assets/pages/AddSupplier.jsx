@@ -54,33 +54,47 @@ const AddSupplier = () => {
     <div className="container">
        <AccountantNav/>
       <div className='box'>
-        <h2>Add Supplier</h2>
-        <form  className='addsupplier' onSubmit={handleSubmit}>
+        <h2><span>Add</span> Supplier</h2>
+        <form  onSubmit={handleSubmit}>
+         <div className='fields'>
+          <div className='input-field'>
           <label>
             Supplier Name:
-            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input type="text" name="name" className='row' placeholder='Supplier Name' value={name} onChange={(e) => setName(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
-            Tin Number:
-            <input type="number" name="tin" value={tin} onChange={(e) => setTin(e.target.value)} required />
+            TIN Number:
+            <input type="number" name="tin" className='row' placeholder='TIN Number' value={tin} onChange={(e) => setTin(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Contact Person:
-            <input type="text" name="contactPerson" value={contactPerson} onChange={(e) => setContactPerson(e.target.value)} required />
+            <input type="text" name="contactPerson" className='row' placeholder='Contact Person' value={contactPerson} onChange={(e) => setContactPerson(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Email:
-            <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="email" name="email" className='row' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
-            Phone:
-            <input type="tel" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            Tel:
+            <input type="tel" name="phone" className='row' placeholder='Tel' value={phone} onChange={(e) => setPhone(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Address:
-            <textarea name="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+            <textarea name="address" className='row' placeholder='Address' value={address} onChange={(e) => setAddress(e.target.value)} required />
           </label>
-          <button type="submit">Add Supplier</button>
+          </div>
+          </div>
+          <button className='large-btn'>Add Supplier</button>
           {error && <div className="error">{error.error}</div>}
           {success && <div className="success">{success}</div>}
         </form>

@@ -333,6 +333,7 @@ body.dark .switch::before{
     height: 42px;
     margin: 2px 0;
     width: 100%;
+    border:1px solid var(--text-color);
     margin-bottom: 0;
   }
   /* Button Styles */
@@ -375,6 +376,7 @@ button {
 /* Success Button */
 .success-btn {
   color: #fff;
+  align-items: center;
   background-color: #28a745; /* Success color */
 }
 
@@ -646,15 +648,14 @@ button {
     gap:5px;
   }
   .addbtn{
-    width:5px;
-    height:5px;
     justify-content: center;
     align-items: center;
-    margin: 15px;
+    margin-bottom: auto;
+    padding: 2px;
   }
-  .addbtn img{
-    width: 20px;
-    height: 20px; 
+  .addbtn svg{
+    width: 15px;
+    height: 15px; 
   }
   
   .addsupplier {
@@ -799,7 +800,7 @@ button {
    /* Adjust the distance from the icon */
     right: 80px;
     width: 150px;
-    background: #fff;
+    background: var(--sidebar-color);
     border: 1px solid #ddd;
     padding: 20px;
     margin-top: 10px; /* Adjust the margin if necessary */
@@ -829,7 +830,7 @@ button {
   transition:var(--tran-02)
  }
  .popup {
-  display: none;
+  display: flex;
   position: fixed;
   top: 50%;
   left: 50%;

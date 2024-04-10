@@ -45,32 +45,58 @@ const AddInvoices = () => {
     <div className="container">
         <AccountantNav />
       <div className='box'>
-        <h2>Add Invoice</h2>
-        <form className='addsupplier' onSubmit={handleSubmit}>
+        <h2> <span>Add</span>  Invoice</h2>
+        <form  onSubmit={handleSubmit}>
+          <h3>Customer Details</h3>
+          <div className='fields'>
+          <div className='input-field'>
           <label>
             Customer Name:
-            <input type="text" name="customerName" value={owner} onChange={(e) => setOwner(e.target.value)} required />
+            <input type="text" name="customerName" placeholder='Customer Name' className='row' value={owner} onChange={(e) => setOwner(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
+            <label>
+              TIN Number:
+              <input type="text" name="tinNumber" placeholder='TIN Number' className='row'/>
+            </label>
+          </div>
+          <div className='input-field'>
+            <label>
+              Tel:
+              <input type='text' name='telephone' placeholder='Tel' className='row'/>
+            </label>
+          </div>
+          </div>
+          <h3>Invoice Details</h3>
+          <div className='fields'>
+          <div className='input-field'>
           <label>
-            Invoice Number:
-            <input type="text" name="invoiceNumber" value={invoiceNumber} onChange={(e) => setInvoiceNumber(e.target.value)} required />
+            Invoice NO:
+            <input type="text" name="invoiceNumber" placeholder='Invoice NO' className='row' value={invoiceNumber} onChange={(e) => setInvoiceNumber(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Invoice Date:
-            <input type="date" name="invoiceDate" value={createdAt} onChange={(e) => setCreatedAt(e.target.value)} required />
+            <input type="date" name="invoiceDate" className='row' value={createdAt} onChange={(e) => setCreatedAt(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Status:
-            <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} required>
+            <select name="status" className='row' value={status} onChange={(e) => setStatus(e.target.value)} required>
               <option value="">Select Status</option>
               <option value="unPaid">UnPaid</option>
               <option value="Partially Paid">Partially Paid</option>
               <option value="Full Paid">Full Paid</option>
             </select>
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Payment Type:
-            <select name="paymentType" value={payment} onChange={(e) => setPayment(e.target.value)} required>
+            <select name="paymentType" className='row' value={payment} onChange={(e) => setPayment(e.target.value)} required>
               <option value="">Select Payment Type</option>
               <option value="Credit Card">Credit Card</option>
               <option value="Cash">Cash</option>
@@ -80,23 +106,33 @@ const AddInvoices = () => {
               {/* Add more options as needed */}
             </select>
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Amount:
-            <input type="text" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+            <input type="text" name="amount" className='row' placeholder='Amount' value={amount} onChange={(e) => setAmount(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Amount Paid:
-            <input type="text" name="amountPaid" value={amountPaid} onChange={(e) => setAmountPaid(e.target.value)} required />
+            <input type="text" name="amountPaid" className='row' placeholder='Amount Paid' value={amountPaid} onChange={(e) => setAmountPaid(e.target.value)} required />
           </label>
-          <label>
-            VAT (18%):
-            <input type="checkbox" name="vat" checked={vatIncluded} onChange={(e) => setVatIncluded(e.target.checked)} />
-          </label>
+          </div>
+          <div className='input-field'>
           <label>
             Discount:
-            <input type="text" name="discount" value={discount} onChange={(e) => setDiscount(e.target.value)} required />
+            <input type="text" name="discount" className='row' placeholder='Discount' value={discount} onChange={(e) => setDiscount(e.target.value)} required />
           </label>
-          <button type="submit">Add Invoice</button>
+          </div>
+          <div>
+          <label>
+            VAT (18%):
+            <input type="checkbox" name="vat" className='row' checked={vatIncluded} onChange={(e) => setVatIncluded(e.target.checked)} />
+          </label>
+          </div>
+          </div>
+          <button className='large-btn'>Add Invoice</button>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </form>

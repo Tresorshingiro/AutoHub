@@ -44,7 +44,7 @@ const View = () => {
   }, [id, user]); // Include 'id' as a dependency in the useEffect dependencies array
 
   return (
-   <div className="popup" id="popup">
+   <div className={`popup ${vehicle ? 'show' : ''}`} id="popup">
       <div className="popup-content">
      <div className='fields'>
        {vehicle && (
@@ -95,7 +95,7 @@ const View = () => {
                     Email: <input type="email" name="email" value={vehicle.email} readOnly />
                   </label>
                   </div>
-                  <button class="close-btn" id="closeBtn">Close</button>
+                  <button className="close-btn" id="closeBtn" onClick={() => setVehicles(null)}>Close</button>
                 </form>
       )}
       </div>
