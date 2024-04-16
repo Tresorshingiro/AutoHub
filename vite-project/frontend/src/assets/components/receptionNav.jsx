@@ -5,12 +5,13 @@ import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
-const ReceptionNav = () => {
+const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
   const [activeButton, setActiveButton] = useState('registration');
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [collapsedSidebar, setCollapsedSidebar] = useState(false);
+  const [customerFilter, setCustomerFilter] = useState('');
   const { user } = useAuthContext()
   const { logout } = useLogout()
   
@@ -34,6 +35,7 @@ const ReceptionNav = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark');
   };
+
 
   return (
     <div>
@@ -87,10 +89,6 @@ const ReceptionNav = () => {
         </div>
     </nav>
     <div className='header-info'>
-    <div className='search-box'>
-      <FaSearch/>
-      <input type='search' placeholder='Search...'/>
-    </div>
     <div className='notification'>
       <FaBell className='icon'/>
     </div>

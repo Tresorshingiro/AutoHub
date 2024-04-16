@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
+import { useAuthContext } from '../hooks/useAuthContext';
 import '../../App.css';
 
 const Update = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [user] =  useAuthContext();
   const [vehicle, setVehicle] = useState({
     owner: '',
     telephone: '',
@@ -19,7 +21,11 @@ const Update = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`);
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`,{
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         const data = response.data;
 
         setVehicle(data);
@@ -29,7 +35,7 @@ const Update = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,28 +63,44 @@ const Update = () => {
         <ReceptionNav />
       {vehicle && (
         <div className='box'>
-          <div className='pro-container'>
-            <div className='details'>
-              <div className='addsupplier'>
+              <div>
                 <form onSubmit={handleSubmit}>
-                  <label>
-                    Owner: <input type="text" name="owner" value={vehicle.owner} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Tel: <input type="tel" name="telephone" value={vehicle.telephone} onChange={handleInputChange} />
-                  </label>
-                  <label>
-                    Email: <input type="email" name="email" value={vehicle.email} onChange={handleInputChange} />
-                  </label>
+                  <h3>Vehicle Details</h3>
+                  <div className='fields'>
+                  <div className='input-field'>
                   <label>
                     Brand: <input type="text" name="brand" value={vehicle.brand} onChange={handleInputChange} />
                   </label>
+                  </div>
+                  <div className='input-field'>
                   <label>
                     Type: <input type="text" name="type" value={vehicle.type} onChange={handleInputChange} />
                   </label>
+                  </div>
+                  <div className='input-field'>
                   <label>
                     Plate NO: <input type="text" name="plate" value={vehicle.plate} onChange={handleInputChange} />
                   </label>
+                  </div>
+                  </div>
+                  <h3>Customer Details</h3>
+                  <div className='fields'>
+                  <div className='input-field'>
+                  <label>
+                    Owner: <input type="text" name="owner" value={vehicle.owner} onChange={handleInputChange} />
+                  </label>
+                  </div>
+                  <div className='input-field'>
+                  <label>
+                    Tel: <input type="tel" name="telephone" value={vehicle.telephone} onChange={handleInputChange} />
+                  </label>
+                  </div>
+                  <div className='input-field'>
+                  <label>
+                    Email: <input type="email" name="email" value={vehicle.email} onChange={handleInputChange} />
+                  </label>
+                  </div>
+                  </div>
                   <div className='buttons'>
                     <button type="submit" className='btn'>
                       <img src='/arrow.png' alt='Update Icon' />
@@ -90,9 +112,7 @@ const Update = () => {
                   </div>
                 </form>
               </div>
-            </div>
           </div>
-        </div>
       )}
     </div>
   );

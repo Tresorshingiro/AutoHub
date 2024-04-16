@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-const View = () => {
-  const { id } = useParams();
+const View = ({id, onClose}) => {
   console.log('Received Vehicle ID:', id); 
-  const [vehicle, setVehicles] = useState(undefined);
+  const [vehicle, setVehicles] = useState(null);
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const { user } = useAuthContext()
@@ -41,17 +39,27 @@ const View = () => {
       setLoading(false)
       setError('You must be logged in');
     }
+    return () =>{
+      setVehicles(null);
+      setLoading(null);
+      setError(true);
+    };
+
   }, [id, user]); // Include 'id' as a dependency in the useEffect dependencies array
+
+  const handleClose = () =>{
+    onClose();
+  }
 
   return (
    <div className={`popup ${vehicle ? 'show' : ''}`} id="popup">
       <div className="popup-content">
-     <div className='fields'>
        {vehicle && (
                 <form  method='post'>
                  <div>
                   <h3>Vehicle Details</h3>
                  </div>
+                 <div className='fields'>
                  <div className='input-field'>
                   <label>
                     Vehicle Brand: <input type="text" name="brand" value={vehicle.brand} readOnly />
@@ -77,9 +85,11 @@ const View = () => {
                     Service Category: <input type="text" name="text" value={vehicle.service} readOnly />
                   </label>
                   </div>
+                </div>
                   <div>
                     <h3>Customer Details</h3>
                   </div>
+                  <div className='fields'>
                   <div className='input-field'>
                   <label>
                     Customer Name: <input type="text" name="owner" value={vehicle.owner} readOnly />
@@ -95,10 +105,10 @@ const View = () => {
                     Email: <input type="email" name="email" value={vehicle.email} readOnly />
                   </label>
                   </div>
-                  <button className="close-btn" id="closeBtn" onClick={() => setVehicles(null)}>Close</button>
+                </div>
+                <button className="success-btn" id="closeBtn" onClick={handleClose}>Close</button>
                 </form>
       )}
-      </div>
       </div>
     </div>
   );

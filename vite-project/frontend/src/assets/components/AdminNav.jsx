@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { NavLink } from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox} from 'react-icons/fa';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox, FaHome, FaUser} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
@@ -47,6 +47,35 @@ const AdminNav = () => {
           </div>
           <FaChevronRight className='toggle' onClick={toggleSidebar}/>
         </header>
+        <div className='menu-bar'>
+          <div className='menu'>
+            <ul className='menu-links'>
+              <li>
+              <NavLink to='/' className='nav-link' activeClassName='active'>
+               <FaHome className='icon'/>
+                <span>Dashboard</span>
+              </NavLink>
+              </li>
+              <li>
+                <NavLink to='/employee' className='nav-link' activeClassName='active'>
+                  <FaUser className='icon'/>
+                  <span>Employee</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to='/suppliers' className='nav-link' activeClassName='active'>
+                  <FaTruck className='icon'/>
+                  <span>Suppliers</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to='/invoice' className='nav-link' activeClassName='active'>
+                  <FaFileInvoice className='icon'/>
+                  <span>Invoices</span>
+                </NavLink>
+              </li>
+            </ul>
+          </div>
         <div className="bottom-content">
               <li className="mode" onClick={toggleDarkMode}>
                   <div className="moon-sun">
@@ -60,6 +89,7 @@ const AdminNav = () => {
                       <span className="switch"></span>
                   </div>
               </li>
+              </div>
               </div>
       </nav>
       <div className='header-info'>
