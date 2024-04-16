@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { FaCheckCircle, FaEdit } from 'react-icons/fa';
+import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 // import ReceptionNav from './receptionNav';
 // import QuotationNav from './quotationNav';
 // import AccountantNav from './AccountantNav';
@@ -14,9 +16,16 @@ const ClearedAccountant = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState('cleared');
+  const [openDropdowns, setOpenDropdowns] = useState(false);
   const location = useLocation();
   const { user } = useAuthContext();
+
+  const toggleDropdown = (vehicleId) =>{
+    setOpenDropdowns(prevState => ({
+      ...prevState,
+      [vehicleId]: !prevState[vehicleId]
+    }));
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,17 +51,7 @@ const ClearedAccountant = () => {
       setError('You must be logged in');
     }
 
-    const path = location.pathname.toLowerCase();
-    if (path.includes('reception')) {
-      setCurrentPage('reception');
-    } else if (path.includes('operations')) {
-      setCurrentPage('operations');
-    } else if (path.includes('accountant')) {
-      setCurrentPage('accountant');
-    } else {
-      setCurrentPage('cleared');
-    }
-  }, [location.pathname, user]);
+  }, [ user]);
 
   return (
       <div className='box'>
@@ -84,24 +83,27 @@ const ClearedAccountant = () => {
                 <td>{vehicle.vatInclude ? 'Yes' : 'No'}</td>
                 <td>{vehicle.total_price}</td>
                 <td>
-                  <div className='tbtn'>
-                    <Link to={`/Approved/${vehicle._id}`} className='vw'>
-                      <button className='view'>
-                        <img src='/view.png' alt='View Icon' />
-                        Approved
-                      </button>
-                    </Link>
-                    <Link to='/AddInvoice' className='edt'>
-                      <button className='edit'>
-                        <img src='/edit.png' alt='Edit Icon' />
-                        Create Invoice
-                      </button>
-                    </Link>
-                    {/*<button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
-                      <img src='/delete.png' alt='Delete Icon' />
-                      Delete
-            </button>*/}
-                  </div>
+                <div onClick={() => toggleDropdown(vehicle._id)}>
+                      <IoEllipsisVerticalOutline/>
+                      {openDropdowns[vehicle._id] && (
+                        <div className='more-icon'>
+                          <ul className='min-menu'>
+                            <Link to={`/approved/${vehicle._id}`}>
+                            <li>
+                              <FaCheckCircle/>
+                              <span>Approved</span>
+                            </li>
+                            </Link>
+                            <Link to='/invoice'>
+                            <li>
+                              <FaEdit/>
+                              <span>Invoice</span>
+                            </li>
+                            </Link>
+                            </ul>
+                            </div>
+                      )}
+                      </div>
                 </td>
               </tr>
             ))}

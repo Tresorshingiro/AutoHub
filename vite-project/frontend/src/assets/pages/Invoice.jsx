@@ -1,13 +1,23 @@
 import React,{useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios'
+import { FaFileInvoice, FaEdit, FaPlus } from 'react-icons/fa';
 import AccountantNav from '../components/AccountantNav';
 import '../../App.css';
+import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 
 const Invoice = () => {
   const [invoiceData, setInvoiceData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [openDropdowns, setOpenDropdowns] = useState(false);
   const [error, setError] = useState(null)
+
+  const toggleDropdown = (invoiceId) => {
+    setOpenDropdowns(prevState =>({
+      ...prevState,
+      [invoiceId]: !prevState[invoiceId]
+    })
+  )};
 
   useEffect(() => {
     const fetchData = async() =>{
@@ -39,9 +49,9 @@ const Invoice = () => {
          <AccountantNav/>
         <div className='box'>
         <div className='add'>
-          <h3>Add Invoice</h3>
-          <Link to='/AddInvoice'>
-          <button className='addbtn'> <img src='/add.png'/> </button>
+          <h2><span>Add</span>Invoice</h2>
+          <Link to='/AddInvoice' className='addbtn'>
+           <button> <FaPlus/> </button>
           </Link>
           </div>
         {loading ?(
@@ -75,20 +85,23 @@ const Invoice = () => {
                   <td>{invoice.amountPaid}</td>
                   <td>{invoice.vatIncluded ? 'Yes' : 'No'}</td>
                   <td>
-                  <div className='tbtn'>
-                      <Link to={`/view/${invoice._id}`} className='vw'>
-                        <button className='view'>
-                          <img src='/view.png' alt='View Icon' />
-                          View
-                        </button>
-                      </Link>
-                      <Link to={`/update/${invoice._id}`} className='edt'>
-                        <button className='edit'>
-                          <img src='/edit.png' alt='Edit Icon' />
-                          Edit
-                        </button>
-                      </Link>
+                  <div onClick={() => toggleDropdown(invoice._id)}>
+                    <IoEllipsisVerticalOutline/>
+                    {openDropdowns[invoice._id] &&(
+                      <div className='more-icon'>
+                        <ul className='min-menu'>
+                          <li>
+                            <FaFileInvoice/>
+                            <span>Invoice</span>
+                          </li>
+                          <li>
+                            <FaEdit/>
+                            <span>Edit</span>
+                          </li>
+                        </ul>
                       </div>
+                    )}
+                  </div>
                   </td>
                 </tr>
               ))}

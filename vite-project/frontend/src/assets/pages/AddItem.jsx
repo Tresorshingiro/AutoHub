@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../App.css';                                                                                        
 import QuotationNav from '../components/quotationNav';
+import AccountantNav from '../components/AccountantNav';
 
 const AddPurchase = () => {
   const [itemName, setItemName] = useState('');
@@ -47,27 +48,37 @@ const AddPurchase = () => {
 
   return (
     <div className="container">
-        <QuotationNav />
+        <AccountantNav/>
       <div className='box'>
-        <h2>Add Item</h2>
-        <form className='addsupplier' onSubmit={handleSubmit}>
-          <label>
+        <h2><span>Add</span> Item</h2>
+        <form  onSubmit={handleSubmit}>
+          <div className='fields'>
+           <div className='input-field'>
+           <label>
             Item Name:
-            <input type="text" name="itemName" value={itemName} onChange={(e) => setItemName(e.target.value)} required />
-          </label>
+            <input type="text" name="itemName" className='row' placeholder='Item Name' value={itemName} onChange={(e) => setItemName(e.target.value)} required />
+           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Quantity:
-            <input type="number" name="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
+            <input type="number" name="quantity" className='row' placeholder='Quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Unit Price:
-            <input type="number" name="unitPrice" value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} required />
+            <input type="number" name="unitPrice" className='row' placeholder='Unit Price' value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} required />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
-            Supplier:
-            <input type="text" name="supplier" value={supplier} onChange={(e) => setSupplier(e.target.value)} required />
+            Supplier Name:
+            <input type="text" name="supplier" className='row' placeholder='Supplier Name' value={supplier} onChange={(e) => setSupplier(e.target.value)} required />
           </label>
-          <button type="submit">Add Purchase</button>
+          </div>
+          </div>
+          <button className='large-btn'>Add Item</button>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </form>

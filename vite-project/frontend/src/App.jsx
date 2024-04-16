@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/components/View';
+import View from './assets/components/view';
 import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
@@ -33,6 +33,9 @@ import PrintModal from './assets/components/PrintModal';
 import ClearedAccountant from './assets/pages/ClearedAccountant';
 import ViewOperations from './assets/pages/ViewOperations';
 import { useAuthContext } from './assets/hooks/useAuthContext';
+import Employee from './assets/pages/Employee';
+import AddEmployee from './assets/pages/AddEmployee';
+import Dashboard from './assets/pages/dashboard';
 import './App.css';
 
 const App = () => {
@@ -56,7 +59,7 @@ const App = () => {
       <Route path="/management" element={user ? <Management /> : <Navigate to={"/"} />} />
       <Route path="/operations" element={user ? <Operations /> : <Navigate to={"/"} />} />
       <Route path="/owner" element={<Owner />} />
-      <Route path="/inservice" element={user && user.role !== "Accountant" ? <Inservice/> : <Navigate to={"/Accountant"} />}/>
+      <Route path="/inservice" element={<Inservice/>}/>
       <Route path="/view/:id" element={<View/>}/>
       <Route path="/update/:id"element={<Update/>}/>
       <Route path="/quotation/:id"element={<Quotation/>}/>
@@ -79,6 +82,9 @@ const App = () => {
       <Route path="/accountantCleared"element={<ClearedAccountant/>}/>
       <Route path="/viewOperations/:id"element={<ViewOperations/>}/>
       <Route path="/printmodel"element={<PrintModal/>}/>
+      <Route path="/employee"element={<Employee/>}/>
+      <Route path="/addemployee"element={<AddEmployee/>}/>
+      <Route path="/dashboard"element={<Dashboard/>}/>
       </Routes>
     </Router>
   );

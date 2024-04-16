@@ -1,13 +1,23 @@
 import React,{useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
+import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 
 const PurchaseList = () => {
   const [Purchase, setPurchase] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openDropdowns, setOpenDropdowns] = useState(false);
   const [error, setError] = useState(null);
+
+  const toggleDropdown = (purchaseId) => {
+    setOpenDropdowns(prevState =>({
+      ...prevState,
+      [purchaseId]: !prevState[purchaseId]
+  }))
+  }
 
   const deletePurchaseById = async (id, itemName, supplier) => {
     if(window.confirm(`Are you sure you wan't to delete the ${itemName} of ${supplier}`)) {
@@ -55,9 +65,9 @@ const PurchaseList = () => {
        <AccountantNav/>
       <div className='box'>
       <div className='add'>
-        <h3>Add Purchase</h3>
-        <Link to='/AddPurchase'>
-        <button className='addbtn'> <img src='/add.png'/> </button>
+        <h2> <span>Add</span> Purchase</h2>
+        <Link to='/AddPurchase' className='addbtn'>
+        <button> <FaPlus/> </button>
         </Link>
         </div>
         {loading ? (
@@ -83,23 +93,26 @@ const PurchaseList = () => {
                   <td>{purchase.unitPrice}</td>
                   <td>{purchase.supplier}</td>
                   <td>
-                    <div className='tbtn'>
-                      <Link to={`/view/${purchase._id}`} className='vw'>
-                        <button className='view'>
-                          <img src='/view.png' alt='View Icon' />
-                          View
-                        </button>
-                      </Link>
-                      <Link to={`/update/${purchase._id}`} className='edt'>
-                        <button className='edit'>
-                          <img src='/edit.png' alt='Edit Icon' />
-                          Edit
-                        </button>
-                      </Link>
-                      <button className='delete' onClick={() => deletePurchaseById(purchase._id, purchase.itemName, purchase.supplier)}>
-                        <img src='/delete.png' alt='Delete Icon' />
-                        Delete
-                      </button>
+                    <div onClick={() => toggleDropdown(purchase._id)}>
+                      <IoEllipsisVerticalOutline/>
+                      {openDropdowns[purchase._id] &&(
+                        <div className='more-icon'>
+                          <ul className='min-menu'>
+                            <li>
+                              <FaEye/>
+                              <span>View</span>
+                            </li>
+                            <li>
+                              <FaEdit/>
+                              <span>Edit</span>
+                            </li>
+                            <li onClick={() => deletePurchaseById(purchase._id, purchase.itemName, purchase.supplier)}>
+                              <FaTrash/>
+                              <span>Delete</span>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </td>
                 </tr>

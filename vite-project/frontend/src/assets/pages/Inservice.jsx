@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
+import View from '../components/view';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
-import {FaEye, FaEdit, FaTrash} from 'react-icons/fa'
+import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
-import View from '../components/View'
-import { useAuthContext } from '../hooks/useAuthContext'
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const getLoc = "http://localhost:3000/api/vehicles/";
 
 const Inservice = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openDropdowns, setOpenDropdowns] = useState(true);
+  const [openDropdowns, setOpenDropdowns] = useState({});
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const [showViewModal, setViewModal] = useState(false);
+  const [filter, setFilter] = useState('');
   const [error, setError] = useState(null);
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
 
-  const toggleDropdown = (vehicleId) => {
-    setOpenDropdowns(prevState => ({
-      ...prevState,
-      [vehicleId]: !prevState[vehicleId]
-    }));
-  };
   useEffect(() => {
     const fetchData = async () => {
-
       try {
         const response = await axios.get(getLoc, {
           headers: {
@@ -35,6 +30,7 @@ const Inservice = () => {
           }
         });
         setVehicles(response.data);
+        setOpenDropdowns({}); // Initialize openDropdowns state for each vehicle
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
       } finally {
@@ -44,24 +40,70 @@ const Inservice = () => {
 
     if (user) {
       fetchData();
-      setError(null)
+      setError(null);
     } else {
-      setLoading(false)
+      setLoading(false);
       setError('You must be logged in');
     }
-
   }, [user]);
+
+ {/* useEffect(() =>{
+    const handleDocumentClick = (event) => {
+      const isInsideDropdown = object.value(openDropdowns).some(value => value);
+      if(!isInsideDropdown){
+        setOpenDropdowns({});
+      }
+    };
+    document.addEventListener('click', handleDocumentClick);
+
+    return() => {
+      document.removeEventListener('click', handleDocumentClick)
+    }
+  }, [openDropdowns]);*/}
+
+  const toggleDropdown = (vehicleId) => {
+    setOpenDropdowns(prevState => ({
+      ...prevState,
+      [vehicleId]: !prevState[vehicleId]
+    }));
+  };
 
   const handleViewDetails = (vehicleId) => {
     setSelectedVehicleId(vehicleId);
-    console.log('selected ID:', vehicleId); // Set the selected vehicle ID
+    setViewModal(true);
   };
+
+  const handleCloseView = () => {
+    setViewModal(false);
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const filteredVehicles = vehicles.filter(vehicle =>
+    vehicle.brand.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.plate.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.owner.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.insurance.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.createdAt.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div className="container">
-        <ReceptionNav />
+      <ReceptionNav vehicles={vehicles} />
       <div className='box'>
-        <h2>In-service Vehicles</h2>
+        <div className='high-table'>
+        <h2><span>In-</span>service Vehicles</h2>
+        <div className='search'>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={filter}
+          onChange={handleFilterChange}
+        />
+        </div>
+        </div>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -79,7 +121,7 @@ const Inservice = () => {
               </tr>
             </thead>
             <tbody>
-              {vehicles.map(vehicle => (
+              {filteredVehicles.map(vehicle => (
                 <tr key={vehicle._id}>
                   <td>{vehicle.brand}</td>
                   <td>{vehicle.plate_no}</td>
@@ -97,10 +139,10 @@ const Inservice = () => {
                               <span>View</span>
                             </li>
                             <Link to={`/update/${vehicle._id}`}>
-                            <li>
-                              <FaEdit/>
-                              <span>Edit</span>
-                            </li>
+                              <li>
+                                <FaEdit/>
+                                <span>Edit</span>
+                              </li>
                             </Link>
                             <li onClick={() => deleteCar(vehicles, setVehicles, getLoc)}>
                               <FaTrash/>
@@ -117,7 +159,9 @@ const Inservice = () => {
           </table>
         )}
       </div>
-      {selectedVehicleId && <View id={selectedVehicleId} />}
+      {showViewModal && (
+        <View id={selectedVehicleId} onClose={handleCloseView}/>
+      )}
     </div>
   );
 };

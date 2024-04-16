@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import { NavLink } from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox} from 'react-icons/fa';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox, FaHome, FaUser} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
-const AccountantNav = () => {
+const AdminNav = () => {
   const [showInventoryDropdown, setShowInventoryDropdown] = useState(false);
   const [showReportDropdown, setShowReportDropdown] = useState(false);
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
@@ -30,7 +30,6 @@ const AccountantNav = () => {
   };
   const handleLogout = (e) => {
     logout();
-    location.href = '/'
   }
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -52,16 +51,16 @@ const AccountantNav = () => {
           <div className='menu'>
             <ul className='menu-links'>
               <li>
-              <NavLink to='/accountant' className='nav-link' activeClassName='active'>
-               <FaCheckCircle className='icon'/>
-                <span>Cleared Vehicles</span>
+              <NavLink to='/' className='nav-link' activeClassName='active'>
+               <FaHome className='icon'/>
+                <span>Dashboard</span>
               </NavLink>
               </li>
               <li>
-              <NavLink to='/invoice' className='nav-link' activeClassName='active'>
-                <FaFileInvoice className='icon'/>
-                <span>Add Invoice</span>
-              </NavLink>
+                <NavLink to='/employee' className='nav-link' activeClassName='active'>
+                  <FaUser className='icon'/>
+                  <span>Employee</span>
+                </NavLink>
               </li>
               <li>
                 <NavLink to='/suppliers' className='nav-link' activeClassName='active'>
@@ -70,22 +69,10 @@ const AccountantNav = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to='/purchase' className='nav-link' activeClassName='active'>
-                  <FaShoppingCart className='icon'/>
-                  <span>Purchases</span>
+                <NavLink to='/invoice' className='nav-link' activeClassName='active'>
+                  <FaFileInvoice className='icon'/>
+                  <span>Invoices</span>
                 </NavLink>
-              </li>
-              <li>
-                <NavLink to='/stock' className='nav-link' activeClassName='active'>
-                  <FaBox className='icon'/>
-                  <span>Stock</span>
-                </NavLink>
-              </li>
-              <li>
-              <NavLink to='/additem' className='nav-link' activeClassName='active'>
-                <FaPlus className='icon'/>
-                <span>Add Item</span>
-              </NavLink>
               </li>
             </ul>
           </div>
@@ -103,7 +90,7 @@ const AccountantNav = () => {
                   </div>
               </li>
               </div>
-          </div>
+              </div>
       </nav>
       <div className='header-info'>
       <div className='search-box'>
@@ -136,4 +123,4 @@ const AccountantNav = () => {
     );
 };
 
-export default AccountantNav;
+export default AdminNav;

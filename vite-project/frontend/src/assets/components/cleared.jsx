@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 // import ReceptionNav from './receptionNav';
 // import QuotationNav from './quotationNav';
 // import AccountantNav from './AccountantNav';
+import { FaCheckCircle, FaEdit } from 'react-icons/fa';
+import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
@@ -14,10 +16,18 @@ const getLoc = "http://localhost:3000/api/cleared/vehicles/";
 const Cleared = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openDropdowns, setOpenDropdowns] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState('cleared');
   const location = useLocation();
   const { user } = useAuthContext();
+
+  const toggleDropdown = (vehicleId) =>{
+    setOpenDropdowns(prevState => ({
+      ...prevState,
+      [vehicleId]: !prevState[vehicleId]
+    }));
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,24 +97,27 @@ const Cleared = () => {
                 <td>{vehicle.vatInclude ? 'Yes' : 'No'}</td>
                 <td>{vehicle.total_price}</td>
                 <td>
-                  <div className='tbtn'>
-                    <Link to={`/Approved/${vehicle._id}`} className='vw'>
-                      <button className='view'>
-                        <img src='/view.png' alt='View Icon' />
-                        Approved
-                      </button>
-                    </Link>
-                    <Link to='/AddInvoice' className='edt'>
-                      <button className='edit'>
-                        <img src='/edit.png' alt='Edit Icon' />
-                        Create Invoice
-                      </button>
-                    </Link>
-                    <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
-                      <img src='/delete.png' alt='Delete Icon' />
-                      Delete
-            </button>
-                  </div>
+                <div onClick={() => toggleDropdown(vehicle._id)}>
+                      <IoEllipsisVerticalOutline/>
+                      {openDropdowns[vehicle._id] && (
+                        <div className='more-icon'>
+                          <ul className='min-menu'>
+                            <Link to={`/approved/${vehicle._id}`}>
+                            <li>
+                              <FaCheckCircle/>
+                              <span>Approved</span>
+                            </li>
+                            </Link>
+                            <Link to='/invoice'>
+                            <li>
+                              <FaEdit/>
+                              <span>Invoice</span>
+                            </li>
+                            </Link>
+                            </ul>
+                            </div>
+                      )}
+                      </div>
                 </td>
               </tr>
             ))}
