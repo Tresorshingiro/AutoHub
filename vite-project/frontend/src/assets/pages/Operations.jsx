@@ -66,7 +66,7 @@ const Operations = () => {
                             <td>{vehicle.insurance}</td>
                             <td>
                               <div className='tbtn'>
-                              <Link to={`/view/${vehicle._id}`} className='vw'>
+                              <Link to={`/viewOperations/${vehicle._id}`} className='vw'>
                                   <button className='view'>
                                     <img src='/view.png' alt='View Icon' />
                                     View

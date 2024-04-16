@@ -10,7 +10,7 @@ const Reception = () => {
     <div className='container'>
     <ReceptionNav/>
     <div className='box'>
-      <h2>Car Registration</h2>
+      <h2> <span>Car</span> Registration</h2>
       <ReceptionForm />
     </div>
  </div>

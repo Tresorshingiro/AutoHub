@@ -1,4 +1,4 @@
-const Cleared_cars = require('../models/cleared_car_model')
+const Cleared_cars = require('../models/clearedCarModel')
 const mongoose = require('mongoose')
 
 // Getting all cleared cars

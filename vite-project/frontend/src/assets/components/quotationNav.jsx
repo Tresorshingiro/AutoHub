@@ -1,17 +1,23 @@
 import React,{useState,useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle} from 'react-icons/fa';
+import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
 const QuotationNav = () => {
-  const [activeButton, setActiveButton] = useState('operations');
   const { user } = useAuthContext()
+  const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const { logout } = useLogout()
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
+  };
+
+  const toggleLogoutDropdown = () => {
+    setShowLogoutDropdown(!showLogoutDropdown);
   };
 
   const handleLogout = (e) => {
@@ -19,52 +25,101 @@ const QuotationNav = () => {
     location.href = '/'
   }
 
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+    setCollapsedSidebar(!collapsedSidebar);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark');
+  };
+
   return (
     <div>
-     <section className="header">
-        <div className='lg'>
-             <h1>AutoHub</h1>
-           </div>
-           <div className='placeholder'>
-            <h3>Operations</h3>
-           </div>
-           <div className="user-icon">
+    <nav className={`sidebar ${showSidebar ? '' : 'collapsed'}`}>
+      <header>
+        <div className='image-text'>
+          <span className='image'>
+            <img src='/logo.png'/>
+          </span>
+          <span className='name'>AutoHub</span>
+        </div>
+        <FaChevronRight className='toggle' onClick={toggleSidebar}/>
+      </header>
+      <div className='menu-bar'>
+        <div className='menu'>
+          <ul className='menu-links'>
+            <li>
+            <NavLink to='/operations' className='nav-link' activeClassName='active'>
+             <FaQuoteLeft className='icon'/>
+              <span>Add Quotation</span>
+            </NavLink>
+            </li>
+            <li>
+            <NavLink to='/quotationlist' className='nav-link' activeClassName='active'>
+              <FaList className='icon'/>
+              <span>Quotation List</span>
+            </NavLink>
+            </li>
+            <li>
+            <NavLink to='/cleared' className='nav-link' activeClassName='active'>
+              <FaCheckCircle className='icon'/>
+              <span>Cleared Vehicles</span>
+            </NavLink>
+            </li>
+            <li>
+            <NavLink to='/additem' className='nav-link' activeClassName='active'>
+              <FaPlus className='icon'/>
+              <span>Add Item</span>
+            </NavLink>
+            </li>
+          </ul>
+        </div>
+      <div className="bottom-content">
+            <li className="mode" onClick={toggleDarkMode}>
+                <div className="moon-sun">
+                  <div className='icon'> 
+                    <FaMoon className='moon' style={{ opacity: darkMode ? '1' : '0' }}/>
+                    <FaSun className="sun" style={{ opacity: darkMode ? '0' : '1' }}/>
+                    </div>
+                </div>
+                <span className="mode-text text">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
+                <div className="toggle-switch">
+                    <span className="switch"></span>
+                </div>
+            </li>
+            </div>
+        </div>
+    </nav>
+    <div className='header-info'>
+    <div className='search-box'>
+      <FaSearch/>
+      <input type='search' placeholder='Search...'/>
+    </div>
+    <div className='notification'>
+      <FaBell className='icon'/>
+    </div>
+    <div className="user-icon" onClick={toggleLogoutDropdown}>
           {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
-          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>} 
+          {showLogoutDropdown && (
+            <div className="dropdown-logout">
+              <ul className='sub-menu'>
+                <li>
+                  <FaCog/>
+                  <span>Settings</span>
+                </li>
+              <li onClick={handleLogout}>
+                <FaSignOutAlt/>
+                <span>Logout</span>
+              </li>
+              </ul>
+            </div>
+          )}
         </div>
-      </section>
-      <div className="nav-links">
-      <div className="user-icon">
-        <img src="/user.png" alt="User Icon" />
-        <h2>Operations</h2>
-      </div>
-      <NavLink to='/operations' activeclassname="active-link"  onClick={() => handleButtonClick('operations')}>
-        <button className={`button ${activeButton === 'operations' ? 'active' : ''}`}>
-          <FaQuoteLeft className={activeButton ==='operations' ? 'black-on-click' : ''}/>
-            Add Quotation
-        </button>
-      </NavLink>
-      <NavLink to='/quotationlist' activeclassname="active-link" onClick={() => handleButtonClick('quotationlist')}>
-        <button className={`button ${activeButton === 'quotationlist' ? 'active' : ''}`}>
-            <FaList className={activeButton === 'quotationlist' ? 'black-on-click' : ''}/>
-            Quotation List
-        </button>
-      </NavLink>
-      <NavLink to='/cleared' activeclassname="active-link" onClick={() => handleButtonClick('cleared')}>
-        <button className={`button ${activeButton === 'cleared' ? 'active' : ''}`}>
-        <FaCheckCircle className={activeButton ==='cleared' ? 'black-on-click' : ''}/>
-            Cleared Vehicles
-        </button>
-      </NavLink>
-      <NavLink to='/additem' activeclassname="active-link" onClick={() => handleButtonClick('additem')}>
-        <button className={`button ${activeButton === 'additem' ? 'active' : ''}`}>
-          <FaPlus className={activeButton === 'additem' ? 'black-on-click' : ''}/>
-          Add Item
-          </button>
-      </NavLink>
-      </div>
     </div>
+  </div>
   );
 }
 

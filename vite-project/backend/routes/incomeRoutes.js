@@ -1,21 +1,21 @@
-const express = require('express')
-const {
-    getAllIncome,
-    getOneIncome,
-    createIncome,
-    updateIncome,
-    deleteIncome} = require('../controllers/incomeControllers')
+// const express = require('express')
+// const {
+//     getAllIncome,
+//     getOneIncome,
+//     createIncome,
+//     updateIncome,
+//     deleteIncome} = require('../controllers/incomeControllers')
 
-const router = express.Router()
+// const router = express.Router()
 
-router.get('/', getAllIncome)
+// router.get('/', getAllIncome)
 
-router.get('/:id', getOneIncome)
+// router.get('/:id', getOneIncome)
 
-router.post('/', createIncome)
+// router.post('/', createIncome)
 
-router.patch('/:id', updateIncome)
+// router.patch('/:id', updateIncome)
 
-router.delete('/:id', deleteIncome)
+// router.delete('/:id', deleteIncome)
 
-module.exports = router
+// module.exports = router

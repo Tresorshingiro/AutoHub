@@ -1,110 +1,126 @@
 import React,{useState} from 'react';
 import { NavLink } from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt } from 'react-icons/fa';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
 const AccountantNav = () => {
-  const [activeButton, setActiveButton] = useState('cleared');
   const [showInventoryDropdown, setShowInventoryDropdown] = useState(false);
   const [showReportDropdown, setShowReportDropdown] = useState(false);
+  const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const { user } = useAuthContext()
   const { logout } = useLogout()
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark');
   };
-
   const toggleInventoryDropdown = () => {
     setShowInventoryDropdown(!showInventoryDropdown);
   };
   const toggleReportDropdown = () => {
     setShowReportDropdown(!showReportDropdown)
   };
+  
+  const toggleLogoutDropdown = () => {
+    setShowLogoutDropdown(!showLogoutDropdown)
+  };
   const handleLogout = (e) => {
     logout();
     location.href = '/'
   }
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+    setCollapsedSidebar(!collapsedSidebar);
+  };
     return(
       <div>
-         <section className="header">
-        <div className='lg'>
-          <h1>AutoHub</h1>
-        </div>
-        <div className='placeholder'>
-          <h3>Accountant</h3>
-        </div>
-        <div className="user-icon">
-          {user && <div className='user-id'>{user.username}</div>}
-          <img src="/user.png" alt="User Icon" />
-          {user && <button onClick={handleLogout} className='btn' style={{backgroundColor: "red"}}>Logout</button>}
-        </div>
-      </section>
-      <div className='nav-links'>
-        <div className="user-icon">
-          <img src="/user.png" alt="User Icon" />
-          <h2>Accountant</h2>
-        </div>
-        <NavLink
-        to='/accountant'
-        activeclassname="active-link"
-        onClick={() => handleButtonClick('cleared')}
-      >
-        <button className={`button ${activeButton === 'cleared' ? 'active' : ''}`}>
-          <FaCheckCircle className={activeButton ==='cleared' ? 'black-on-click' : ''}/>
-          Cleared Vehicles
-        </button>
-      </NavLink>
-        <NavLink
-        to='/invoice'
-        activeclassname="active-link"
-        onClick={() => handleButtonClick('invoice')}
-        >
-          <button className={`button ${activeButton === 'invoice' ? 'active' : ''}`}>
-            <FaFileInvoice className={activeButton === 'invoice' ? 'black-on-click' : ''}/>
-            Invoices
-          </button>
-        </NavLink>
-        <div className="dropdown">
-          <button
-           className={`button ${showInventoryDropdown ? 'active' : ''}`}
-           onClick={toggleInventoryDropdown}
-           >
-             <FaBuilding className={activeButton === 'inventory' ? 'black-on-click' : ''} />
-             Inventory
-            <span className="dropdown-icon-container">
-            <FaCaretDown className="dropdown-icon" />
+      <nav className={`sidebar ${showSidebar ? '' : 'collapsed'}`}>
+        <header>
+          <div className='image-text'>
+            <span className='image'>
+              <img src='/logo.png'/>
             </span>
-           </button>
-            {showInventoryDropdown && (
-          <div className="dropdown-content">
-           <NavLink to="/suppliers" className='drop-links'>Supplier</NavLink>
-           <NavLink to="/purchase" className='drop-links'>Purchase</NavLink>
-           <NavLink to="/stock" className='drop-links'>Stock</NavLink>
+            <span className='name'>AutoHub</span>
           </div>
-           )}
+          <FaChevronRight className='toggle' onClick={toggleSidebar}/>
+        </header>
+        <div className='menu-bar'>
+          <div className='menu'>
+            <ul className='menu-links'>
+              <li>
+              <NavLink to='/accountant' className='nav-link' activeClassName='active'>
+               <FaCheckCircle className='icon'/>
+                <span>Cleared Vehicles</span>
+              </NavLink>
+              </li>
+              <li>
+              <NavLink to='/invoice' className='nav-link' activeClassName='active'>
+                <FaFileInvoice className='icon'/>
+                <span>Add Invoice</span>
+              </NavLink>
+              </li>
+              <li>
+              <NavLink to='/cleared' className='nav-link' activeClassName='active'>
+                <FaCheckCircle className='icon'/>
+                <span>Cleared Vehicles</span>
+              </NavLink>
+              </li>
+              <li>
+              <NavLink to='/additem' className='nav-link' activeClassName='active'>
+                <FaPlus className='icon'/>
+                <span>Add Item</span>
+              </NavLink>
+              </li>
+            </ul>
           </div>
-          <div className='dropdown'>
-            <button
-            className={`button ${showReportDropdown ? 'active' : ''}`}
-            onClick={toggleReportDropdown}
-            >
-              <FaFileAlt className={activeButton === 'reports' ? 'black-on-click' : ''}/>
-              Reports 
-              <span className='dropdown-icon-container'>
-                <FaCaretDown className='dropdown-icon'/>
-              </span>
-            </button>
-            {showReportDropdown && (
-              <div className='dropdown-content'>
-                <NavLink to="/income" className='drop-links'>Incomes</NavLink>
-                <NavLink to="/expense" className='drop-links'>Expenses</NavLink>
+        <div className="bottom-content">
+              <li className="mode" onClick={toggleDarkMode}>
+                  <div className="moon-sun">
+                    <div className='icon'> 
+                      <FaMoon className='moon' style={{ opacity: darkMode ? '1' : '0' }}/>
+                      <FaSun className="sun" style={{ opacity: darkMode ? '0' : '1' }}/>
+                      </div>
+                  </div>
+                  <span className="mode-text text">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
+                  <div className="toggle-switch">
+                      <span className="switch"></span>
+                  </div>
+              </li>
+              </div>
+          </div>
+      </nav>
+      <div className='header-info'>
+      <div className='search-box'>
+        <FaSearch/>
+        <input type='search' placeholder='Search...'/>
+      </div>
+      <div className='notification'>
+        <FaBell className='icon'/>
+      </div>
+      <div className="user-icon" onClick={toggleLogoutDropdown}>
+            {user && <div className='user-id'>{user.username}</div>}
+            <img src="/user.png" alt="User Icon" />
+            {showLogoutDropdown && (
+              <div className="dropdown-logout">
+                <ul className='sub-menu'>
+                  <li>
+                    <FaCog/>
+                    <span>Settings</span>
+                  </li>
+                <li onClick={handleLogout}>
+                  <FaSignOutAlt/>
+                  <span>Logout</span>
+                </li>
+                </ul>
               </div>
             )}
           </div>
       </div>
-      </div> 
+    </div>
     );
 };
 

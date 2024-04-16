@@ -5,13 +5,12 @@ import { Link, useLocation } from 'react-router-dom';
 // import AccountantNav from './AccountantNav';
 import axios from 'axios';
 import '../../App.css';
-import deleteCar from '../components/functions/deleteCar';
+// import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
-import ReceptionNav from './receptionNav';
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
 
-const Cleared = () => {
+const ClearedAccountant = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,8 +55,6 @@ const Cleared = () => {
   }, [location.pathname, user]);
 
   return (
-    <div className='container'>
-      <ReceptionNav/>
       <div className='box'>
       <h2>Cleared Vehicles</h2>
       {loading ? (
@@ -68,7 +65,7 @@ const Cleared = () => {
         <table>
           <thead>
             <tr>
-              <th>Approval Date</th>
+              <th>Date</th>
               <th>Vehicle Brand</th>
               <th>Plate No</th>
               <th>Customer Name</th>
@@ -80,7 +77,7 @@ const Cleared = () => {
           <tbody>
             {vehicles.map(vehicle => (
               <tr key={vehicle._id}>
-                <td>{vehicle.approvedAt}</td>
+                <td>{vehicle.createdAt}</td>
                 <td>{vehicle.brand}</td>
                 <td>{vehicle.plate}</td>
                 <td>{vehicle.owner}</td>
@@ -100,10 +97,10 @@ const Cleared = () => {
                         Create Invoice
                       </button>
                     </Link>
-                    <button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
+                    {/*<button className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc)}>
                       <img src='/delete.png' alt='Delete Icon' />
                       Delete
-            </button>
+            </button>*/}
                   </div>
                 </td>
               </tr>
@@ -112,8 +109,7 @@ const Cleared = () => {
         </table>
       )}
     </div>
-  </div>
   );
 };
 
-export default Cleared;
+export default ClearedAccountant;

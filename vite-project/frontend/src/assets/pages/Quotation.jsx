@@ -12,6 +12,7 @@ const Quotation = () => {
   const [vehicle, setVehicles] = useState(undefined);  
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showPrintModal, setShowPrintModal] = useState(false);
   const {user} = useAuthContext()
 

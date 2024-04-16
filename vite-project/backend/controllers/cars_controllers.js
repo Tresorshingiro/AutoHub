@@ -1,9 +1,10 @@
-const Car_data = require('../models/Reception_car_model')
+const Car_data = require('../models/vehicleModel')
+const Customer = require('../models/customerModel')
 const mongoose = require('mongoose')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
-    const vehicleData = await Car_data.find({}).sort({createdAt: -1})
+    const vehicleData = await Car_data.find({}).populate('owner').sort({createdAt: -1})
 
     res.status(200).json(vehicleData)
 }
@@ -16,7 +17,7 @@ const getOneCar = async (req, res) => {
         return res.status(404).json({error: 'No such Vehicle'})
     }
 
-    const vehicle = await Car_data.findById(id)
+    const vehicle = await Car_data.findById(id).populate('owner')
 
     if(!vehicle) {
         return res.status(404).json({error: 'No such Vehicle'})
@@ -27,11 +28,20 @@ const getOneCar = async (req, res) => {
 
 // Creating a car details
 const createVehicle = async (req, res) => {
-    const { owner, brand, type, plate, insurance, telephone, email, service } = req.body
+    const { names, telephone, email, address, TIN_no, true_client, brand, type, plate_no, insurance, engine, chassis_no, service } = req.body
 
     try {
-        const worker_id = req.user._id
-        const vehicle = await Car_data.create({owner, brand, type, plate, insurance, telephone, email, service, worker_id})
+        const customer = await Customer.create({names, telephone, email, address, TIN_no, true_client})
+        const vehicle = await Car_data.create({
+            owner: customer._id, 
+            brand, 
+            type, 
+            plate_no, 
+            insurance,
+            engine,
+            chassis_no,
+            service
+        })
         res.status(200).json(vehicle)
     } catch(error) {
         console.error('Error:', error)

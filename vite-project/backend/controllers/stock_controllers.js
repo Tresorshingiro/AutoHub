@@ -1,4 +1,4 @@
-const Stock = require('../models/Stock');
+const Stock = require('../models/stockModel');
 const mongoose = require('mongoose');
 
 // Get all stocks
