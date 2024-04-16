@@ -357,6 +357,9 @@ body.dark .switch::before{
     border:1px solid var(--text-color);
     margin-bottom: 0;
   }
+  .input-field .checkbox{
+    width:10%;
+  }
   /* Button Styles */
 button {
   display: inline-block;
@@ -409,6 +412,8 @@ button {
 
 /* Danger Button */
 .danger-btn {
+  display: flex;
+  gap:2px;
   color: #fff;
   background-color: #dc3545; /* Danger color */
 }
@@ -517,18 +522,7 @@ button {
     display:flex;
     gap:2px;
   }
-  .view{
-    background-color: #23AE00;
-  }
-  .vw{
-    text-decoration: none;
-  }
-  .edt{
-    text-decoration: none;
-  }
-  .delete{
-    background-color:red ;
-  }
+ 
   .quota{
     text-decoration: none;
   }
@@ -853,6 +847,15 @@ button {
   color:var(--primary-color);
   transition:var(--tran-02)
  }
+ .delete{
+  display: flex;
+  align-items: center;
+  padding-top:10px;
+  gap:10px;
+ }
+.delete:hover{
+  color: red;
+}
  .popup {
   display: block;
   position: fixed;
