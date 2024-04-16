@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
   
-    return `${hours}:${minutes}:${seconds}T${day}/${month}/${year}`;
+    return `${hours}:${minutes}:${seconds} {day}/${month}/${year}`;
 };
 
 module.exports = {
