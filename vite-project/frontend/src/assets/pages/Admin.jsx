@@ -6,7 +6,6 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const Admin = () => {
   const { user } = useAuthContext()
 
-
   return(
     <div className="container">
       <AdminNav/>

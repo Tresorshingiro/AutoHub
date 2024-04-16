@@ -1,4 +1,4 @@
-const Purchase = require('../models/Purchase');
+const Purchase = require('../models/purchaseModel');
 const mongoose =require('mongoose');
 
 // Get all suppliers

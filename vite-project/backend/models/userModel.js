@@ -5,10 +5,6 @@ const validator = require('validator')
 const { formatDate } = require('../controllers/functions/formatDate')
 
 const userSchema = new Schema({
-    role: {
-        type: String,
-        required: true
-    },
     username: {
         type: String,
         unique: true,
@@ -19,15 +15,18 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
+    role: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String
+    },
     password: {
         type: String,
         required: true
     },
     createdAt: {
-        type: String,
-        default: () => formatDate(new Date())
-    },
-    date: {
         type: String,
         get: formatDate, // Getter method to format the date when retrieving from the database
         set: (val) => val // Setter method to handle date assignments (no need for modification here)

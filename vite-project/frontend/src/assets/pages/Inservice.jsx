@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
-import View from '../components/view';
+import View from '../components/View';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
@@ -124,9 +124,9 @@ const Inservice = () => {
               {filteredVehicles.map(vehicle => (
                 <tr key={vehicle._id}>
                   <td>{vehicle.brand}</td>
-                  <td>{vehicle.plate}</td>
-                  <td>{vehicle.owner}</td>
-                  <td>{vehicle.createdAt}</td>
+                  <td>{vehicle.plate_no}</td>
+                  <td>{vehicle.owner ? vehicle.owner.names : 'N/A'}</td>
+                  <td>{vehicle.createdAt ? new Date(vehicle.createdAt).toLocaleDateString() : 'N/A'}</td>
                   <td>{vehicle.insurance}</td>
                   <td>
                     <div onClick={() => toggleDropdown(vehicle._id)}>

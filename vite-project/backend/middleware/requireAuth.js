@@ -1,26 +1,41 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/userModel')
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
 
 const requireAuth = async (req, res, next) => {
+    // Verify authorization header
+    const authHeader = req.headers.authorization;
 
-    // verify authorization
-    const { authorization } = req.headers
-
-    if (!authorization) {
-        return res.status(401).json({error: 'Authorization  token required'})
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Authorization token required' });
     }
 
-    const token = authorization.split(' ')[1]
+    const token = authHeader.split(' ')[1];
 
     try {
-        const _id = jwt.verify(token, process.env.SECRET)
-        req.user = await User.findOne({ _id}).select('_id')
-        next()
-    } catch(error){
-        console.log(error)
-        res.status(401).json({error: 'Request is not Authorized'})
+        // Verify and decode JWT token
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+
+        // Fetch user details using _id from decoded token
+        const user = await User.findById(decodedToken._id);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Attach user object to the request
+        req.user = user;
+
+        next();
+    } catch (error) {
+        console.error(error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Token expired' });
+        } else if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Invalid token' });
+        } else {
+            return res.status(401).json({ error: 'Request is not authorized' });
+        }
     }
+};
 
-}
-
-module.exports = requireAuth
+module.exports = requireAuth;

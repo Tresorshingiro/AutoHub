@@ -36,9 +36,9 @@ app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchase', purchaseRoute);
 app.use('/api/stock',stockRoute);
 app.use('/api/users', userRoutes);
-app.use('/api/invoice', invoiceRoutes);
-app.use('/api/income', incomeRoutes);
-app.use('/api/expense', expenseRoutes)
+// app.use('/api/invoice', invoiceRoutes);
+// app.use('/api/income', incomeRoutes);
+// app.use('/api/expense', expenseRoutes)
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

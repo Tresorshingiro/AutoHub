@@ -1,4 +1,4 @@
-const Supplier = require('../models/Supplier');
+const Supplier = require('../models/stockModel');
 const mongoose =require('mongoose');
 
 // Get all suppliers

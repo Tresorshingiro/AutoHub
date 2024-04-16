@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/components/view';
+import View from './assets/components/View';
 import Update from './assets/pages/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
@@ -21,7 +21,7 @@ import AddPurchase from './assets/pages/AddPurchase';
 import SupplierList from './assets/pages/SupplierList';
 import StockList from './assets/pages/StockList';
 import PurchaseList from './assets/pages/PurchaseList';
-import Invoice from './assets/pages/invoice';
+import Invoice from './assets/pages/Invoice';
 import AddInvoices from './assets/pages/AddInvoice';
 import AddItem from './assets/pages/AddItem';
 import Approved from './assets/pages/Approved';
@@ -31,7 +31,7 @@ import AddIncome from './assets/pages/AddIncome';
 import AddExpense from './assets/pages/AddExpense';
 import PrintModal from './assets/components/PrintModal';
 import ClearedAccountant from './assets/pages/ClearedAccountant';
-import ViewOperations from './assets/pages/viewOperations';
+import ViewOperations from './assets/pages/ViewOperations';
 import { useAuthContext } from './assets/hooks/useAuthContext';
 import Employee from './assets/pages/Employee';
 import AddEmployee from './assets/pages/AddEmployee';
@@ -71,7 +71,7 @@ const App = () => {
       <Route path="/suppliers"element={<SupplierList/>}/>
       <Route path="/stock"element={<StockList/>}/>
       <Route path="/purchase"element={<PurchaseList/>}/>
-      <Route path="/Invoice"element={<Invoice/>}/>
+      <Route path="/Invoice"element={user && user.role == "Accountant" ? <Invoice/> : <Navigate to={'/'} /> }/>
       <Route path="/AddInvoice"element={<AddInvoices/>}/>
       <Route path="/AddItem"element={<AddItem/>}/>
       <Route path="/Approved/:id"element={<Approved/>}/>

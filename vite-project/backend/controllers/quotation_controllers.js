@@ -1,4 +1,4 @@
-const quotedCar = require('../models/quotation_model')
+const quotedCar = require('../models/quotationModel')
 const mongoose = require('mongoose')
 
 // Getting all cleared cars
@@ -27,11 +27,12 @@ const getOneQuotation = async (req, res) => {
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {
-    const {owner, brand, plate, type, furniture, service, description, quantity, unitPrice, vatIncluded, total_price, createdAt } = req.body
+    const {owner, brand, plate, type, furniture, service, description, quantity, unitPrice, vatIncluded, createdAt } = req.body
 
     try {
-         const total_price = req.body.total_price;
-        const quotation = await quotedCar.create({owner, brand, plate, type, furniture, service, description, quantity, unitPrice, vatIncluded, total_price, createdAt})
+        const total_price = req.body.total_price;
+        const worker_id = req.user._id
+        const quotation = await Quotations.create({worker_id, owner, brand, plate, type, furniture, service, description, quantity, unitPrice, vatIncluded, total_price, createdAt})
         res.status(200).json(quotation)
     } catch(error) {
         console.error('Error:', error)

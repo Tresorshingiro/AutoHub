@@ -124,15 +124,15 @@ const ReceptionForm = () => {
         </div>
         <div className="input-field">
         <label>
-          Chassi NO:
+          Chassis NO:
         <input 
           type="text" 
           name="insurance" 
-          placeholder='Chassi NO'
+          placeholder='Chassis NO'
           className='row' 
           onChange={(e) => setInsurance(e.target.value)}
           value={insurance}
-        />
+        /> 
         </label>
         </div>
         <div className="input-field">

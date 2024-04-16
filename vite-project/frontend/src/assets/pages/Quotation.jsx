@@ -42,7 +42,6 @@ const Quotation = () => {
       fetchData();
       setError(null)
     } else {
-      setLoading(false)
       setError('You must be logged in');
     }
     
@@ -87,7 +86,8 @@ const Quotation = () => {
       // Calculate the total price based on updated services
       const totalPrice = calculateTotalPrice(updatedServices);
     
-      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
+      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles', {
+        worker_id: vehicle.worker_id,
         brand: vehicle.brand,
         owner: vehicle.owner,
         plate: vehicle.plate,
@@ -100,6 +100,11 @@ const Quotation = () => {
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
         total_price: totalPrice
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
       });
     
       if (quotationResponse.status === 200) {

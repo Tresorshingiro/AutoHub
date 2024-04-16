@@ -30,6 +30,7 @@ const AccountantNav = () => {
   };
   const handleLogout = (e) => {
     logout();
+    location.href = '/'
   }
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
