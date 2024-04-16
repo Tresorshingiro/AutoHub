@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ReceptionNav from '../components/receptionNav';
 import axios from 'axios';
 import { useAuthContext } from '../hooks/useAuthContext';
 import '../../App.css';
 
-const Update = () => {
-  const { id } = useParams();
+const Update = ({id, onClose}) => {
   const navigate = useNavigate();
   const [user] =  useAuthContext();
   const [vehicle, setVehicle] = useState({
@@ -59,8 +57,8 @@ const Update = () => {
   };
 
   return (
-    <div className="container">
-        <ReceptionNav />
+    <div className='popup' id="popup">
+    <div className='popup-content'>
       {vehicle && (
         <div className='box'>
               <div>
@@ -114,6 +112,7 @@ const Update = () => {
               </div>
           </div>
       )}
+      </div>
     </div>
   );
 };
