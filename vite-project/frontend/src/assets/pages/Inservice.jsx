@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
-import View from '../components/view';
+import View from '../components/View';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
