@@ -1,11 +1,12 @@
-const quotedCar = require('../models/quotationModel')
+const Quotation = require('../models/quotationModel')
+const RepairService = require('../models/repairServiceModel')
 const mongoose = require('mongoose')
 
 // Getting all cleared cars
 const getQuotations = async (req, res) => {
-    const quotation = await quotedCar.find({}).sort({createdAt: -1})
+    const quotation = await Quotation.find({}).populate('car_id').populate('worker_id').populate('repair_service_id').sort({createdAt: -1})
 
-    res.status(200).json(quotedCar)
+    res.status(200).json(quotation)
 }
 
 // Getting a single cleared car
@@ -16,7 +17,7 @@ const getOneQuotation = async (req, res) => {
         return res.status(404).json({error: 'No such Quotation'})
     }
 
-    const quotation = await quotedCar.findById(id)
+    const quotation = await Quotation.findById(id).populate('car_id').populate('worker_id').populate('repair_service_id')
 
     if(!quotation) {
         return res.status(404).json({error: 'No such Quotation'})
@@ -27,12 +28,25 @@ const getOneQuotation = async (req, res) => {
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {
-    const {owner, brand, plate_no, type, furniture, description, quantity, unitPrice, vatIncluded, createdAt } = req.body
+    const {car_id, price, vatIncluded, isApproved, createdAt, description, category, stock_item, quantity } = req.body
 
     try {
-        const total_price = req.body.total_price;
         const worker_id = req.user._id
-        const quotation = await quotedCar.create({worker_id, owner, brand, plate_no, type, furniture,  description, quantity, unitPrice, vatIncluded, total_price, createdAt})
+        const repair_service = await RepairService.create({
+            description,
+            category,
+            stock_item,
+            quantity
+        })
+        const quotation = await Quotation.create({
+            car_id,
+            worker_id,
+            repair_service_id: repair_service._id,
+            price,
+            vatIncluded,
+            isApproved,
+            createdAt
+        })
         res.status(200).json(quotation)
     } catch(error) {
         console.error('Error:', error)
@@ -49,7 +63,7 @@ const updateQuotation = async (req, res) => {
         return res.status(404).json({error: 'No such Quotation'})
     }
 
-    const quotation = await quotedCar.findOneAndUpdate({_id: id}, {
+    const quotation = await Quotation.findOneAndUpdate({_id: id}, {
         ...req.body
     })
 
@@ -68,7 +82,7 @@ const deleteQuotation = async (req, res) => {
         return res.status(404).json({error: 'No such Quotation'})
     }
 
-    const quotation = await quotedCar.findOneAndDelete({_id: id})
+    const quotation = await Quotation.findOneAndDelete({_id: id})
 
     if(!quotation) {
         return res.status(404).json({error: 'No such Quotation'})

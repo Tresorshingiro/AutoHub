@@ -221,9 +221,9 @@ body.dark .switch::before{
 .container {
     display: flex;
     flex-direction: row;
+    align-items: stretch;
     padding: 20px;
-    width: 100%;
-
+    margin-top: 100px;
   }
   .header-info{
     position: absolute;
@@ -428,6 +428,8 @@ button {
 
 /* Danger Button */
 .danger-btn {
+  display: flex;
+  gap:2px;
   color: #fff;
   background-color: #dc3545; /* Danger color */
 }
@@ -536,18 +538,7 @@ button {
     display:flex;
     gap:2px;
   }
-  .view{
-    background-color: #23AE00;
-  }
-  .vw{
-    text-decoration: none;
-  }
-  .edt{
-    text-decoration: none;
-  }
-  .delete{
-    background-color:red ;
-  }
+ 
   .quota{
     text-decoration: none;
   }
@@ -872,6 +863,15 @@ button {
   color:var(--primary-color);
   transition:var(--tran-02)
  }
+ .delete{
+  display: flex;
+  align-items: center;
+  padding-top:10px;
+  gap:10px;
+ }
+.delete:hover{
+  color: red;
+}
  .popup {
   display: block;
   position: fixed;

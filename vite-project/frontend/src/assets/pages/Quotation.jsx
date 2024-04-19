@@ -12,8 +12,9 @@ const Quotation = () => {
   const [vehicle, setVehicles] = useState(undefined);  
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [service, setService] = useState('')
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [isApproved, setIsApproved] = usestate(false)
   const {user} = useAuthContext()
 
   useEffect(() => {
@@ -65,6 +66,7 @@ const Quotation = () => {
     });
   };
 
+  // I don't understand this function
   const handleServiceChange = (e) => {
     setNewService({
       ...newService,
@@ -89,15 +91,10 @@ const Quotation = () => {
 
       const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles', {
         worker_id: vehicle.worker_id,
-        brand: vehicle.brand,
-        owner: vehicle.owner.names,
-        plate: vehicle.plate_no,
-        type: vehicle.type,
-        TIN_no: vehicle.owner.TIN_no,
-        createdAt: vehicle.createdAt,
-        furniture: newService.furniture,
-        description: newService.description,
-        quantity: newService.quantity,
+        car_id: vehicle.owner._id,
+
+        // I don't know what to put here
+
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
         total_price: totalPrice
@@ -234,6 +231,17 @@ const Quotation = () => {
             />
           </label>
           </div>
+          <div className="input-field">
+        <label>
+          Service Category:
+        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
+          <option value="">Select Service</option>
+          <option value="Service A">Service A</option>
+          <option value="Service B">Service B</option>
+          <option value="Service C">Service C</option>
+        </select>
+        </label>
+        </div>
           <div className='input-field'>
           <label>
             Parts to buy:
