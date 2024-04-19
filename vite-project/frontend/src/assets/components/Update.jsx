@@ -6,7 +6,7 @@ import '../../App.css';
 
 const Update = ({id, onClose}) => {
   const navigate = useNavigate();
-  const [user] =  useAuthContext();
+  const {user} =  useAuthContext();
   const [vehicle, setVehicle] = useState({
     owner: '',
     telephone: '',
@@ -47,7 +47,11 @@ const Update = ({id, onClose}) => {
     e.preventDefault();
 
     try {
-      const response = await axios.patch(`http://localhost:3000/api/vehicles/${id}`, vehicle);
+      const response = await axios.patch(`http://localhost:3000/api/vehicles/${id}`, vehicle, {
+        headers: {
+          'Authorization': `bearer ${user.token}`
+        }
+      });
       console.log('Vehicle updated successfully:', response.data);
       // Redirect to the view page or any other page after successful update
       navigate(`/view/${id}`);
@@ -56,18 +60,21 @@ const Update = ({id, onClose}) => {
     }
   };
 
+  const handleClose = () =>{
+    onClose();
+  };
+
   return (
     <div className='popup' id="popup">
     <div className='popup-content'>
       {vehicle && (
-        <div className='box'>
               <div>
                 <form onSubmit={handleSubmit}>
                   <h3>Vehicle Details</h3>
                   <div className='fields'>
                   <div className='input-field'>
                   <label>
-                    Brand: <input type="text" name="brand" value={vehicle.brand} onChange={handleInputChange} />
+                  Vehicle Brand: <input type="text" name="brand" value={vehicle.brand} onChange={handleInputChange} />
                   </label>
                   </div>
                   <div className='input-field'>
@@ -77,40 +84,74 @@ const Update = ({id, onClose}) => {
                   </div>
                   <div className='input-field'>
                   <label>
-                    Plate NO: <input type="text" name="plate" value={vehicle.plate} onChange={handleInputChange} />
+                    Plate NO: <input type="text" name="plate" value={vehicle.plate_no} onChange={handleInputChange} />
                   </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                      Engine:
+                      <input type='text' name='engine' className='row' value={vehicle.engine} onChange={handleInputChange}/>
+                    </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                      Insurance:
+                      <input type='text' name='insurance' className='row' value={vehicle.insurance} onChange={handleInputChange}/>
+                    </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                      chassis No:
+                      <input type='text' name='chassis_no' className='row' value={vehicle.chassis_no} onChange={handleInputChange}/>
+                    </label>
                   </div>
                   </div>
                   <h3>Customer Details</h3>
                   <div className='fields'>
                   <div className='input-field'>
                   <label>
-                    Owner: <input type="text" name="owner" value={vehicle.owner} onChange={handleInputChange} />
+                    Owner: <input type="text" name="owner" value={vehicle.owner.names} onChange={handleInputChange} />
                   </label>
                   </div>
                   <div className='input-field'>
                   <label>
-                    Tel: <input type="tel" name="telephone" value={vehicle.telephone} onChange={handleInputChange} />
+                    Tel: <input type="tel" name="telephone" value={vehicle.owner.telephone} onChange={handleInputChange} />
                   </label>
                   </div>
                   <div className='input-field'>
+                    <label>
+                      Tin Number:
+                      <input type='number' name='TIN_no' value={vehicle.owner.TIN_no} onChange={handleInputChange}/>
+                    </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                      Address:
+                      <input type='text' name='address' value={vehicle.owner.address} onChange={handleInputChange}/>
+                    </label>
+                  </div>
+                  <div className='input-field'>
                   <label>
-                    Email: <input type="email" name="email" value={vehicle.email} onChange={handleInputChange} />
+                    Email: <input type="email" name="email" value={vehicle.owner.email} onChange={handleInputChange} />
                   </label>
+                  </div>
+                  <div className='input-field'>
+                    <label>
+                      True Client:
+                      <input type='text' name='true_client' value={vehicle.owner.true_client} onChange={handleInputChange}/>
+                    </label>
                   </div>
                   </div>
                   <div className='buttons'>
-                    <button type="submit" className='btn'>
-                      <img src='/arrow.png' alt='Update Icon' />
+                    <button type='submit' className='large-btn'>
                       Update
                     </button>
-                    <button type="button" className='btn' onClick={() => navigate(`/view/${id}`)}>
+                    <button type="button" className='success-btn' onClick={handleClose}>
                       Cancel
                     </button>
                   </div>
                 </form>
               </div>
-          </div>
       )}
       </div>
     </div>

@@ -19,19 +19,13 @@ const Quotation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('ID from URL:', id);
         const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`, {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
         });
         const data = response.data;
-        
-        console.log('ID from URL:', id);
-        console.log('API response:', data);
-
         setVehicles(data);
-
       } catch (error) {
         console.error('Error fetching data:', error);
         console.error('Error details:', error.response);
@@ -44,7 +38,7 @@ const Quotation = () => {
     } else {
       setError('You must be logged in');
     }
-    
+
   }, [user]);
 
   const [quotationInfo, setQuotationInfo] = useState({
@@ -52,16 +46,16 @@ const Quotation = () => {
     plateNo: '',
     customerName: '',
     vehicleBrand: '',
-    services: [],
+    services: []
   });
 
   const [newService, setNewService] = useState({
     furniture: '',
-    description:'',
+    description: '',
     quantity: '',
     unitPrice: '',
     vatIncluded: false,
-    total_price:true,
+    total_price: true,
   });
 
   const handleQuotationChange = (e) => {
@@ -78,21 +72,28 @@ const Quotation = () => {
     });
   };
 
-  const handleAddService = async (vehicle, newService) => {
+  const calculateTotalPrice = (updatedServices) => {
+    return updatedServices.reduce((total, service) => {
+      const unitPrice = parseFloat(service.unitPrice) || 0;
+      const quantity = parseFloat(service.quantity) || 0;
+      const totalPrice = unitPrice * quantity;
+      return total + (service.vatIncluded ? totalPrice * 1.18 : totalPrice);
+    }, 0).toFixed(2);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      // Add the new service to the quotation services
-      const updatedServices = [...quotationInfo.services, newService];
-    
-      // Calculate the total price based on updated services
-      const totalPrice = calculateTotalPrice(updatedServices);
-    
+      const totalPrice = calculateTotalPrice([...quotationInfo.services, newService]);
+
       const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles', {
         worker_id: vehicle.worker_id,
         brand: vehicle.brand,
-        owner: vehicle.owner,
-        plate: vehicle.plate,
+        owner: vehicle.owner.names,
+        plate: vehicle.plate_no,
         type: vehicle.type,
-        service: vehicle.service,
+        TIN_no: vehicle.owner.TIN_no,
         createdAt: vehicle.createdAt,
         furniture: newService.furniture,
         description: newService.description,
@@ -100,35 +101,17 @@ const Quotation = () => {
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
         total_price: totalPrice
-      },
-      {
+      }, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
       });
-    
+
       if (quotationResponse.status === 200) {
-        setQuotationInfo({
-          ...quotationInfo,
-          services: updatedServices,
-          total_price: totalPrice,
-        });
-    
-        setNewService({
-          furniture: '',
-          description:'',
-          quantity: 0,
-          unitPrice: 0,
-          vatIncluded: false,
-        });
-    
         setSuccess('Service added successfully');
         setError(null);
       } else {
-        console.error('Error:', quotationResponse.statusText);
-        const errorData = quotationResponse.data; // Directly access response data
-        console.error('Error Details:', errorData);
-        setError(errorData);
+        setError('An error occurred while adding service');
         setSuccess(null);
       }
     } catch (error) {
@@ -137,37 +120,12 @@ const Quotation = () => {
       setSuccess(null);
     }
   };
-  
-  
-  
-
-  const calculateTotalPrice = (updatedServices) => {
-    return updatedServices.reduce((total, service) => {
-      const unitPrice = parseFloat(service.unitPrice) || 0;
-      const quantity = parseFloat(service.quantity) || 0;
-      const totalPrice = unitPrice * quantity;
-  
-      return total + (service.vatIncluded ? totalPrice * 1.18 : totalPrice);
-    }, 0).toFixed(2);
-  };
-  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!user) {
-      setError('You must be logged in')
-      return
-    }
-    
-    console.log('Submitted Quotation Info:', quotationInfo);
-  };
 
   const handleClosePrintModal = () => {
-    setShowPrintModal(false); 
+    setShowPrintModal(false);
   };
+
   const handlePrint = () => {
-    console.log("Print button clicked");
     setShowPrintModal(true);
   };
 
@@ -176,9 +134,12 @@ const Quotation = () => {
         <QuotationNav/>
       {vehicle && (
       <div className='box'>
-      <h3>Add Quotation</h3>
-        <div className='add-quotation'>
-          <form className='addquota'>
+      <h2><span>Add</span> Quotation</h2>
+        <div>
+    <form onSubmit={handleSubmit}>
+      <h3>Vehicle Details</h3>
+        <div className='fields'>
+          <div className='input-field'>
           <label>
             Date:
             <input
@@ -188,26 +149,8 @@ const Quotation = () => {
               onChange={handleQuotationChange}
             />
           </label>
-          <label>
-            PlateNo:
-            <input
-              type="text"
-              name="plateNo"
-              value={vehicle.plate}
-              onChange={handleQuotationChange}
-              placeholder='PlateNo'
-            />
-          </label>
-          <label>
-            Customer Name:
-            <input
-              type="text"
-              name="customerName"
-              value={vehicle.owner}
-              onChange={handleQuotationChange}
-              placeholder='Customer Name'
-            />
-          </label>
+          </div>
+          <div className='input-field'>
           <label>
             Vehicle Brand:
             <input
@@ -218,16 +161,68 @@ const Quotation = () => {
               placeholder='Vehicle Brand'
             />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
-            Category:
+            PlateNo:
             <input
-            type="text"
-            name="service"
-            value={vehicle.service}
-            onChange={handleQuotationChange}
-            placeholder='Service Category'
+              type="text"
+              name="plateNo"
+              value={vehicle.plate_no}
+              onChange={handleQuotationChange}
+              placeholder='PlateNo'
             />
           </label>
+          </div>
+          <div className='input-field'>
+            <label>
+              Type:
+              <input
+               type='text'
+               name='type'
+               value={vehicle.type}
+               onChange={handleQuotationChange}
+              />
+            </label>
+          </div>
+          <div className='input-field'>
+            <label>
+              Engine:
+              <input
+               type='text'
+               name='engine'
+               value={vehicle.engine}
+               onChange={handleQuotationChange}
+              />
+            </label>
+          </div>
+          <div className='input-field'>
+          <label>
+            Customer Name:
+            <input
+              type="text"
+              name="customerName"
+              value={vehicle.owner.names}
+              onChange={handleQuotationChange}
+              placeholder='Customer Name'
+            />
+          </label>
+          </div>
+          <div className='input-field'>
+            <label>
+              TIN Number:
+              <input
+               type='number'
+               name='TIN_no'
+               value={vehicle.owner.TIN_no}
+               onChange={handleQuotationChange}
+              />
+            </label>
+          </div>
+          </div>
+          <h3>Service Details</h3>
+          <div className='fields'>
+          <div className='input-field'>
           <label>
             Description:
             <textarea
@@ -238,6 +233,8 @@ const Quotation = () => {
             placeholder='Description'
             />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Parts to buy:
             <textarea
@@ -248,8 +245,8 @@ const Quotation = () => {
               placeholder='Parts to buy'
             />
           </label>
-          </form>
-          <form className='addquota'>
+          </div>
+          <div className='input-field'>
           <label>
             Quantity:
             <input
@@ -259,6 +256,8 @@ const Quotation = () => {
               onChange={handleServiceChange}
             />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             Unit Price:
             <input
@@ -268,18 +267,23 @@ const Quotation = () => {
               onChange={handleServiceChange}
             />
           </label>
+          </div>
+          <div className='input-field'>
           <label>
             VAT Included:
             <input
               type="checkbox"
               name="vatIncluded"
+              className='checkbox'
               checked={newService.vatIncluded}
               onChange={() => setNewService({ ...newService, vatIncluded: !newService.vatIncluded })}
             />
           </label>
-          </form>
+          </div>
+          </div>
+          <button onClick={handleSubmit} className='large-btn'>Add Service</button>
+        </form>
         </div>
-        <button type="button" className='addservice'onClick={() => handleAddService(vehicle, newService, calculateTotalPrice)}>Add Service</button>
         {/* Display added services in a table */}
         {quotationInfo.services.length > 0 && (
           <div className="added-services">
@@ -301,8 +305,8 @@ const Quotation = () => {
                 {quotationInfo.services.map((service, index) => (
                   <tr key={index}>
                     <td>{vehicle.createdAt}</td>
-                    <td>{vehicle.plate}</td>
-                    <td>{vehicle.owner}</td>
+                    <td>{vehicle.plate_no}</td>
+                    <td>{vehicle.owner.names}</td>
                     <td>{service.furniture}</td>
                     <td>{service.quantity}</td>
                     <td>{service.unitPrice}</td>
@@ -332,8 +336,8 @@ const Quotation = () => {
 
 
         <br />
-        <div className='buttons'>
-            <button type="submit" onClick={handlePrint}>Save</button>
+        <div>
+            <button className='success-btn' onClick={handlePrint}>Save</button>
           </div>
 
           {/* Display the print modal when showPrintModal is true */}

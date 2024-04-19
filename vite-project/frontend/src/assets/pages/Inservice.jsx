@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
-import View from '../components/View';
+import View from '../components/view';
 import Update from '../components/Update';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
@@ -17,6 +16,7 @@ const Inservice = () => {
   const [loading, setLoading] = useState(true);
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const [updateVehicleId, setUpdateVehicleId] = useState(null);
   const [showViewModal, setViewModal] = useState(false);
   const [showUpdateModal, setUpdateModal] = useState(false);
   const [filter, setFilter] = useState('');
@@ -79,7 +79,7 @@ const Inservice = () => {
   };
 
   const handleEdit = (id) => {
-    setSelectedVehicleId(id);
+    setUpdateVehicleId(id);
     setUpdateModal(true);
   };
 
@@ -174,7 +174,7 @@ const Inservice = () => {
         <View id={selectedVehicleId} onClose={handleCloseView}/>
       )}
       {showUpdateModal && (
-        <Update id={selectedVehicleId} onClose={handleCloseView}/>
+        <Update id={updateVehicleId} onClose={handleCloseView}/>
       )}
     </div>
   );

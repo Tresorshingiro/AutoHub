@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/components/View';
+import View from './assets/components/view';
 import Update from './assets/components/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
