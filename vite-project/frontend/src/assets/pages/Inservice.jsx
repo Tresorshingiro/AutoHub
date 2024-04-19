@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReceptionNav from '../components/receptionNav';
 import View from '../components/View';
-import Update from '../components/Update';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
@@ -18,10 +17,8 @@ const Inservice = () => {
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
   const [showViewModal, setViewModal] = useState(false);
-  const [showUpdateModal, setUpdateModal] = useState(false);
   const [filter, setFilter] = useState('');
   const [error, setError] = useState(null);
-  const dropdownRef = useRef(null);
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -50,21 +47,19 @@ const Inservice = () => {
     }
   }, [user]);
 
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        // Clicked outside the dropdown, so close all dropdowns
+ {/* useEffect(() =>{
+    const handleDocumentClick = (event) => {
+      const isInsideDropdown = object.value(openDropdowns).some(value => value);
+      if(!isInsideDropdown){
         setOpenDropdowns({});
       }
     };
+    document.addEventListener('click', handleDocumentClick);
 
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
+    return() => {
+      document.removeEventListener('click', handleDocumentClick)
+    }
+  }, [openDropdowns]);*/}
 
   const toggleDropdown = (vehicleId) => {
     setOpenDropdowns(prevState => ({
@@ -78,14 +73,8 @@ const Inservice = () => {
     setViewModal(true);
   };
 
-  const handleEdit = (id) => {
-    setSelectedVehicleId(id);
-    setUpdateModal(true);
-  };
-
   const handleCloseView = () => {
     setViewModal(false);
-    setUpdateModal(false);
   };
 
   const handleFilterChange = (e) => {
@@ -94,8 +83,8 @@ const Inservice = () => {
 
   const filteredVehicles = vehicles.filter(vehicle =>
     vehicle.brand.toLowerCase().includes(filter.toLowerCase()) ||
-    vehicle.plate_no.toLowerCase().includes(filter.toLowerCase()) ||
-    vehicle.owner.names.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.plate.toLowerCase().includes(filter.toLowerCase()) ||
+    vehicle.owner.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.insurance.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.createdAt.toLowerCase().includes(filter.toLowerCase())
   );
@@ -137,11 +126,11 @@ const Inservice = () => {
                   <td>{vehicle.brand}</td>
                   <td>{vehicle.plate_no}</td>
                   <td>{vehicle.owner ? vehicle.owner.names : 'N/A'}</td>
-                  <td>{vehicle.createdAt}</td>
+                  <td>{vehicle.createdAt ? new Date(vehicle.createdAt).toLocaleDateString() : 'N/A'}</td>
                   <td>{vehicle.insurance}</td>
                   <td>
-                    <div ref={dropdownRef}>
-                      <IoEllipsisVerticalOutline onClick={() => toggleDropdown(vehicle._id)}/>
+                    <div onClick={() => toggleDropdown(vehicle._id)}>
+                      <IoEllipsisVerticalOutline/>
                       {openDropdowns[vehicle._id] && (
                         <div className='more-icon'>
                           <ul className='min-menu'>
@@ -149,13 +138,13 @@ const Inservice = () => {
                               <FaEye/>
                               <span>View</span>
                             </li>
-                              <li onClick={() => handleEdit(vehicle._id)}>
+                            <Link to={`/update/${vehicle._id}`}>
+                              <li>
                                 <FaEdit/>
                                 <span>Edit</span>
                               </li>
-                          </ul>
-                          <ul>
-                          <li className='delete' onClick={() => deleteCar(vehicle, setVehicles, getLoc, user)}>
+                            </Link>
+                            <li onClick={() => deleteCar(vehicles, setVehicles, getLoc)}>
                               <FaTrash/>
                               <span>Delete</span>
                             </li>
@@ -172,9 +161,6 @@ const Inservice = () => {
       </div>
       {showViewModal && (
         <View id={selectedVehicleId} onClose={handleCloseView}/>
-      )}
-      {showUpdateModal && (
-        <Update id={selectedVehicleId} onClose={handleCloseView}/>
       )}
     </div>
   );
