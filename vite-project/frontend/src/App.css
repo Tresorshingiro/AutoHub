@@ -249,19 +249,28 @@ body.dark .switch::before{
     color: var(--text-color);
     background: var(--body-color); 
   }
-  .high-table{
+
+.high-table {
+    position: normal;
     display: flex;
+    width: 100%;
     justify-content: space-between;
-  }
-  .search input{
-    display: flex;
-    height:100%;
-    width:100%;
+}
+
+.search {
+    top: 0;
+    right: 0;
+}
+
+.search input {
+    height: 100%;
     outline: none;
     border: 1px solid var(--primary-color);
     color: var(--text-color);
     background: var(--body-color); 
-  }
+}
+
+
 
   .user-icon {
     display:flex;
@@ -335,7 +344,7 @@ body.dark .switch::before{
   }
   form .fields {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Two columns */
+    grid-template-columns: repeat(4, 1fr); /* Two columns */
     grid-template-rows: repeat(3, auto); /* Three rows */
     gap: 5px;
   }
@@ -355,6 +364,16 @@ body.dark .switch::before{
     width: 100%;
     border:1px solid var(--text-color);
     margin-bottom: 0;
+  }
+  .input-field textarea{
+    height: 60px;
+    margin: 2px 0;
+    width: 100%;
+    border:1px solid var(--text-color);
+    margin-bottom: 0;
+  }
+  .input-field .checkbox{
+    width:10%;
   }
   /* Button Styles */
 button {
@@ -397,13 +416,14 @@ button {
 .success-btn {
   color: var(--text-color);
   align-items: center;
-  background-color: #85e19a; /* Success color */
+  background-color: var(--sidebar-color); /* Success color */
   border: 1px solid var(--text-color);
 }
 
 .success-btn:hover {
-  background-color: #218838; /* Darker shade of success color */
-  color: #fff;
+  background-color: var(--body-color);
+  color: var(--text-color);
+  box-shadow: 0.5rem 0.5rem  rgba(0,0,0,.1);
 }
 
 /* Danger Button */
@@ -441,6 +461,9 @@ button {
   .box {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 80%;
     height: fit-content;
     margin-left:300px ;
     padding: 30px;
@@ -865,8 +888,12 @@ button {
   color:var(--text-color);
   height: fit-content;
   padding: 20px;
-  border: 2px solid var(--primary-color);
+  border: 1px;
   border-radius: 10px;
+}
+.popup-content .fields{
+  margin: 10px;
+  gap: 5px;
 }
 .popup-content h3{
   color: var(--primary-color);
@@ -881,7 +908,35 @@ button {
   border: none;
   cursor: pointer;
 }
-
+.view-logo{
+  display: flex;
+  align-items: center;
+  width:40%;
+  top: 0;
+  left: 0;
+}
+.view-logo .img-logo img{
+  width: 40px;
+  height: 40px;
+}
+.logo-name{
+  font-weight: 800px;
+  font-size: 2rem;
+  font-style: italic;
+  color:var(--primary-color);
+  transition: var(--tran-03);
+}
+.address{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+.address li{
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  gap: 10px;
+}
 .payment-statistics-container {
   margin-top: 20px;
   display: flex;

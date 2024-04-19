@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import ReceptionNav from '../components/receptionNav';
 import View from '../components/View';
+import Update from './Update';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
@@ -16,6 +16,7 @@ const Inservice = () => {
   const [loading, setLoading] = useState(true);
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const [updateVehicleId, setUpdateVehicleId] = useState(null);
   const [showViewModal, setViewModal] = useState(false);
   const [filter, setFilter] = useState('');
   const [error, setError] = useState(null);
@@ -71,6 +72,11 @@ const Inservice = () => {
   const handleViewDetails = (vehicleId) => {
     setSelectedVehicleId(vehicleId);
     setViewModal(true);
+  };
+
+  const handleEdit = (id) => {
+    setUpdateVehicleId(id);
+    setUpdateModal(true);
   };
 
   const handleCloseView = () => {
@@ -161,6 +167,9 @@ const Inservice = () => {
       </div>
       {showViewModal && (
         <View id={selectedVehicleId} onClose={handleCloseView}/>
+      )}
+      {showUpdateModal && (
+        <Update id={updateVehicleId} onClose={handleCloseView}/>
       )}
     </div>
   );

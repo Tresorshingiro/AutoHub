@@ -1,4 +1,6 @@
 import React from 'react';
+import { FaMapMarkerAlt, FaEnvelope, FaFilePdf,  } from 'react-icons/fa';
+import { MdPhone } from 'react-icons/md';
 import '../../App.css';
 
 const PrintModal = ({ onClose, vehicle, services,total_price }) => {
@@ -7,18 +9,28 @@ const PrintModal = ({ onClose, vehicle, services,total_price }) => {
   };
 
   return (
-    <div className="print-modal">
-      <div id='print-content'>
-      <div className='print-header'>
-        <h1>AutoHub</h1>
-      </div>
-      <div className='print-list'>
-      <ul>
-        <ol>autohub@gmail.com</ol>
-        <ol>0788888888</ol>
-        <ol>Kigali-Rwanda</ol>
-      </ul>
-      </div>
+    <div className="popup">
+      <div className="popup-content" id='print-content'>
+      <div className='view-logo'>
+          <span className='img-logo'><img  src='/logo.png'/></span>
+          <span className='logo-name'>AutoHub</span>
+        </div>
+        <div className='address'>
+          <ul>
+           <li>
+            <FaMapMarkerAlt/>
+            <span>KN 32 ST,Kigali, PO Box 1447</span>
+            </li>
+           <li>
+            <FaEnvelope/>
+            <span>autohub@gmail.com</span>
+            </li>
+           <li>
+            <MdPhone/>
+            <span>0789736453</span>
+            </li>
+          </ul>
+        </div>
         <table className="print-table">
           <thead>
             <tr>
@@ -57,10 +69,12 @@ const PrintModal = ({ onClose, vehicle, services,total_price }) => {
             </tr>
           </tbody>
         </table>
-      </div>
       <div className='buttons'>
-      <button onClick={handlePrint}>Print</button>
-      <button className='delete' onClick={onClose}>Close</button>
+      <button onClick={handlePrint}>
+        <FaFilePdf/>
+      </button>
+      <button className='success-btn' onClick={onClose}>Cancle</button>
+      </div>
       </div>
     </div>
   );
