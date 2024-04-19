@@ -51,7 +51,7 @@ const AdminNav = () => {
           <div className='menu'>
             <ul className='menu-links'>
               <li>
-              <NavLink to='/' className='nav-link' activeClassName='active'>
+              <NavLink to='/admin' className='nav-link' activeClassName='active'>
                <FaHome className='icon'/>
                 <span>Dashboard</span>
               </NavLink>

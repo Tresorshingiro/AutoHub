@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Link} from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
 import View from '../components/View';
@@ -15,6 +15,7 @@ const Operations = () => {
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const dropdownRef = useRef(null);
   const {user} = useAuthContext()
 
   useEffect(() => {
@@ -42,7 +43,23 @@ const Operations = () => {
 
   }, [user])
 
-  const toggleDropdown = (vehicleId) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdowns({});
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  }, []);
+
+  const toggleDropdown = (vehicleId, event) => {
+
+    event.stopPropagation()
+
     setOpenDropdowns(prevState => ({
       ...prevState,
       [vehicleId]: !prevState[vehicleId]
@@ -111,8 +128,8 @@ const Operations = () => {
                             <td>{vehicle.createdAt}</td>
                             <td>{vehicle.insurance}</td>
                             <td>
-                              <div>
-                              <IoEllipsisVerticalOutline onClick={() => toggleDropdown(vehicle._id)}/>
+                              <div ref={dropdownRef}>
+                              <IoEllipsisVerticalOutline onClick={(event) => toggleDropdown(vehicle._id, event)}/>
                               {openDropdowns[vehicle._id] &&(
                               <div className='more-icon'>
                                 <ul className='min-menu'>

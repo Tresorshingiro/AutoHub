@@ -65,7 +65,7 @@ const SupplierList = () => {
        <AccountantNav/>
       <div className='box'>
         <div className='add'>
-        <h2><span>Add</span>Supplier</h2>
+        <h2><span>Add</span> Supplier</h2>
         <Link to='/AddSupplier' className='addbtn'>
         <button> <FaPlus/> </button>
         </Link>
