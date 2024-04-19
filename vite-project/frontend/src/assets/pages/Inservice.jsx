@@ -66,7 +66,10 @@ const Inservice = () => {
   }, []);
 
 
-  const toggleDropdown = (vehicleId) => {
+  const toggleDropdown = (vehicleId, event) => {
+
+    event.stopPropagation()
+
     setOpenDropdowns(prevState => ({
       ...prevState,
       [vehicleId]: !prevState[vehicleId]
@@ -141,7 +144,7 @@ const Inservice = () => {
                   <td>{vehicle.insurance}</td>
                   <td>
                     <div ref={dropdownRef}>
-                      <IoEllipsisVerticalOutline onClick={() => toggleDropdown(vehicle._id)}/>
+                      <IoEllipsisVerticalOutline onClick={(event) => toggleDropdown(vehicle._id, event)}/>
                       {openDropdowns[vehicle._id] && (
                         <div className='more-icon'>
                           <ul className='min-menu'>

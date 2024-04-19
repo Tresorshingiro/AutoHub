@@ -31,11 +31,9 @@ import AddIncome from './assets/pages/AddIncome';
 import AddExpense from './assets/pages/AddExpense';
 import PrintModal from './assets/components/PrintModal';
 import ClearedAccountant from './assets/pages/ClearedAccountant';
-import ViewOperations from './assets/pages/ViewOperations';
 import { useAuthContext } from './assets/hooks/useAuthContext';
 import Employee from './assets/pages/Employee';
 import AddEmployee from './assets/pages/AddEmployee';
-import Dashboard from './assets/pages/dashboard';
 import './App.css';
 
 const App = () => {
@@ -80,11 +78,9 @@ const App = () => {
       <Route path="/AddIncome"element={<AddIncome/>}/>
       <Route path="/AddExpense"element={<AddExpense/>}/>
       <Route path="/accountantCleared"element={<ClearedAccountant/>}/>
-      <Route path="/viewOperations/:id"element={<ViewOperations/>}/>
       <Route path="/printmodel"element={<PrintModal/>}/>
       <Route path="/employee"element={<Employee/>}/>
       <Route path="/addemployee"element={<AddEmployee/>}/>
-      <Route path="/dashboard"element={<Dashboard/>}/>
       </Routes>
     </Router>
   );

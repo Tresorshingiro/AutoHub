@@ -13,10 +13,10 @@ const supplierSchema =  new Schema({
         required: true 
     },
     telephone: { 
-        type: String, 
+        type: Number, 
         required: true 
     },
-    email: { 
+    email: {
         type: String, 
         required: true 
     },

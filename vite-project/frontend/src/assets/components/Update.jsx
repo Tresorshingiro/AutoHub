@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaMapMarkerAlt, FaEnvelope } from 'react-icons/fa';
+import { MdPhone } from 'react-icons/md';
 import axios from 'axios';
 import { useAuthContext } from '../hooks/useAuthContext';
 import '../../App.css';
@@ -67,6 +69,26 @@ const Update = ({id, onClose}) => {
   return (
     <div className='popup' id="popup">
     <div className='popup-content'>
+    <div className='view-logo'>
+          <span className='img-logo'><img  src='/logo.png'/></span>
+          <span className='logo-name'>AutoHub</span>
+        </div>
+        <div className='address'>
+          <ul>
+           <li>
+            <FaMapMarkerAlt/>
+            <span>KN 32 ST,Kigali</span>
+            </li>
+           <li>
+            <FaEnvelope/>
+            <span>autohub@gmail.com</span>
+            </li>
+           <li>
+            <MdPhone/>
+            <span>0789736453</span>
+            </li>
+          </ul>
+        </div>
       {vehicle && (
               <div>
                 <form onSubmit={handleSubmit}>

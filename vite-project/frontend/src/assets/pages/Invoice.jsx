@@ -49,7 +49,7 @@ const Invoice = () => {
          <AccountantNav/>
         <div className='box'>
         <div className='add'>
-          <h2><span>Add</span>Invoice</h2>
+          <h2><span>Add</span> Invoice</h2>
           <Link to='/AddInvoice' className='addbtn'>
            <button> <FaPlus/> </button>
           </Link>
