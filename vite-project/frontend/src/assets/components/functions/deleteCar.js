@@ -1,10 +1,10 @@
-const deleteCar = async (vehicles, setVehicles, getLoc, user) => {
+const deleteCar = async (vehicle, setVehicles, getLoc, user) => {
   if (!user) {
     return
   }
-    if (window.confirm(`Are you sure you want to delete the ${vehicles.brand} of ${vehicles.owner.names}`)) {
+    if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
       try {
-        const deleteResponse = await fetch(getLoc + vehicles._id, {
+        const deleteResponse = await fetch(getLoc + vehicle._id, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${user.token}`
@@ -14,9 +14,9 @@ const deleteCar = async (vehicles, setVehicles, getLoc, user) => {
         const json = await deleteResponse.json();
         
         if (deleteResponse.status === 200) {
-          alert(`Deleted ${vehicles.brand} of ${vehicles.owner.names}`);
+          alert(`Deleted ${vehicle.brand} of ${vehicle.owner}`);
           // Remove the vehicle from the state
-          setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== vehicles._id));
+          setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== vehicle._id));
         } else {
           // Errors occurring in the deletion process
           console.error(json.error); // Log error message

@@ -58,7 +58,7 @@ const Inservice = () => {
         setOpenDropdowns({});
       }
     };
-
+    document.addEventListener('click', handleClickOutside);
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);

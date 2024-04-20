@@ -13,7 +13,6 @@ const ReceptionForm = () => {
     const [insurance, setInsurance] = useState('')
     const [telephone, setTelephone] = useState('')
     const [email, setEmail] = useState('')
-    const [service, setService] = useState('')
     const [TIN_no, setTIN_no] = useState('')
     const [true_client, setTrueClient] = useState('')
     const [address, setAddress] = useState('')
@@ -30,7 +29,7 @@ const ReceptionForm = () => {
       return;
     }
   
-    const vehicle = { names, TIN_no, true_client, address, brand, type, plate_no,chassis_no, engine, insurance, telephone, email, service };
+    const vehicle = { names, TIN_no, true_client, address, brand, type, plate_no,chassis_no, engine, insurance, telephone, email };
   
     try {
       const response = await fetch('http://localhost:3000/api/vehicles/', {
@@ -114,8 +113,11 @@ const ReceptionForm = () => {
         case 'address':
             setAddress(value);
             break;
-      default:
-        break;
+        case 'trueClient':
+            setTrueClient(value);
+            break;
+        default:
+          break;
     }
   };
   
@@ -217,17 +219,7 @@ const ReceptionForm = () => {
         /> 
         </label>
         </div>
-        <div className="input-field">
-        <label>
-          Service Category:
-        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
-          <option value="">Select Service</option>
-          <option value="Service A">Service A</option>
-          <option value="Service B">Service B</option>
-          <option value="Service C">Service C</option>
-        </select>
-        </label>
-        </div>
+
       </div>
         <h3>Customer Details</h3>
       <div className="fields">
