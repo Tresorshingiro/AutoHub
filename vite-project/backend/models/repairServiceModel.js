@@ -10,19 +10,20 @@ const repairServiceSchema = new Schema({
         type: String
     },
     stock_item: {
-        type: Schema.Types.ObjectId,
-        ref: 'Stock',
-        required: true
+        type: String,
+        // type: Schema.Types.ObjectId,
+        // ref: 'Stock',
+        // required: true
     },
     quantity: {
         type: Number,
         required: true
     },
-    worker_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }
+    // worker_id: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // }
 })
 
 module.exports = mongoose.model('RepairService', repairServiceSchema)

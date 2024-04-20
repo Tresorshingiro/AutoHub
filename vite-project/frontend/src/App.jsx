@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/components/view';
+import View from './assets/components/View';
 import Update from './assets/components/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
@@ -51,13 +51,13 @@ const App = () => {
         } />
       <Route path="/signin" element={!user ? <SignIn /> : <Navigate to={`/${user_role}`}/>} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/reception" element={user ? <Reception /> : <Navigate to={"/"} />} />
-      <Route path="/accountant" element={user ? <Accountant /> : <Navigate to={"/"} />} />
+      <Route path="/reception" element={user && user_role === "Reception" ? <Reception /> : <Navigate to={"/"} />} />
+      <Route path="/accountant" element={user && user_role === "Accountant" ? <Accountant /> : <Navigate to={"/"} />} />
       <Route path="/admin" element={user ? <Admin /> : <Navigate to={"/"} />} />
       <Route path="/management" element={user ? <Management /> : <Navigate to={"/"} />} />
       <Route path="/operations" element={user ? <Operations /> : <Navigate to={"/"} />} />
       <Route path="/owner" element={<Owner />} />
-      <Route path="/inservice" element={<Inservice/>}/>
+      <Route path="/inservice" element={user && user_role === "Reception" ? <Inservice/> : <Navigate to={'/'}/> }/>
       <Route path="/view/:id" element={<View/>}/>
       <Route path="/update/:id"element={<Update/>}/>
       <Route path="/quotation/:id"element={<Quotation/>}/>
