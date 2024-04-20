@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {Link} from 'react-router-dom';
 import QuotationNav from '../components/quotationNav';
-import View from '../components/view';
+import View from '../components/View';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext'
 import { FaEye, FaPlus } from 'react-icons/fa';

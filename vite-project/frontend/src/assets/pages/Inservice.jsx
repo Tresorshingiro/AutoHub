@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReceptionNav from '../components/receptionNav';
-import View from '../components/view';
+import View from '../components/View';
 import Update from '../components/Update';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 import { FaEye, FaEdit, FaTrash, FaSearch } from 'react-icons/fa';

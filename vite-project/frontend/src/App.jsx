@@ -10,7 +10,7 @@ import Management from './assets/pages/Management';
 import Operations from './assets/pages/Operations';
 import Owner from './assets/pages/Owner';
 import Inservice from './assets/pages/Inservice';
-import View from './assets/components/view';
+import View from './assets/components/View';
 import Update from './assets/components/Update';
 import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
@@ -58,7 +58,7 @@ const App = () => {
       <Route path="/operations" element={user ? <Operations /> : <Navigate to={"/"} />} />
       <Route path="/owner" element={<Owner />} />
       <Route path="/inservice" element={<Inservice/>}/>
-      <Route path="/view/:id" element={<View/>}/>
+      <Route path="/view/:id"element={<View/>}/>
       <Route path="/update/:id"element={<Update/>}/>
       <Route path="/quotation/:id"element={<Quotation/>}/>
       <Route path="/quotationlist"element={<QuotationList/>}/>
