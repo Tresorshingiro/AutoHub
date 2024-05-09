@@ -15,7 +15,7 @@ const AddPurchase = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/api/stock/addItem/', {
+      const response = await fetch('http://localhost:3000/api/stock/addItem', {
         method: 'POST',
         body: JSON.stringify({ itemName, quantity, unitPrice }),
         headers: {
