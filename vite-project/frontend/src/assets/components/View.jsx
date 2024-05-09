@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { FaEnvelope, FaMailBulk, FaMailchimp, FaMapMarked, FaMapMarkedAlt, FaMapMarker, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaEnvelope, FaFilePdf, FaMailBulk, FaMailchimp, FaMapMarked, FaMapMarkedAlt, FaMapMarker, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { MdPhone } from 'react-icons/md';
+
 
 const View = ({id, onClose}) => {
   console.log('Received Vehicle ID:', id); 
@@ -51,7 +52,8 @@ const View = ({id, onClose}) => {
 
   const handleClose = () =>{
     onClose();
-  }
+  };
+
 
   return (
    <div className={`popup ${vehicle ? 'show' : ''}`} id="popup">
