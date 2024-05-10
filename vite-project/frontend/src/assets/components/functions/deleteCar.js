@@ -2,7 +2,7 @@ const deleteCar = async (vehicle, setVehicles, getLoc, user) => {
   if (!user) {
     return
   }
-    if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner}`)) {
+    if (window.confirm(`Are you sure you want to delete the ${vehicle.brand} of ${vehicle.owner.names}`)) {
       try {
         const deleteResponse = await fetch(getLoc + vehicle._id, {
           method: 'DELETE',
@@ -14,7 +14,7 @@ const deleteCar = async (vehicle, setVehicles, getLoc, user) => {
         const json = await deleteResponse.json();
         
         if (deleteResponse.status === 200) {
-          alert(`Deleted ${vehicle.brand} of ${vehicle.owner}`);
+          alert(`Deleted ${vehicle.brand} of ${vehicle.owner.names}`);
           // Remove the vehicle from the state
           setVehicles(prevVehicles => prevVehicles.filter(v => v._id !== vehicle._id));
         } else {

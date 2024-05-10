@@ -15,11 +15,7 @@ const clearedCarSchema = new Schema({
     },
     clearedAt: {
         type: String,
-        default: () => {
-            const currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
-            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
-        }
+        default: () => formatDate(new Date())
     },
     worker_id: {
         type: Schema.Types.ObjectId,
