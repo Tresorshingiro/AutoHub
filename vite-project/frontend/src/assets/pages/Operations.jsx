@@ -28,7 +28,7 @@ const Operations = () => {
       const json = await response.json()
 
       if (response.ok){
-        setVehicles(json)
+        setVehicles(json.vehicleData || [])
       }
     }
 

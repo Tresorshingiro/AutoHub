@@ -22,7 +22,7 @@ const QuotationSchema = new Schema({
         type: Boolean,
         default: false
     },
-    price: {
+    total_price: {
         type: Number,
         required: true
     },

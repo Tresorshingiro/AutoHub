@@ -62,7 +62,7 @@ const View = ({id, onClose}) => {
           <span className='img-logo'><img  src='/logo.png'/></span>
           <span className='logo-name'>AutoHub</span>
         </div>
-        <div className='address'>
+        <div className='address-garage'>
           <ul>
            <li>
             <FaMapMarkerAlt/>

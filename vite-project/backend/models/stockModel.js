@@ -12,10 +12,6 @@ const stockSchema =  new Schema({
         type: Number,
         required: true
     },
-    unitPrice: {
-        type: Number,
-        required: true
-    },
     createdAt: {
         type: String,
         default: () => {

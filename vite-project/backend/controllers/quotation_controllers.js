@@ -2,6 +2,22 @@ const Quotation = require('../models/quotationModel')
 const RepairService = require('../models/repairServiceModel')
 const mongoose = require('mongoose')
 
+
+const getQuotation = async (req, res) => {
+    try {
+        const quotations = await Quotation.find()
+            .populate('car_id')
+            .populate('worker_id')
+            .populate('repair_service_id')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json(quotations);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 // Getting all cleared cars
 const getQuotations = async (req, res) => {
     const quotation = await Quotation.find({}).populate('car_id').populate('worker_id').populate('repair_service_id').sort({createdAt: -1})
@@ -28,7 +44,7 @@ const getOneQuotation = async (req, res) => {
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {
-    const {car_id, price, vatIncluded, isApproved, createdAt, description, category, stock_item, quantity } = req.body
+    const {car_id, total_price, vatIncluded, isApproved, createdAt, description, category, stock_item, quantity, unitPrice } = req.body
 
     try {
         const worker_id = req.user._id
@@ -36,13 +52,14 @@ const createQuotation = async (req, res) => {
             description,
             category,
             stock_item,
-            quantity
+            quantity,
+            unitPrice
         })
         const quotation = await Quotation.create({
             car_id,
             worker_id,
             repair_service_id: repair_service._id,
-            price,
+            total_price,
             vatIncluded,
             isApproved,
             createdAt
@@ -91,6 +108,7 @@ const deleteQuotation = async (req, res) => {
 }
 
 module.exports = {
+    getQuotation,
     getQuotations,
     getOneQuotation,
     createQuotation,

@@ -6,6 +6,7 @@ import AccountantNav from '../components/AccountantNav';
 const AddPurchase = () => {
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [measurement_unit, setMeasurementUnit] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [supplier, setSupplier] = useState('');
   const [success, setSuccess] = useState(null);
@@ -17,7 +18,7 @@ const AddPurchase = () => {
     try {
       const response = await fetch('http://localhost:3000/api/purchase/', {
         method: 'POST',
-        body: JSON.stringify({ itemName, quantity, unitPrice, supplier }),
+        body: JSON.stringify({ itemName, quantity,measurement_unit, unitPrice, supplier }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -34,6 +35,7 @@ const AddPurchase = () => {
 
       setItemName('');
       setQuantity('');
+      setMeasurementUnit('');
       setUnitPrice('');
       setSupplier('');
       setError(null);
@@ -63,6 +65,17 @@ const AddPurchase = () => {
           <label>
             Quantity:
             <input type="number" name="quantity" className='row' placeholder='Quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
+          </label>
+          </div>
+          <div className='input-field'>
+          <label>
+            Measurement Unit:
+            <select name='measurement_unit' value={measurement_unit} onChange={(e) => setMeasurementUnit(e.target.value)}>
+              <option value=''>Select Measurement</option>
+              <option value='Litre'>Litre</option>
+              <option value='kilogram'>Kilogram</option>
+              <option value='other'>Other</option>
+            </select>
           </label>
           </div>
           <div className='input-field'>

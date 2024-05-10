@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect, useRef} from 'react';
 import { NavLink } from 'react-router-dom';
 import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox} from 'react-icons/fa';
 import '../../App.css';
@@ -12,6 +12,7 @@ const AccountantNav = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const { user } = useAuthContext()
+  const dropdownRef = useRef(null)
   const { logout } = useLogout()
 
   const toggleDarkMode = () => {
@@ -36,6 +37,17 @@ const AccountantNav = () => {
     setShowSidebar(!showSidebar);
     setCollapsedSidebar(!collapsedSidebar);
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowLogoutDropdown(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
     return(
       <div>
       <nav className={`sidebar ${showSidebar ? '' : 'collapsed'}`}>
@@ -113,7 +125,8 @@ const AccountantNav = () => {
       <div className='notification'>
         <FaBell className='icon'/>
       </div>
-      <div className="user-icon" onClick={toggleLogoutDropdown}>
+      <div ref={dropdownRef}>
+      <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>
             {user && <div className='user-id'>{user.username}</div>}
             <img src="/user.png" alt="User Icon" />
             {showLogoutDropdown && (
@@ -130,6 +143,7 @@ const AccountantNav = () => {
                 </ul>
               </div>
             )}
+          </div>
           </div>
       </div>
     </div>

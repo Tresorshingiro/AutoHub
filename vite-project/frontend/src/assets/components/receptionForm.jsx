@@ -56,7 +56,6 @@ const ReceptionForm = () => {
         setInsurance('');
         setTelephone('');
         setEmail('');
-        setService('');
         setTIN_no('');
         setTrueClient('');
         setAddress('');

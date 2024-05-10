@@ -4,9 +4,17 @@ const mongoose = require('mongoose')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
+  try{
     const vehicleData = await Car_data.find({}).populate('owner').sort({createdAt: -1})
 
-    res.status(200).json(vehicleData)
+    const distinctOwners = new Set(vehicleData.map(vehicle => String(vehicle.owner._id)));
+    const customerCount = distinctOwners.size;
+
+    res.status(200).json({vehicleData, customerCount})
+  } catch(error){
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
 
 // Getting a single car

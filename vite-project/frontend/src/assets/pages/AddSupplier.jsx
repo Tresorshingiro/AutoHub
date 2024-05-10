@@ -86,7 +86,7 @@ const AddSupplier = () => {
               </label>
             </div>
           </div>
-          <button className='large-btn'>Add Supplier</button>
+          <button onClick={handleSubmit} className='large-btn'>Add Supplier</button>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </form>

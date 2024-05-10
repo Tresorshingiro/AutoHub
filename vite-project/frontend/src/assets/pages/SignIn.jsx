@@ -21,7 +21,7 @@ const SignIn = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
                 <div>
-                    <h1 className='mt-6 text-center text-3xl font-extrabold text-green-600'>AutoHub</h1>
+                    <h1 className='mt-6 text-center text-3xl font-sans font-extrabold italic text-green-600'>AutoHub</h1>
                 </div>
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 uppercase">Login</h2>

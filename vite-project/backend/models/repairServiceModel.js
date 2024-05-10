@@ -19,6 +19,10 @@ const repairServiceSchema = new Schema({
         type: Number,
         required: true
     },
+    unitPrice: {
+        type: Number,
+        required: true
+    }
     // worker_id: {
     //     type: Schema.Types.ObjectId,
     //     ref: 'User',
@@ -26,4 +30,4 @@ const repairServiceSchema = new Schema({
     // }
 })
 
-module.exports = mongoose.model('RepairService', repairServiceSchema)
+module.exports = mongoose.model('repairService', repairServiceSchema)

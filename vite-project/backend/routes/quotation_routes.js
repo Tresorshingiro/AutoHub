@@ -1,6 +1,7 @@
 const express = require('express')
 // controller functions
 const {
+    getQuotation,
     getQuotations,
     getOneQuotation,
     createQuotation,
@@ -13,6 +14,8 @@ const router = express.Router()
 
 // Require Auth for all quotation routes
 router.use(requireAuth)
+
+router.get('/', getQuotation)
 
 // GET all cars quotations
 router.get('/', getQuotations)

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaSun, FaMoon, FaCheckCircle, FaTools, FaFile, FaChevronRight, FaSearch, FaSignOutAlt, FaCog, FaBell} from 'react-icons/fa';
+import { FaSun, FaMoon, FaCheckCircle, FaTools, FaFile, FaChevronRight, FaSearch, FaSignOutAlt, FaCog, FaBell, FaListAlt} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
@@ -12,6 +12,7 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [collapsedSidebar, setCollapsedSidebar] = useState(false);
   const [customerFilter, setCustomerFilter] = useState('');
+  const dropdownRef = useRef(null)
   const { user } = useAuthContext()
   const { logout } = useLogout()
   
@@ -36,6 +37,18 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark');
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowLogoutDropdown(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
 
   return (
@@ -66,6 +79,12 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
             </NavLink>
             </li>
             <li>
+              <NavLink to='/pendingList' className='nav-link' activeClassName='active'>
+              <FaListAlt className='icon'/>
+              <span>Pending List</span>
+              </NavLink>
+            </li>
+            <li>
             <NavLink to='/cleared' className='nav-link' activeClassName='active'>
               <FaCheckCircle className='icon'/>
               <span>Cleared Vehicles</span>
@@ -93,7 +112,8 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
     <div className='notification'>
       <FaBell className='icon'/>
     </div>
-    <div className="user-icon" onClick={toggleLogoutDropdown}>
+    <div ref={dropdownRef}>
+    <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>
           {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
           {showLogoutDropdown && (
@@ -111,6 +131,7 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
             </div>
           )}
         </div>
+    </div>
     </div>
   </div>
   );

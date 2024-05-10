@@ -7,8 +7,9 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import '../../App.css';
 
 const Update = ({id, onClose}) => {
-  const navigate = useNavigate();
-  const {user} =  useAuthContext();
+  const {user} = useAuthContext('');
+
+
   const [vehicle, setVehicle] = useState({
     owner: '',
     telephone: '',
@@ -21,7 +22,7 @@ const Update = ({id, onClose}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`,{
+        const response = await axios.get(`http://localhost:3000/api/vehicles/${id}`, {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }
@@ -51,12 +52,10 @@ const Update = ({id, onClose}) => {
     try {
       const response = await axios.patch(`http://localhost:3000/api/vehicles/${id}`, vehicle, {
         headers: {
-          'Authorization': `bearer ${user.token}`
+          'Authorization': `Bearer ${user.token}`
         }
       });
       console.log('Vehicle updated successfully:', response.data);
-      // Redirect to the view page or any other page after successful update
-      navigate(`/view/${id}`);
     } catch (error) {
       console.error('Error updating vehicle:', error);
     }
@@ -168,6 +167,7 @@ const Update = ({id, onClose}) => {
                     <button type='submit' className='large-btn'>
                       Update
                     </button>
+
                     <button type="button" className='success-btn' onClick={handleClose}>
                       Cancel
                     </button>

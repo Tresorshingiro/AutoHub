@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, useRef} from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt} from 'react-icons/fa';
 import '../../App.css';
@@ -10,6 +10,7 @@ const QuotationNav = () => {
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const dropdownRef = useRef(null)
   const { logout } = useLogout()
 
   const handleButtonClick = (buttonName) => {
@@ -34,6 +35,18 @@ const QuotationNav = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark');
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowLogoutDropdown(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div>
@@ -68,12 +81,6 @@ const QuotationNav = () => {
               <span>Cleared Vehicles</span>
             </NavLink>
             </li>
-            <li>
-            <NavLink to='/additem' className='nav-link' activeClassName='active'>
-              <FaPlus className='icon'/>
-              <span>Add Item</span>
-            </NavLink>
-            </li>
           </ul>
         </div>
       <div className="bottom-content">
@@ -96,7 +103,8 @@ const QuotationNav = () => {
     <div className='notification'>
       <FaBell className='icon'/>
     </div>
-    <div className="user-icon" onClick={toggleLogoutDropdown}>
+    <div ref={dropdownRef}>
+    <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>
           {user && <div className='user-id'>{user.username}</div>}
           <img src="/user.png" alt="User Icon" />
           {showLogoutDropdown && (
@@ -114,6 +122,7 @@ const QuotationNav = () => {
             </div>
           )}
         </div>
+    </div>
     </div>
   </div>
   );
