@@ -8,11 +8,8 @@ const cleared_car_routes = require('./routes/cleared_car_routes');
 const supplierRoutes = require('./routes/supplierRoutes');
 const quotationRoutes = require('./routes/quotation_routes');
 const purchaseRoute = require('./routes/purchaseRoute');
-const stockRoute = require('./routes/stockRoute');
+const stockItemRoute = require('./routes/stockItemRoute');
 const userRoutes = require('./routes/userRoutes');
-const invoiceRoutes = require('./routes/invoiceRoutes');
-const incomeRoutes = require('./routes/incomeRoutes')
-const expenseRoutes = require('./routes/expenseRoutes')
 
 //initialise the app
 const app = express();
@@ -34,11 +31,8 @@ app.use('/api/cleared/vehicles', cleared_car_routes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchase', purchaseRoute);
-app.use('/api/stock',stockRoute);
+app.use('/api/stock',stockItemRoute);
 app.use('/api/users', userRoutes);
-// app.use('/api/invoice', invoiceRoutes);
-// app.use('/api/income', incomeRoutes);
-// app.use('/api/expense', expenseRoutes)
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)

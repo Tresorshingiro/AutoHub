@@ -121,17 +121,14 @@ const ReceptionForm = () => {
   };
   
   const isTrueClient = (e) => {
-    const trueClientInput = document.getElementsByName("trueClient")[0];
-    const namesInput = document.getElementsByName("owner")[0];
-
-    if (e.target.checked) {
-        setTrueClient(namesInput.value);
-        trueClientInput.setAttribute("readonly", true);
+    const { checked } = e.target;
+  
+    if (checked) {
+      setTrueClient(names);
     } else {
-        setTrueClient('');
-        trueClientInput.removeAttribute("readonly");
+      setTrueClient('');
     }
-}  
+  };
 
   return(
     <form  onSubmit={handleSubmit}>
@@ -314,8 +311,8 @@ const ReceptionForm = () => {
       </div>
         <br/>
         <button className="large-btn">Save</button>
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
+        {error && <div className="error" style={{ textAlign: "center" }}>{error}</div>}
+        {success && <div className="success" style={{ textAlign: "center" }}>{success}</div>}
         </div>
       </form>
   );

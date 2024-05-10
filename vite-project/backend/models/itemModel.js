@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
+const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-    item_name: {
+    itemName: {
         type: String,
         required: true
     },
     measurement_unit: {
         type: String,
-        required: true
     },
     unitPrice: {
         type: Number,
@@ -17,11 +17,7 @@ const itemSchema = new Schema({
     },
     createdAt: {
         type: String,
-        default: () => {
-            const currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 2); // Add 2 hours
-            return currentDate.toISOString().slice(0, -5); // Remove milliseconds
-        }
+        default: () => formatDate(new Date())
     },
 })
 

@@ -16,9 +16,9 @@ const AddPurchase = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/api/purchase/', {
+      const response = await fetch('http://localhost:3000/api/stock/addItem', {
         method: 'POST',
-        body: JSON.stringify({ itemName, quantity,measurement_unit, unitPrice, supplier }),
+        body: JSON.stringify({ itemName, quantity, unitPrice }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -87,7 +87,7 @@ const AddPurchase = () => {
           <div className='input-field'>
           <label>
             Supplier Name:
-            <input type="text" name="supplier" className='row' placeholder='Supplier Name' value={supplier} onChange={(e) => setSupplier(e.target.value)} required />
+            <input type="text" name="supplier" className='row' placeholder='Supplier Name' value={supplier} onChange={(e) => setSupplier(e.target.value)} />
           </label>
           </div>
           </div>

@@ -11,9 +11,9 @@ const repairServiceSchema = new Schema({
     },
     stock_item: {
         type: String,
-        // type: Schema.Types.ObjectId,
-        // ref: 'Stock',
-        // required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Stock',
+        required: true
     },
     quantity: {
         type: Number,

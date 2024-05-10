@@ -28,8 +28,7 @@ const userSchema = new Schema({
     },
     createdAt: {
         type: String,
-        get: formatDate, // Getter method to format the date when retrieving from the database
-        set: (val) => val // Setter method to handle date assignments (no need for modification here)
+        default: () => formatDate(new Date())
     }
 })
 
