@@ -14,13 +14,20 @@ const getAllStock = async (req, res) => {
   }
 };
 
+
 // Add new item to inventory
 const addItemToInventory = async (req, res) => {
-  const { itemName, quantity, unitPrice } = req.body
-  const newItem = await Item.create({ itemName, unitPrice });
-  await Stock.create({ item_id: newItem._id, volume_remaining: quantity });
-  return newItem;
+  const { itemName, quantity, measurement_unit, unitPrice } = req.body;
+  try {
+    const newItem = await Item.create({ itemName, measurement_unit, unitPrice });
+    const newStock = await Stock.create({ item_id: newItem._id, volume_remaining: quantity });
+    res.status(201).json({ message: 'Item added successfully', newItem, newStock });
+  } catch (error) {
+    console.error('Error adding item to inventory:', error);
+    res.status(500).json({ error: 'Failed to add item to inventory' });
+  }
 };
+
 
 // Use item in repairing process
 const useItem = async (req, res) => {

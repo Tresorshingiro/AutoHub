@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const formatDate = require('../controllers/functions/formatDate')
+const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema;
 

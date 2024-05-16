@@ -91,13 +91,13 @@ const Quotation = () => {
     try {
       const totalPrice = calculateTotalPrice([...quotationInfo.services, newService]);
 
-      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles', {
+      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
         worker_id: vehicle.worker_id,
         car_id: vehicle.owner._id,
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
         description: newService.description,
-        category: service,
+        category: newService.service,
         stock_item: newService.furniture,
         quantity: newService.quantity,
         total_price: totalPrice
@@ -132,7 +132,7 @@ const Quotation = () => {
       description: '',
       quantity: '',
       unitPrice: '',
-      vatIncluded: false,
+      vatIncluded: true,
       total_price: true,
 
     });
@@ -164,6 +164,7 @@ const Quotation = () => {
             <input
               type="text"
               name="date"
+              className='row'
               value={vehicle.createdAt}
               onChange={handleQuotationChange}
             />
@@ -175,6 +176,7 @@ const Quotation = () => {
             <input
               type="text"
               name="vehicleBrand"
+              className='row'
               value={vehicle.brand}
               onChange={handleQuotationChange}
               placeholder='Vehicle Brand'
@@ -187,6 +189,7 @@ const Quotation = () => {
             <input
               type="text"
               name="plateNo"
+              className='row'
               value={vehicle.plate_no}
               onChange={handleQuotationChange}
               placeholder='PlateNo'
@@ -199,6 +202,7 @@ const Quotation = () => {
               <input
                type='text'
                name='type'
+               className='row'
                value={vehicle.type}
                onChange={handleQuotationChange}
               />
@@ -210,6 +214,7 @@ const Quotation = () => {
               <input
                type='text'
                name='engine'
+               className='row'
                value={vehicle.engine}
                onChange={handleQuotationChange}
               />
@@ -221,6 +226,7 @@ const Quotation = () => {
             <input
               type="text"
               name="customerName"
+              className='row'
               value={vehicle.owner.names}
               onChange={handleQuotationChange}
               placeholder='Customer Name'
@@ -233,6 +239,7 @@ const Quotation = () => {
               <input
                type='number'
                name='TIN_no'
+               className='row'
                value={vehicle.owner.TIN_no}
                onChange={handleQuotationChange}
               />
@@ -247,6 +254,7 @@ const Quotation = () => {
             <textarea
             text="text"
             name="description"
+            className='row'
             value={newService.description}
             onChange={handleServiceChange}
             placeholder='Description'
@@ -256,7 +264,7 @@ const Quotation = () => {
           <div className="input-field">
         <label>
           Service Category:
-        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
+        <select name="service" className='row' value={service} onChange={(e) => setService(e.target.value)}>
           <option value="">Select Service</option>
           <option value="Service A">Service A</option>
           <option value="Service B">Service B</option>
@@ -270,6 +278,7 @@ const Quotation = () => {
             <textarea
               type="text"
               name="furniture"
+              className='row'
               value={newService.furniture}
               onChange={handleServiceChange}
               placeholder='Parts to buy'
@@ -282,6 +291,7 @@ const Quotation = () => {
             <input
               type="number"
               name="quantity"
+              className='row'
               value={newService.quantity}
               onChange={handleServiceChange}
             />
@@ -293,6 +303,7 @@ const Quotation = () => {
             <input
               type="number"
               name="unitPrice"
+              className='row'
               value={newService.unitPrice}
               onChange={handleServiceChange}
             />

@@ -11,13 +11,22 @@ const Update = ({id, onClose}) => {
 
 
   const [vehicle, setVehicle] = useState({
-    owner: '',
-    telephone: '',
-    email: '',
+    owner: {
+      names: '',
+      telephone: '',
+      email: '',
+      TIN_no: '',
+      address: '',
+      true_client: ''
+    },
     brand: '',
     type: '',
-    plate: '',
-  });
+    plate_no: '',
+    engine: '',
+    insurance: '',
+    chassis_no: ''
+}
+  );
 
   useEffect(() => {
     const fetchData = async () => {
