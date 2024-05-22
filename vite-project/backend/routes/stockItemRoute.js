@@ -4,21 +4,27 @@ const {
   getAllStock,
   addItemToInventory,
   useItem,
-  replenishStock
+  replenishStock,
+  deleteAllStock,
+  deleteStockItem
 } = require('../controllers/stockItemController');
 
 const router = express.Router();
 
-// GET all users
+// GET all stock
 router.get('/', getAllStock);
 
-// GET a single user
+// create new items and stock
 router.post('/addItem', addItemToInventory);
 
-// Post a new user
+// use certin amount of stock
 router.put('/useItem', useItem);
 
-// Delete a user
+// Replenish stock
 router.put('/replenish', replenishStock);
+
+// Delete stock
+router.delete('/:id', deleteStockItem)
+router.delete('/deleteAll', deleteAllStock);
 
 module.exports = router;
