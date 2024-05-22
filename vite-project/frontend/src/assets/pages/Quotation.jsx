@@ -5,6 +5,7 @@ import axios from 'axios';
 import PrintModal from '../components/PrintModal';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext'
+import { FaFilePdf } from 'react-icons/fa';
 
 
 const Quotation = () => {
@@ -14,7 +15,8 @@ const Quotation = () => {
   const [error, setError] = useState(null);
   const [service, setService] = useState('')
   const [showPrintModal, setShowPrintModal] = useState(false);
-  const [isApproved, setIsApproved] = usestate(false)
+  const [showTable, setShowTable] = useState(false)
+  const [isApproved, setIsApproved] = useState(false)
   const {user} = useAuthContext()
 
   useEffect(() => {
@@ -67,7 +69,6 @@ const Quotation = () => {
     });
   };
 
-  // I don't understand this function
   const handleServiceChange = (e) => {
     setNewService({
       ...newService,
@@ -90,18 +91,19 @@ const Quotation = () => {
     try {
       const totalPrice = calculateTotalPrice([...quotationInfo.services, newService]);
 
-      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles', {
+      const quotationResponse = await axios.post('http://localhost:3000/api/quotations/vehicles/', {
         worker_id: vehicle.worker_id,
         car_id: vehicle.owner._id,
-
-        // I don't know what to put here
-
         unitPrice: newService.unitPrice,
         vatIncluded: newService.vatIncluded,
+        description: newService.description,
+        category: newService.service,
+        stock_item: newService.furniture,
+        quantity: newService.quantity,
         total_price: totalPrice
       }, {
         headers: {
-          'Authorization': `Bearer ${user.token}`
+          'Authorization':`Bearer ${user.token}`
         }
       });
 
@@ -109,15 +111,34 @@ const Quotation = () => {
         setSuccess('Service added successfully');
         setError(null);
       } else {
-        setError('An error occurred while adding service');
+        setError('An error occurred while saving service');
         setSuccess(null);
       }
     } catch (error) {
-      console.error('An error occurred while adding service:', error);
-      setError('An error occurred while adding service');
+      console.error('An error occurred while saving service:', error);
+      setError('An error occurred while saving service');
       setSuccess(null);
     }
   };
+
+  const handleAddService = () => {
+    setQuotationInfo(prevState => ({
+      ...prevState,
+      services: [...prevState.services, newService]
+    }));
+
+    setNewService({
+      furniture: '',
+      description: '',
+      quantity: '',
+      unitPrice: '',
+      vatIncluded: true,
+      total_price: true,
+
+    });
+    setShowTable(true); 
+  };
+  
 
   const handleClosePrintModal = () => {
     setShowPrintModal(false);
@@ -143,6 +164,7 @@ const Quotation = () => {
             <input
               type="text"
               name="date"
+              className='row'
               value={vehicle.createdAt}
               onChange={handleQuotationChange}
             />
@@ -154,6 +176,7 @@ const Quotation = () => {
             <input
               type="text"
               name="vehicleBrand"
+              className='row'
               value={vehicle.brand}
               onChange={handleQuotationChange}
               placeholder='Vehicle Brand'
@@ -166,6 +189,7 @@ const Quotation = () => {
             <input
               type="text"
               name="plateNo"
+              className='row'
               value={vehicle.plate_no}
               onChange={handleQuotationChange}
               placeholder='PlateNo'
@@ -178,6 +202,7 @@ const Quotation = () => {
               <input
                type='text'
                name='type'
+               className='row'
                value={vehicle.type}
                onChange={handleQuotationChange}
               />
@@ -189,6 +214,7 @@ const Quotation = () => {
               <input
                type='text'
                name='engine'
+               className='row'
                value={vehicle.engine}
                onChange={handleQuotationChange}
               />
@@ -200,6 +226,7 @@ const Quotation = () => {
             <input
               type="text"
               name="customerName"
+              className='row'
               value={vehicle.owner.names}
               onChange={handleQuotationChange}
               placeholder='Customer Name'
@@ -212,6 +239,7 @@ const Quotation = () => {
               <input
                type='number'
                name='TIN_no'
+               className='row'
                value={vehicle.owner.TIN_no}
                onChange={handleQuotationChange}
               />
@@ -226,6 +254,7 @@ const Quotation = () => {
             <textarea
             text="text"
             name="description"
+            className='row'
             value={newService.description}
             onChange={handleServiceChange}
             placeholder='Description'
@@ -235,7 +264,7 @@ const Quotation = () => {
           <div className="input-field">
         <label>
           Service Category:
-        <select name="service" value={service} onChange={(e) => setService(e.target.value)}>
+        <select name="service" className='row' value={service} onChange={(e) => setService(e.target.value)}>
           <option value="">Select Service</option>
           <option value="Service A">Service A</option>
           <option value="Service B">Service B</option>
@@ -249,6 +278,7 @@ const Quotation = () => {
             <textarea
               type="text"
               name="furniture"
+              className='row'
               value={newService.furniture}
               onChange={handleServiceChange}
               placeholder='Parts to buy'
@@ -261,6 +291,7 @@ const Quotation = () => {
             <input
               type="number"
               name="quantity"
+              className='row'
               value={newService.quantity}
               onChange={handleServiceChange}
             />
@@ -272,6 +303,7 @@ const Quotation = () => {
             <input
               type="number"
               name="unitPrice"
+              className='row'
               value={newService.unitPrice}
               onChange={handleServiceChange}
             />
@@ -290,68 +322,65 @@ const Quotation = () => {
           </label>
           </div>
           </div>
-          <button onClick={handleSubmit} className='large-btn'>Add Service</button>
         </form>
         </div>
-        {/* Display added services in a table */}
-        {quotationInfo.services.length > 0 && (
-          <div className="added-services">
-            <h3>Added Services</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Plate No</th>
-                  <th>Customer Name</th>
-                  <th>Parts to buy</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th>VAT</th>
-                  <th>Total Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quotationInfo.services.map((service, index) => (
-                  <tr key={index}>
-                    <td>{vehicle.createdAt}</td>
-                    <td>{vehicle.plate_no}</td>
-                    <td>{vehicle.owner.names}</td>
-                    <td>{service.furniture}</td>
-                    <td>{service.quantity}</td>
-                    <td>{service.unitPrice}</td>
-                    <td>{service.vatIncluded ? '18%' : 'N/A'}</td>
-                    <td>
-                      {service.vatIncluded ? 'Included' : 'Excluded'}
-                      : ${(parseFloat(service.unitPrice) * parseFloat(service.quantity)).toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                <td>
-              <strong>Total Price:</strong>
-               </td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td>${calculateTotalPrice(quotationInfo.services)}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
+        <button onClick={handleAddService} className='large-btn'>Add Service</button>
+{/* Display added services in a table */}
+{showTable && quotationInfo.services.length > 0 && (
+  <div className="added-services">
+    <h3>Added Services</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Plate No</th>
+          <th>Description</th>
+          <th>Parts to buy</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>VAT</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {quotationInfo.services.map((service, index) => (
+          <tr key={index}>
+            <td>{vehicle.createdAt}</td>
+            <td>{vehicle.plate_no}</td>
+            <td>{service.description}</td>
+            <td>{service.furniture}</td>
+            <td>{service.quantity}</td>
+            <td>{service.unitPrice}</td>
+            <td>{service.vatIncluded ? '18%' : 'N/A'}</td>
+            <td>
+              {service.vatIncluded ? 'Included' : 'Excluded'}
+              : ${(parseFloat(service.unitPrice) * parseFloat(service.quantity)).toFixed(2)}
+            </td>
+          </tr>
+        ))}
+        <tr>
+          <td colSpan="7">
+            <strong>Total Price:</strong>
+          </td>
+          <td>${calculateTotalPrice(quotationInfo.services)}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+)}
+
 
 
         <br />
         <div>
-            <button className='success-btn' onClick={handlePrint}>Save</button>
+            <button className='success-btn' onClick={(e) => {handleSubmit(e); handlePrint();}}>Save</button>
+            {error && <div className='error'>{error}</div>}
+            {success && <div className='success'>{success}</div>}
           </div>
 
           {/* Display the print modal when showPrintModal is true */}
           {showPrintModal && (
-            <PrintModal onClose={handleClosePrintModal} vehicle={vehicle} services={quotationInfo.services} total_price={quotationInfo.total_price} />
+            <PrintModal onClose={handleClosePrintModal} vehicle={vehicle} services={quotationInfo.services} total_price={calculateTotalPrice(quotationInfo.services)} />
           )}
         </div>
   )

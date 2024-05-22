@@ -13,6 +13,8 @@ const AddInvoices = () => {
   const [amountPaid, setAmountPaid] = useState('')
   const [vatIncluded , setVatIncluded] = useState(false)
   const [discount, setDiscount] = useState('')
+  const [bankNumber, setBankNumber] = useState('')
+  const [momoNumber, setMomoNumber] = useState('')
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
 
@@ -40,6 +42,12 @@ const AddInvoices = () => {
       setError(error.response ? error.response.data : 'An unexpected error occurred');
       setSuccess(null);
     }
+  };
+
+  const handlePayementChange = (e) => {
+    setPayment(e.target.value);
+    setBankNumber('');
+    setMomoNumber('');
   };
   return (
     <div className="container">
@@ -96,11 +104,11 @@ const AddInvoices = () => {
           <div className='input-field'>
           <label>
             Payment Type:
-            <select name="paymentType" className='row' value={payment} onChange={(e) => setPayment(e.target.value)} required>
+            <select name="paymentType" className='row' value={payment} onChange={handlePayementChange} required>
               <option value="">Select Payment Type</option>
               <option value="Credit Card">Credit Card</option>
               <option value="Cash">Cash</option>
-              <option value="Mobile Money">Mobile Money</option>
+              <option value="MoMo">Mobile Money</option>
               <option value="Bank">Bank</option>
               <option value="Cheque">Cheque</option>
               {/* Add more options as needed */}
@@ -125,12 +133,44 @@ const AddInvoices = () => {
             <input type="text" name="discount" className='row' placeholder='Discount' value={discount} onChange={(e) => setDiscount(e.target.value)} required />
           </label>
           </div>
-          <div>
+          <div className='input-field'>
           <label>
             VAT (18%):
-            <input type="checkbox" name="vat" className='row' checked={vatIncluded} onChange={(e) => setVatIncluded(e.target.checked)} />
+            <input type="checkbox" name="vat" className='checkbox' checked={vatIncluded} onChange={(e) => setVatIncluded(e.target.checked)} />
           </label>
           </div>
+          {payment === 'Bank'  &&(
+            <div className='input-field'>
+              <label>
+                Bank Number:
+                <input type='text' name='bankNumber' className='row' placeholder='Bank NO' value={bankNumber} onChange={(e) => setBankNumber(e.target.value)} required/>
+              </label>
+            </div>
+          )}
+          {payment === 'Credit Card'  &&(
+            <div className='input-field'>
+              <label>
+                Bank Number:
+                <input type='text' name='bankNumber' className='row' placeholder='Bank NO' value={bankNumber} onChange={(e) => setBankNumber(e.target.value)} required/>
+              </label>
+            </div>
+          )}
+         {payment === 'Cheque'  &&(
+            <div className='input-field'>
+              <label>
+                Bank Number:
+                <input type='text' name='bankNumber' className='row' placeholder='Bank NO' value={bankNumber} onChange={(e) => setBankNumber(e.target.value)} required/>
+              </label>
+            </div>
+          )}
+          {payment === 'MoMo' &&(
+            <div className='input-field'>
+              <label>
+                MoMo Number:
+                <input type='text' name='MoMo' className='row' placeholder='MoMo Number' value={momoNumber} onChange={(e) => setMomoNumber(e.target.value)} required/>
+              </label>
+            </div>
+          )}
           </div>
           <button className='large-btn'>Add Invoice</button>
           {error && <div className="error">{error}</div>}

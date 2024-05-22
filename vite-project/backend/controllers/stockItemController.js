@@ -15,6 +15,7 @@ const getAllStock = async (req, res) => {
   }
 };
 
+
 // Add new item to inventory
 const addItemToInventory = async (req, res) => {
   const { itemName, quantity, unitPrice, supplier } = req.body;

@@ -4,9 +4,17 @@ const mongoose = require('mongoose')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
+  try{
     const vehicleData = await Car_data.find({}).populate('owner').sort({createdAt: -1})
 
-    res.status(200).json(vehicleData)
+    const distinctOwners = new Set(vehicleData.map(vehicle => String(vehicle.owner._id)));
+    const customerCount = distinctOwners.size;
+
+    res.status(200).json({vehicleData, customerCount})
+  } catch(error){
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
 
 // Getting a single car
@@ -75,11 +83,44 @@ const updateVehicle = async (req, res) => {
     }
 
     try {
-        console.log('Received PUT request for vehicle update:', req.body);
+        console.log('Received PATCH request for vehicle update:', req.body);
 
+        // Extract owner information from the request body
+        const { owner, ...updatedFields } = req.body;
+
+        let ownerId;
+
+        // If owner information is provided
+        if (owner) {
+            // Find the corresponding customer in the database
+            const existingCustomer = await Customer.findOneAndUpdate({
+                names: owner.names,
+                telephone: owner.telephone,
+                email: owner.email,
+                address: owner.address,
+                TIN_no: owner.TIN_no,
+                true_client: owner.true_client
+            });
+
+            // If the customer exists, use its ObjectId
+            if (existingCustomer) {
+                ownerId = existingCustomer._id;
+            } else {
+                // If the customer doesn't exist, create a new customer
+                const newCustomer = await Customer.create(owner);
+                ownerId = newCustomer._id;
+            }
+        }
+
+        // If ownerId exists, update the vehicle with the ownerId
+        if (ownerId) {
+            updatedFields.owner = ownerId;
+        }
+
+        // Update the vehicle with the updatedFields
         const updatedVehicle = await Car_data.findOneAndUpdate(
             { _id: id },
-            { $set: req.body },
+            { $set: updatedFields },
             { new: true }
         );
 
@@ -94,6 +135,7 @@ const updateVehicle = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 
 module.exports = {

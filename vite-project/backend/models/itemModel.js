@@ -9,6 +9,8 @@ const itemSchema = new Schema({
     },
     measurement_unit: {
         type: String,
+        enum:['litre', 'kilogram', 'other'],
+        required: true
     },
     unitPrice: {
         type: Number,

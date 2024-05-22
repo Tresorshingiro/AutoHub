@@ -32,10 +32,11 @@ const Inservice = () => {
             'Authorization': `Bearer ${user.token}`
           }
         });
-        setVehicles(response.data);
+        setVehicles(response.data.vehicleData || []);
         setOpenDropdowns({}); // Initialize openDropdowns state for each vehicle
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
+        setVehicles([]);
       } finally {
         setLoading(false);
       }
@@ -95,17 +96,19 @@ const Inservice = () => {
     setFilter(e.target.value);
   };
 
-  const filteredVehicles = vehicles.filter(vehicle =>
+  const filteredVehicles = vehicles.filter(vehicle => 
     vehicle.brand.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.plate_no.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.owner.names.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.insurance.toLowerCase().includes(filter.toLowerCase()) ||
     vehicle.createdAt.toLowerCase().includes(filter.toLowerCase())
-  );
+   );
+
+
 
   return (
     <div className="container">
-      <ReceptionNav vehicles={vehicles} />
+      <ReceptionNav />
       <div className='box'>
         <div className='high-table'>
         <h2><span>In-</span>service Vehicles</h2>

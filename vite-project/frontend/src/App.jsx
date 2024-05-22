@@ -34,6 +34,7 @@ import ClearedAccountant from './assets/pages/ClearedAccountant';
 import { useAuthContext } from './assets/hooks/useAuthContext';
 import Employee from './assets/pages/Employee';
 import AddEmployee from './assets/pages/AddEmployee';
+import PendingList from './assets/pages/PendingList';
 import './App.css';
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
       <Route path="/printmodel"element={<PrintModal/>}/>
       <Route path="/employee"element={<Employee/>}/>
       <Route path="/addemployee"element={<AddEmployee/>}/>
+      <Route path="/pendingList"element={<PendingList/>}/>
       </Routes>
     </Router>
   );
