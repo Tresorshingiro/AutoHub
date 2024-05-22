@@ -117,6 +117,7 @@ const Inservice = () => {
           type="text"
           placeholder="Search..."
           value={filter}
+          className='row'
           onChange={handleFilterChange}
         />
         </div>

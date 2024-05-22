@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const http = require('http');
+const socketIo = require('socket.io');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const cars_routes = require('./routes/cars_routes');
@@ -13,6 +15,13 @@ const userRoutes = require('./routes/userRoutes');
 
 //initialise the app
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 
 // Enbale CORS
 app.use(cors());
@@ -41,6 +50,18 @@ mongoose.connect(process.env.MONGO_URI)
         app.listen(PORT, () => console.log(`Connected to DB & listening on port ${PORT}`));
     })
     .catch(console.error);
+
+// Socket.io connection
+io.on('connection', (socket) => {
+    console.log('New client connected');
+  
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+    });
+  });
+
+  
+module.exports = io;
 
 // Operations is next
 

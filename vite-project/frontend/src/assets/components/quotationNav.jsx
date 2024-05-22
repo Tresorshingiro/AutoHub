@@ -1,24 +1,55 @@
 import React,{useState,useEffect, useRef} from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt} from 'react-icons/fa';
+import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaUser} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
+import socketIOClient from 'socket.io-client';
+
+const SOCKET_SERVER_URL = "http://localhost:5000";
 
 const QuotationNav = () => {
   const { user } = useAuthContext()
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotification, setShowNotification] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const dropdownRef = useRef(null)
+  const notificationDropdownRef = useRef(null)
   const { logout } = useLogout()
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
-  };
+
+  useEffect(() => {
+    const socket = socketIOClient(SOCKET_SERVER_URL);
+
+    socket.on('newVehicle', (data) => {
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        data,
+      ]);
+    });
+
+    socket.on('vehicleCleared', (data) => {
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        data,
+      ]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
 
   const toggleLogoutDropdown = () => {
     setShowLogoutDropdown(!showLogoutDropdown);
+  };
+
+  const toggleNotificationDropdown = () => {
+    setShowNotification(!showNotification);
   };
 
   const handleLogout = (e) => {
@@ -40,6 +71,9 @@ const QuotationNav = () => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowLogoutDropdown(false);
+      }
+      if(notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target)) {
+        setShowNotification(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -100,8 +134,27 @@ const QuotationNav = () => {
         </div>
     </nav>
     <div className='header-info'>
-    <div className='notification'>
+    <div ref={notificationDropdownRef}>
+    <div className='notification' onClick={(event) => toggleNotificationDropdown(event)}>
       <FaBell className='icon'/>
+      {notifications.length > 0 && <span className='unread-count'>{notifications.length}</span>}
+      {showNotification && (
+        <div className='notification-dropdown'>
+          <ul className='notification-ul'>
+          {notifications.map((notification, index) => (
+                  <li key={index}>
+                    <div className='notify-icon'>
+                      <FaUser />
+                    </div>
+                    <div className='notify-data'>
+                      <div className='notify-title'>{notification.message}</div>
+                    </div>
+                  </li>
+                ))}
+          </ul>
+        </div>
+      )}
+    </div>
     </div>
     <div ref={dropdownRef}>
     <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>

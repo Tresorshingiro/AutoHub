@@ -16,7 +16,6 @@ import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
 import Cleared from './assets/components/cleared';
 import AddSupplier from './assets/pages/AddSupplier';
-import AddStock from './assets/pages/AddStock';
 import AddPurchase from './assets/pages/AddPurchase';
 import SupplierList from './assets/pages/SupplierList';
 import StockList from './assets/pages/StockList';
@@ -65,7 +64,6 @@ const App = () => {
       <Route path="/quotationlist"element={<QuotationList/>}/>
       <Route path="/cleared"element={<Cleared/>}/>
       <Route path="/AddSupplier"element={<AddSupplier/>}/>
-      <Route path="/AddStock"element={<AddStock/>}/>
       <Route path="/AddPurchase"element={<AddPurchase/>}/>
       <Route path="/suppliers"element={<SupplierList/>}/>
       <Route path="/stock"element={<StockList/>}/>

@@ -5,12 +5,14 @@ import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
 import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const StockList = () => {
   const [Stock, setStock] = useState([]);
   const [openDropdowns, setOpenDropdowns] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {user} = useAuthContext();
 
   const toggleDropdown = (stockId) => {
     setOpenDropdowns(prevState =>({
@@ -49,7 +51,11 @@ const StockList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/stock/');
+        const response = await axios.get('http://localhost:3000/api/stock/', {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
         setStock(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -58,17 +64,20 @@ const StockList = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if( user ) {
+      fetchData();
+      setError(null);
+    } else {
+      setLoading(false);
+      setError('You must be logged in')
+    }
+  }, [user]);
   return (
     <div className="container">
        <AccountantNav/>
       <div className='box'>
       <div className='add'>
-        <h2><span>Add</span>Stock</h2>
-        <Link to='/AddStock'className='addbtn'>
-        <button> <FaPlus/> </button>
-        </Link>
+        <h2><span>Add</span> Stock</h2>
         </div>
         {loading ? (
           <p>Loading...</p>
@@ -80,8 +89,8 @@ const StockList = () => {
               <tr>
                 <th>Item Name</th>
                 <th>Quantity</th>
+                <th>Measurement Unit</th>
                 <th>Unit Price</th>
-                <th>Supplier Name</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -89,9 +98,9 @@ const StockList = () => {
               {Stock.map(stock => (
                 <tr key={stock._id}>
                   <td>{stock.itemName}</td>
-                  <td>{stock.quantity}</td>
+                  <td>{stock.volume_remaining}</td>
+                  <td>{stock.measurement_unit}</td>
                   <td>{stock.unitPrice}</td>
-                  <td>{stock.category}</td>
                   <td>
                     <div onClick={() => toggleDropdown(stock._id)}>
                       <IoEllipsisVerticalOutline/>
