@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema
 
@@ -20,8 +19,8 @@ const inserviceCarSchema = new Schema({
         ref: 'Quotation'
     },
     registeredAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     }
 })
 

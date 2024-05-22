@@ -11,6 +11,4 @@ const formatDate = (dateString) => {
     return `${hours}:${minutes}:${seconds}_${day}/${month}/${year}`;
 };
 
-module.exports = {
-    formatDate
-}
+export default formatDate;

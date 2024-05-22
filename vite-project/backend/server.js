@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/vehicles', cars_routes);
 app.use('/api/cleared/vehicles', cleared_car_routes);
-app.use('/api/suppliers', supplierRoutes);
+app.use('/api/supplier', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchase', purchaseRoute);
 app.use('/api/stock',stockItemRoute);
