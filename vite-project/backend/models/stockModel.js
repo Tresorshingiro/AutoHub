@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema
 
@@ -13,12 +12,16 @@ const stockSchema =  new Schema({
         type: Number,
         required: true
     },
+    supplier: {
+        type: Schema.Types.ObjectId,
+        ref: 'Supplier',
+        required: true
+    },
     createdAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     }
 });
-
 
 
 module.exports = mongoose.model('Stock', stockSchema);

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const validator = require('validator')
-const { formatDate } = require('../controllers/functions/formatDate')
 
 const userSchema = new Schema({
     username: {
@@ -27,8 +26,8 @@ const userSchema = new Schema({
         required: true
     },
     createdAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     }
 })
 

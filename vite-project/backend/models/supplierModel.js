@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
-const formatDate = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema;
 
 const supplierSchema =  new Schema({
     company_name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     TIN_no: { 
         type: Number, 
-        required: true 
+        required: true,
+        unique: true
     },
     telephone: { 
         type: Number, 
@@ -25,8 +26,8 @@ const supplierSchema =  new Schema({
         required: true 
     },
     createdAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     }
 });
 

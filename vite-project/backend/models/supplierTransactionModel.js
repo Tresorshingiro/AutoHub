@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const formatDate = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema;
 
@@ -17,8 +16,8 @@ const supplierTransactionSchema = new Schema({
         required: true
     },
     transactedAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     }
 })
 

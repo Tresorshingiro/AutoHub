@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { formatDate } = require('../controllers/functions/formatDate')
 
 const Schema = mongoose.Schema
 
@@ -14,8 +13,8 @@ const clearedCarSchema = new Schema({
         required: true
     },
     clearedAt: {
-        type: String,
-        default: () => formatDate(new Date())
+        type: Date,
+        default: Date.now
     },
     worker_id: {
         type: Schema.Types.ObjectId,

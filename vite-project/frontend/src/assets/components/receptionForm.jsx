@@ -60,7 +60,7 @@ const ReceptionForm = () => {
         setTrueClient('');
         setAddress('');
         setError(null);
-        setSuccess('Vehicle added successfully');
+        setSuccess('Vehicle added successfully!');
         console.log('New vehicle added', json);
       }
     } catch (error) {
