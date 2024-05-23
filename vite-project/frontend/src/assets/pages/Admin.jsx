@@ -37,7 +37,7 @@ const Admin = () => {
             <FaUserFriends/>
             </div>
             <div className='text'>
-            <span>Customers</span>
+            <span>Vehicles</span>
             <p>{customerCount}</p>
             </div>
           </div>

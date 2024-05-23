@@ -18,7 +18,7 @@ const getAllStock = async (req, res) => {
 
 // Add new item to inventory
 const addItemToInventory = async (req, res) => {
-  const { itemName, quantity, unitPrice, supplier } = req.body;
+  const { itemName, quantity, unitPrice, measurement_unit, supplier } = req.body;
 
   const company_name = supplier
   try {
@@ -33,7 +33,7 @@ const addItemToInventory = async (req, res) => {
     }
     else {
       supplierId = supplierExist._id;
-      const newItem = await Item.create({ itemName, unitPrice });
+      const newItem = await Item.create({ itemName, unitPrice, measurement_unit });
       const newStock = await Stock.create({ item_id: newItem._id, volume_remaining: quantity, supplier: supplierId });
       res.status(200).json(newItem);
       console.log('New Item added successfully', newItem)

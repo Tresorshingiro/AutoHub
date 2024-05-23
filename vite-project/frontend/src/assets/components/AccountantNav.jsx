@@ -118,10 +118,6 @@ const AccountantNav = () => {
           </div>
       </nav>
       <div className='header-info'>
-      <div className='search-box'>
-        <FaSearch/>
-        <input type='search' placeholder='Search...'/>
-      </div>
       <div className='notification'>
         <FaBell className='icon'/>
       </div>

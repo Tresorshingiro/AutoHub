@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import '../../App.css';
@@ -14,16 +14,22 @@ const getLoc = "http://localhost:3000/api/supplier/"
 const SupplierList = () => {
   const [supplier, setSupplier] = useState([]);
   const [openDropdowns, setOpenDropdowns] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [selectedSupplierId, setSelectedSupplierId] = useState(null);
+  const [viewModal, setViewModal] = useState(false);
   const [error, setError] = useState(null);
+  const dropdownRef = useRef(null);
   const { user } = useAuthContext();
 
-  const toggleDropdown = (supplierId) =>{
+  const toggleDropdown = (supplierId, event) =>{
+    event.stopPropagation()
+
     setOpenDropdowns(prevState =>({
       ...prevState,
       [supplierId] : !prevState[supplierId]
-    }))
-  }
+    }));
+  };
 
 
   useEffect(() => {
@@ -40,15 +46,68 @@ const SupplierList = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdowns({})
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  }, []);
+
+
+  const handleViewDetails = (supplierId) =>{
+    setSelectedSupplierId(supplierId);
+    setViewModal(true);
+  };
+
+  const handleCloseView = () =>{
+    setViewModal(false);
+  }
+
+
+
+  const handleFilterChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredSupplier = supplier.filter(supplier => 
+    (supplier.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||  // Filter company name
+     (typeof supplier.TIN_no === 'string' && supplier.TIN_no.toLowerCase().includes(searchTerm.toLowerCase())) ||  // Filter TIN_no (if string)
+     (typeof supplier.telephone === 'string' && supplier.telephone.toString().includes(searchTerm.toLowerCase())) ||  // Filter telephone (as string)
+     supplier.email.toLowerCase().includes(searchTerm.toLowerCase()) ||  // Filter email
+     formatDate(supplier.createdAt).toLowerCase().includes(searchTerm.toLowerCase()))   // Filter date (formatted)
+    // Additional filtering conditions based on selected fields
+  );
+  
+  console.log(supplier, typeof supplier.telephone);
+
+
+
   return (
     <div className="container">
        <AccountantNav/>
       <div className='box'>
+        <div className='high-table'>
         <div className='add'>
         <h2><span>Add</span> Supplier</h2>
         <Link to='/AddSupplier' className='addbtn'>
         <button> <FaPlus/> </button>
         </Link>
+        </div>
+        <div className='search'>
+          <input
+          type="text"
+          placeholder='Search...'
+          className='row'
+          value={searchTerm}
+          onChange={handleFilterChange}
+          />
+        </div>
         </div>
         {loading ? (
           <p>Loading...</p>
@@ -68,7 +127,7 @@ const SupplierList = () => {
               </tr>
             </thead>
             <tbody>
-              {supplier.map(supplier => (
+              {filteredSupplier.map(supplier => (
                 <tr key={supplier._id}>
                   <td>{supplier.company_name}</td>
                   <td>{supplier.TIN_no}</td>
@@ -77,12 +136,12 @@ const SupplierList = () => {
                   <td>{supplier.address}</td>
                   <td>{formatDate(supplier.createdAt)}</td>
                   <td>
-                    <div onClick={() => toggleDropdown(supplier._id)}>
-                      <IoEllipsisVerticalOutline/>
+                    <div ref={dropdownRef}>
+                      <IoEllipsisVerticalOutline onClick={(event) => toggleDropdown(supplier._id, event)}/>
                       {openDropdowns[supplier._id] &&(
                         <div className='more-icon'>
                           <ul className='min-menu'>
-                            <li>
+                            <li onClick={() => handleViewDetails(supplier._id)}>
                             <FaEye/>
                             <span>View</span>
                             </li>
