@@ -5,6 +5,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 require('dotenv').config();
 const PORT = process.env.PORT;
+const path = require('path');
 const cars_routes = require('./routes/cars_routes');
 const cleared_car_routes = require('./routes/cleared_car_routes');
 const supplierRoutes = require('./routes/supplierRoutes');
@@ -25,6 +26,8 @@ const io = socketIo(server, {
 
 // Enbale CORS
 app.use(cors());
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware
 app.use(express.json());

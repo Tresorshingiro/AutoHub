@@ -124,7 +124,7 @@ const ReceptionNav = () => {
               <FaUser/>
             </div>
             <div className='notify-data'>
-              <div className='notify-title'>Reception</div>
+              {user && <div className='notify-title'>{user.username}</div>}
               <div className='notify-subtitle'>Added new vehicle</div>
             </div>
           </li>
@@ -136,7 +136,12 @@ const ReceptionNav = () => {
     <div ref={dropdownRef}>
     <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>
           {user && <div className='user-id'>{user.username}</div>}
+          {user && user.profileImage ? (
+            <img src={`http://localhost:3000/${user.profileImage}`} alt='user image'/>
+          ):
           <img src="/user.png" alt="User Icon" />
+          }
+          
           {showLogoutDropdown && (
             <div className="dropdown-logout">
               <ul className='sub-menu'>

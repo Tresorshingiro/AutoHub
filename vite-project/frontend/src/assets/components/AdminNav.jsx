@@ -1,6 +1,6 @@
 import React,{useState, useEffect, useRef} from 'react';
 import { NavLink } from 'react-router-dom';
-import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox, FaHome, FaUser} from 'react-icons/fa';
+import {FaCheckCircle, FaPlus, FaBuilding, FaFileInvoice, FaCaretDown, FaCaretRight,FaFileAlt, FaChevronRight, FaMoon, FaSun, FaSearch, FaBell, FaCog, FaSignOutAlt, FaTruck, FaShoppingCart, FaBox, FaHome, FaUser, FaUserAlt, FaPeopleArrows, FaPeopleCarry} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
@@ -71,9 +71,15 @@ const AdminNav = () => {
               </NavLink>
               </li>
               <li>
+                <NavLink to='/users' className='nav-link' activeClassName='active'>
+                  <FaUserAlt className='icon'/>
+                  <span>Add User</span>
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to='/employee' className='nav-link' activeClassName='active'>
-                  <FaUser className='icon'/>
-                  <span>Employee</span>
+                  <FaPeopleCarry className='icon'/>
+                  <span>Employees</span>
                 </NavLink>
               </li>
               <li>
@@ -107,10 +113,6 @@ const AdminNav = () => {
               </div>
       </nav>
       <div className='header-info'>
-      <div className='search-box'>
-        <FaSearch/>
-        <input type='search' placeholder='Search...'/>
-      </div>
       <div className='notification'>
         <FaBell className='icon'/>
       </div>

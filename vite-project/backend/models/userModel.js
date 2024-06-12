@@ -16,6 +16,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
+        enum:['Reception', 'Operation', 'Accountant', 'Admin'],
         required: true
     },
     address: {
@@ -24,6 +25,9 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    profileImage: {
+        type: String
     },
     createdAt: {
         type: Date,

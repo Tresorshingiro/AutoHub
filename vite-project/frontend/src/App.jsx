@@ -34,6 +34,11 @@ import { useAuthContext } from './assets/hooks/useAuthContext';
 import Employee from './assets/pages/Employee';
 import AddEmployee from './assets/pages/AddEmployee';
 import PendingList from './assets/pages/PendingList';
+import Account from './assets/pages/Account';
+import VehicleAdmin from './assets/pages/VehicleAdmin';
+import SupplierAdmin from './assets/pages/SupplierAdmin';
+import Users from './assets/pages/Users';
+import UpdateUser from './assets/pages/updateUser';
 import './App.css';
 
 const App = () => {
@@ -81,6 +86,11 @@ const App = () => {
       <Route path="/employee"element={<Employee/>}/>
       <Route path="/addemployee"element={<AddEmployee/>}/>
       <Route path="/pendingList"element={<PendingList/>}/>
+      <Route path="/account"element={<Account/>}/>
+      <Route path="/vehicleAdmin"element={<VehicleAdmin/>}/>
+      <Route path="/supplierAdmin"element={<SupplierAdmin/>}/>
+      <Route path="/users"element={<Users/>}/>
+      <Route path="/updateUser/:id"element={<UpdateUser/>}/>
       </Routes>
     </Router>
   );
