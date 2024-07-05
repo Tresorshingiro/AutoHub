@@ -146,9 +146,9 @@ const AddSupplier = () => {
               </label>
             </div>
           </div>
-          <button className='large-btn'>Add Supplier</button>
-        {error && <div className="error" style={{ textAlign: "center" }}>{error}</div>}
-        {success && <div className="success" style={{ textAlign: "center" }}>{success}</div>}
+          <button onClick={handleSubmit} className='large-btn'>Add Supplier</button>
+          {error && <div className="error">{error}</div>}
+          {success && <div className="success">{success}</div>}
         </form>
       </div>
     </div>

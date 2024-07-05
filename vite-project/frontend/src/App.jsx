@@ -16,7 +16,6 @@ import Quotation from './assets/pages/Quotation';
 import QuotationList from './assets/pages/QuotationList';
 import Cleared from './assets/components/cleared';
 import AddSupplier from './assets/pages/AddSupplier';
-import AddStock from './assets/pages/AddStock';
 import AddPurchase from './assets/pages/AddPurchase';
 import SupplierList from './assets/pages/SupplierList';
 import StockList from './assets/pages/StockList';
@@ -35,6 +34,11 @@ import { useAuthContext } from './assets/hooks/useAuthContext';
 import Employee from './assets/pages/Employee';
 import AddEmployee from './assets/pages/AddEmployee';
 import PendingList from './assets/pages/PendingList';
+import Account from './assets/pages/Account';
+import VehicleAdmin from './assets/pages/VehicleAdmin';
+import SupplierAdmin from './assets/pages/SupplierAdmin';
+import Users from './assets/pages/Users';
+import UpdateUser from './assets/pages/updateUser';
 import './App.css';
 
 const App = () => {
@@ -65,7 +69,6 @@ const App = () => {
       <Route path="/quotationlist"element={<QuotationList/>}/>
       <Route path="/cleared"element={<Cleared/>}/>
       <Route path="/AddSupplier"element={<AddSupplier/>}/>
-      <Route path="/AddStock"element={<AddStock/>}/>
       <Route path="/AddPurchase"element={<AddPurchase/>}/>
       <Route path="/suppliers"element={<SupplierList/>}/>
       <Route path="/stock"element={<StockList/>}/>
@@ -83,6 +86,11 @@ const App = () => {
       <Route path="/employee"element={<Employee/>}/>
       <Route path="/addemployee"element={<AddEmployee/>}/>
       <Route path="/pendingList"element={<PendingList/>}/>
+      <Route path="/account"element={<Account/>}/>
+      <Route path="/vehicleAdmin"element={<VehicleAdmin/>}/>
+      <Route path="/supplierAdmin"element={<SupplierAdmin/>}/>
+      <Route path="/users"element={<Users/>}/>
+      <Route path="/updateUser/:id"element={<UpdateUser/>}/>
       </Routes>
     </Router>
   );

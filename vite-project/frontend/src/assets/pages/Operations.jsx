@@ -97,6 +97,7 @@ const Operations = () => {
             <input
             type="text"
             placeholder="Search..."
+            className='row'
             value={filter}
             onChange={handleFilterChange}
            />

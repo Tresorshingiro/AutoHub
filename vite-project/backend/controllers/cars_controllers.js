@@ -1,6 +1,7 @@
 const Car_data = require('../models/vehicleModel')
 const Customer = require('../models/customerModel')
 const mongoose = require('mongoose')
+const io = require('../server')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
@@ -50,6 +51,7 @@ const createVehicle = async (req, res) => {
             chassis_no,
             service
         })
+        io.emit('newVehicle', { message: 'A new vehicle has been added by the receptionist', vehicle });
         res.status(200).json(vehicle)
     } catch(error) {
         console.error('Error:', error)

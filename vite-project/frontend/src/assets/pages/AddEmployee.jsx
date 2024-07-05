@@ -52,12 +52,6 @@ const AddEmployee = () => {
                         </select>
                     </label>
                 </div>
-                <div className='input-field'>
-                    <label>
-                        Password:
-                        <input type='password' name='password' className='row' placeholder='Password'/>
-                    </label>
-                </div>
             </div>
             <button className='large-btn'>Add Employee</button>
         </form>

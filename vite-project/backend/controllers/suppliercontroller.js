@@ -5,7 +5,10 @@ const mongoose =require('mongoose');
 const getAllSuppliers = async (req, res) => {
   try {
     const suppliers = await Supplier.find().sort({createdAt: -1});
-    res.json(suppliers);
+
+    const supplierCount = new Set(suppliers.map(Supplier => String(Supplier._id))).size;
+
+    res.status(200).json({suppliers, supplierCount});
   } catch (error) {
     console.error('Error getting suppliers:', error);
     res.status(400).json({ error: 'Internal Server Error' });

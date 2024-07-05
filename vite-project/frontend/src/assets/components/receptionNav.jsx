@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaSun, FaMoon, FaCheckCircle, FaTools, FaFile, FaChevronRight, FaSearch, FaSignOutAlt, FaCog, FaBell, FaListAlt} from 'react-icons/fa';
+import { FaSun, FaMoon, FaCheckCircle, FaTools, FaFile, FaChevronRight, FaSearch, FaSignOutAlt, FaCog, FaBell, FaListAlt, FaUser} from 'react-icons/fa';
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 
-const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
-  const [activeButton, setActiveButton] = useState('registration');
+const ReceptionNav = () => {
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [collapsedSidebar, setCollapsedSidebar] = useState(false);
-  const [customerFilter, setCustomerFilter] = useState('');
   const dropdownRef = useRef(null)
+  const notificationDropdownRef = useRef(null);
   const { user } = useAuthContext()
   const { logout } = useLogout()
   
@@ -20,9 +20,10 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
     setShowLogoutDropdown(!showLogoutDropdown);
   };
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
+  const toggleNotificationDropdown = () => {
+    setShowNotification(!showNotification)
   };
+
 
   const handleLogout = (e) => {
     logout();
@@ -42,6 +43,9 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowLogoutDropdown(false);
+      }
+      if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target)) {
+        setShowNotification(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -109,13 +113,35 @@ const ReceptionNav = ({ vehicles, setFilteredVehicles }) => {
         </div>
     </nav>
     <div className='header-info'>
-    <div className='notification'>
+  <div ref={notificationDropdownRef}>
+    <div className='notification' onClick={(event) => toggleNotificationDropdown(event)}>
       <FaBell className='icon'/>
+      {showNotification &&(
+      <div className='notification-dropdown'>
+        <ul className='notification-ul'>
+          <li>
+            <div className='notify-icon'>
+              <FaUser/>
+            </div>
+            <div className='notify-data'>
+              {user && <div className='notify-title'>{user.username}</div>}
+              <div className='notify-subtitle'>Added new vehicle</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      )}
+    </div>
     </div>
     <div ref={dropdownRef}>
     <div className="user-icon" onClick={(event) => toggleLogoutDropdown(event)}>
           {user && <div className='user-id'>{user.username}</div>}
+          {user && user.profileImage ? (
+            <img src={`http://localhost:3000/${user.profileImage}`} alt='user image'/>
+          ):
           <img src="/user.png" alt="User Icon" />
+          }
+          
           {showLogoutDropdown && (
             <div className="dropdown-logout">
               <ul className='sub-menu'>

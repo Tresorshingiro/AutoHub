@@ -45,17 +45,13 @@ const StockList = () => {
 
   return (
     <div className="container">
-      <AccountantNav />
-      <div className="box">
-        <div className="add">
-          <h2>
-            <span>Add</span> Stock
-          </h2>
-          <Link to="/AddStock" className="addbtn">
-            <button>
-              <FaPlus />
-            </button>
-          </Link>
+       <AccountantNav/>
+      <div className='box'>
+      <div className='add'>
+        <h2><span>St</span>ock</h2>
+        <Link to='/AddStock'className='addbtn'>
+        <button> <FaPlus/> </button>
+        </Link>
         </div>
         {loading ? (
           <p>Loading...</p>
@@ -122,3 +118,5 @@ const StockList = () => {
 };
 
 export default StockList;
+
+

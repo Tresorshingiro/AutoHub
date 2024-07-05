@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReceptionNav from '../components/receptionNav';
 import View from '../components/View';
 import Update from '../components/Update';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
@@ -8,10 +7,11 @@ import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
+import AdminNav from '../components/AdminNav';
 
 const getLoc = "http://localhost:3000/api/vehicles/";
 
-const Inservice = () => {
+const VehicleAdmin = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDropdowns, setOpenDropdowns] = useState({});
@@ -108,10 +108,10 @@ const Inservice = () => {
 
   return (
     <div className="container">
-      <ReceptionNav />
+      <AdminNav />
       <div className='box'>
         <div className='high-table'>
-        <h2><span>In-</span>service Vehicles</h2>
+        <h2><span>Veh</span>icles</h2>
         <div className='search'>
         <input
           type="text"
@@ -126,8 +126,6 @@ const Inservice = () => {
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
-        ) : vehicles.length === 0 ? (
-          <p>No cleared vehicles found.</p>
         ) : (
           <table>
             <thead>
@@ -189,4 +187,4 @@ const Inservice = () => {
   );
 };
 
-export default Inservice;
+export default VehicleAdmin;
