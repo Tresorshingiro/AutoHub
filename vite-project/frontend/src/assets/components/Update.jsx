@@ -81,7 +81,7 @@ const Update = ({id, onClose}) => {
           <span className='img-logo'><img  src='/logo.png'/></span>
           <span className='logo-name'>AutoHub</span>
         </div>
-        <div className='address'>
+        <div className='address-garage'>
           <ul>
            <li>
             <FaMapMarkerAlt/>
@@ -104,7 +104,7 @@ const Update = ({id, onClose}) => {
                   <div className='fields'>
                   <div className='input-field'>
                   <label>
-                  Vehicle Brand: <input type="text" name="brand" value={vehicle.brand} onChange={handleInputChange} />
+                  Vehicle Brand: <input type="text" className='row' name="brand" value={vehicle.brand} onChange={handleInputChange} />
                   </label>
                   </div>
                   <div className='input-field'>
