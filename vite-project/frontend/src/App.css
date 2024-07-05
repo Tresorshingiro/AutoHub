@@ -437,6 +437,14 @@ button {
     border:.1rem solid rgba(0,0,0,.1);
     border-radius: .5rem;
   }
+  .row{
+    padding:2px;
+    font-size: 1rem;
+    color:var(--text-color);
+    text-transform: none;
+    border:.1rem solid rgba(0,0,0,.1);
+    border-radius: .5rem;
+  }
   .box h2 {
     font: bold;
     font-size: x-large;
