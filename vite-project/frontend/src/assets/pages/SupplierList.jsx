@@ -114,6 +114,8 @@ const SupplierList = () => {
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
+        ) : supplier.length === 0 ? (
+          <p>No suppliers found.</p>
         ) : (
           <table>
             <thead>
@@ -130,6 +132,7 @@ const SupplierList = () => {
             <tbody>
               {filteredSupplier.map(supplier => (
                 <tr key={supplier._id}>
+                  {/* Access properties with optional chaining */}
                   <td>{supplier.company_name}</td>
                   <td>{supplier.TIN_no}</td>
                   <td>{supplier.telephone}</td>

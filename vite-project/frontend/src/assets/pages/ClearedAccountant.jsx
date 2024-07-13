@@ -2,12 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaCheckCircle, FaEdit } from 'react-icons/fa';
 import { IoEllipsisVerticalOutline } from 'react-icons/io5';
-// import ReceptionNav from './receptionNav';
-// import QuotationNav from './quotationNav';
-// import AccountantNav from './AccountantNav';
 import axios from 'axios';
 import '../../App.css';
-// import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const getLoc = "http://localhost:3000/api/cleared/vehicles/";
@@ -16,11 +12,11 @@ const ClearedAccountant = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [openDropdowns, setOpenDropdowns] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState({});
   const location = useLocation();
   const { user } = useAuthContext();
 
-  const toggleDropdown = (vehicleId) =>{
+  const toggleDropdown = (vehicleId) => {
     setOpenDropdowns(prevState => ({
       ...prevState,
       [vehicleId]: !prevState[vehicleId]
@@ -35,7 +31,8 @@ const ClearedAccountant = () => {
             'Authorization': `Bearer ${user.token}`
           }
         });
-        setVehicles(response.data);
+        const vehiclesData = Array.isArray(response.data) ? response.data : [];
+        setVehicles(vehiclesData);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
       } finally {
@@ -45,21 +42,22 @@ const ClearedAccountant = () => {
 
     if (user) {
       fetchData();
-      setError(null)
+      setError(null);
     } else {
-      setLoading(false)
+      setLoading(false);
       setError('You must be logged in');
     }
-
-  }, [ user]);
+  }, [user]);
 
   return (
-      <div className='box'>
+    <div className='box'>
       <h2>Cleared Vehicles</h2>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>Error: {error}</p>
+      ) : vehicles.length === 0 ? (
+        <p>No cleared vehicles found.</p>
       ) : (
         <table>
           <thead>
@@ -83,27 +81,27 @@ const ClearedAccountant = () => {
                 <td>{vehicle.vatInclude ? 'Yes' : 'No'}</td>
                 <td>{vehicle.total_price}</td>
                 <td>
-                <div onClick={() => toggleDropdown(vehicle._id)}>
-                      <IoEllipsisVerticalOutline/>
-                      {openDropdowns[vehicle._id] && (
-                        <div className='more-icon'>
-                          <ul className='min-menu'>
-                            <Link to={`/approved/${vehicle._id}`}>
+                  <div onClick={() => toggleDropdown(vehicle._id)}>
+                    <IoEllipsisVerticalOutline />
+                    {openDropdowns[vehicle._id] && (
+                      <div className='more-icon'>
+                        <ul className='min-menu'>
+                          <Link to={`/approved/${vehicle._id}`}>
                             <li>
-                              <FaCheckCircle/>
+                              <FaCheckCircle />
                               <span>Approved</span>
                             </li>
-                            </Link>
-                            <Link to='/invoice'>
+                          </Link>
+                          <Link to='/invoice'>
                             <li>
-                              <FaEdit/>
+                              <FaEdit />
                               <span>Invoice</span>
                             </li>
-                            </Link>
-                            </ul>
-                            </div>
-                      )}
+                          </Link>
+                        </ul>
                       </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
