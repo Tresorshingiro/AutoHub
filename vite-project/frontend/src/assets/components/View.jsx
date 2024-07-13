@@ -53,7 +53,7 @@ const View = ({ id, onClose }) => {
   };
 
   return (
-    <div className='popup'id="popup">
+    <div className={`popup ${vehicle ? 'show' : ''}`} id="popup">
       <div className="popup-content">
         {loading ? (
           <div className='loading-msg'>

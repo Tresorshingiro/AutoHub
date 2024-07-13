@@ -15,7 +15,7 @@ const QuotationSchema = new Schema({
     },
     repair_service_id: {
         type: Schema.Types.ObjectId,
-        ref: 'RepairService',
+        ref: 'repairService',
         required: true
     },
     VAT_included: {

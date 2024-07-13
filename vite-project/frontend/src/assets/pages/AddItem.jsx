@@ -16,9 +16,9 @@ const AddItem = () => {
   const [measurement_unit, setMeasurementUnit] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [supplier, setSupplier] = useState('');
-  const [suppliers, setSuppliers] = useState([]); // Initialize as an empty array
+  const [suppliers, setSuppliers] = useState([]);
   const [success, setSuccess] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
 =======
@@ -72,7 +72,7 @@ const AddItem = () => {
         setUnitPrice('');
         setSupplier(''); // Clear the supplier field
         setError(null);
-        setSuccess('Item added successfully');
+        setSuccess('Item added Successfully');
         console.log('New Item', json);
       }
 
@@ -103,6 +103,7 @@ const AddItem = () => {
   };
 <<<<<<< HEAD
 
+<<<<<<< HEAD
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -122,6 +123,26 @@ const AddItem = () => {
         break;
     }
   };
+=======
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(getLoc, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
+        setSuppliers(response.data);
+      } catch (err) {
+        setError(err.message || 'An error occurred while fetching data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+>>>>>>> fe8ac256d3ad54871cad93a2c80eb913ce0413dc
 
   return (
     <div className="container">
@@ -162,10 +183,10 @@ const AddItem = () => {
             <div className='input-field'>
               <label>
                 Supplier Name:
-                <select name="supplier" className='row' placeholder='Supplier Name' value={supplier} onChange={(e) => setSupplier(e.target.value)} required>
+                <select name="supplier" className='row' placeholder='Supplier Name' value={supplier} onChange={(e) => setSupplier(e.target.value)}>
                   <option value=''>Select Supplier</option>
                   {suppliers.map((supplier) => (
-                    <option key={supplier._id} value={supplier.company_name}>{supplier.company_name}</option>
+                    <option key={supplier._id} value={supplier._id}>{supplier.company_name}</option>
                   ))}
                 </select>
               </label>
