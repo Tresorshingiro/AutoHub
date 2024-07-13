@@ -126,8 +126,6 @@ const Inservice = () => {
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
-        ) : vehicles.length === 0 ? (
-          <p>No cleared vehicles found.</p>
         ) : (
           <table>
             <thead>

@@ -2,7 +2,7 @@ const Quotation = require('../models/quotationModel')
 const RepairService = require('../models/repairServiceModel')
 const mongoose = require('mongoose')
 
-// Get al quotations
+
 const getQuotation = async (req, res) => {
     try {
         const quotations = await Quotation.find()
@@ -17,6 +17,13 @@ const getQuotation = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// Getting all cleared cars
+const getQuotations = async (req, res) => {
+    const quotation = await Quotation.find({}).populate('car_id').populate('worker_id').populate('repair_service_id').sort({createdAt: -1})
+
+    res.status(200).json(quotation)
+}
 
 // Getting a single cleared car
 const getOneQuotation = async (req, res) => {
@@ -102,6 +109,7 @@ const deleteQuotation = async (req, res) => {
 
 module.exports = {
     getQuotation,
+    getQuotations,
     getOneQuotation,
     createQuotation,
     updateQuotation,

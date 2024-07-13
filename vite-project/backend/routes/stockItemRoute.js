@@ -8,12 +8,8 @@ const {
   deleteAllStock,
   deleteStockItem
 } = require('../controllers/stockItemController');
-const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router();
-
-// Require Auth for all Reception car routes
-router.use(requireAuth)
 
 // GET all stock
 router.get('/', getAllStock);

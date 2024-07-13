@@ -30,8 +30,7 @@ const QuotationList = () => {
         const response = await axios.get(getLoc, {
           headers: {
             'Authorization': `Bearer ${user.token}`
-          },
-
+          }
         });
         setQuotations(response.data);
       } catch (err) {
@@ -85,22 +84,13 @@ const QuotationList = () => {
     setFilter(e.target.value);
   };
 
-  const filteredQuotation = Quotations.filter((quotation) => {
-    const createdAt = quotation.createdAt.toLowerCase();
-    const totalPrice = quotation.total_price?.toLowerCase() || ''; // Handle non-string total_price
-    const ownerName = quotation.car_id?.owner.names?.toLowerCase() || '';
-    const plateNo = quotation.car_id?.plate_no?.toLowerCase() || '';
-    const vatText = quotation.VAT_included ? 'Yes' : 'No'; // Convert VAT_included to string
-    const includesVAT = vatText.toLowerCase().includes(filter.toLowerCase());
-
-    return (
-      createdAt.includes(filter.toLowerCase()) ||
-      totalPrice.includes(filter.toLowerCase()) ||
-      ownerName.includes(filter.toLowerCase()) ||
-      plateNo.includes(filter.toLowerCase()) ||
-      includesVAT
-    );
-  });
+  const filteredQuotation = Quotations.filter(quotation => 
+  quotation.createdAt.toLowerCase().includes(filter.toLowerCase()) ||
+  quotation.vatIncluded.toLowerCase().includes(filter.toLowerCase()) ||
+  quotation.total_price.toLowerCase().includes(filter.toLowerCase()) ||
+  quotation.owner.names.toLowerCase().includes(filter.toLowerCase()) ||
+  quotation.plate_no.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div className="container">
@@ -122,8 +112,6 @@ const QuotationList = () => {
             <p>Loading...</p>
           ) : error ? (
             <p>Error: {error}</p>
-          ) : Quotations.length === 0 ? (
-            <p>No cleared vehicles found.</p>
           ) : (
             <table>
               <thead>
