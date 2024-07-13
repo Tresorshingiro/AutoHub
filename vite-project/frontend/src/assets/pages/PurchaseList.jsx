@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React,{useState,useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import { FaEdit, FaEye, FaPlus, FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import '../../App.css';
@@ -9,50 +9,47 @@ import { IoEllipsisVerticalOutline } from 'react-icons/io5';
 const PurchaseList = () => {
   const [Purchase, setPurchase] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openDropdowns, setOpenDropdowns] = useState({});
+  const [openDropdowns, setOpenDropdowns] = useState(false);
   const [error, setError] = useState(null);
 
   const toggleDropdown = (purchaseId) => {
-    setOpenDropdowns((prevState) => ({
+    setOpenDropdowns(prevState =>({
       ...prevState,
-      [purchaseId]: !prevState[purchaseId],
-    }));
-  };
+      [purchaseId]: !prevState[purchaseId]
+  }))
+  }
 
   const deletePurchaseById = async (id, itemName, supplier) => {
-    if (window.confirm(`Are you sure you want to delete the ${itemName} of ${supplier}`)) {
-      try {
-        const response = await fetch(`http://localhost:3000/api/purchase/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          },
-          method: 'DELETE',
-        });
+    if(window.confirm(`Are you sure you wan't to delete the ${itemName} of ${supplier}`)) {
 
-        const json = await response.json();
+      try {
+        const response = await fetch('http://localhost:3000/api/purchase/' + id, {
+          method: 'DELETE'
+        })
+         
+        const json = await response.json()
 
         if (response.ok) {
-          alert(`Deleted ${itemName} of ${supplier}`);
-          window.location.reload(); // Reload to reflect changes
+          alert(`Deleted ${itemName} of ${supplier}`)
+          window.location.reload()
         } else {
-          console.error(json.error); // Log error message
-          alert(`Failed to delete the Purchase due to ${json.error}`);
+          // Errors occuring in the deletion process
+          console.error(json.error); // log error message
+          alert(`Failed to delete the Purchase due to ${json.error}`)
         }
-      } catch (error) {
-        console.error('An error occurred:', error);
-        alert('An error occurred while deleting the Purchase');
+
+      } catch(error) {
+        // For network errors or other exceptions
+        console.error('An error occured: ', error)
+        alert('An error occured while deleting the Purchase')
       }
-    }
-  };
+    }      
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/purchase/', {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
-        });
+        const response = await axios.get('http://localhost:3000/api/purchase/');
         setPurchase(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -63,29 +60,22 @@ const PurchaseList = () => {
 
     fetchData();
   }, []);
-
   return (
     <div className="container">
-      <AccountantNav />
-      <div className="box">
-        <div className="add">
-          <h2>
-            <span>Add</span> Purchase
-          </h2>
-          <Link to="/AddPurchase" className="addbtn">
-            <button>
-              <FaPlus />
-            </button>
-          </Link>
+       <AccountantNav/>
+      <div className='box'>
+      <div className='add'>
+        <h2> <span>Add</span> Purchase</h2>
+        <Link to='/AddPurchase' className='addbtn'>
+        <button> <FaPlus/> </button>
+        </Link>
         </div>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
-        ) : Purchase.length === 0 ? (
-          <p>No purchases found.</p>
         ) : (
-          <table>
+        <table>
             <thead>
               <tr>
                 <th>Item Name</th>
@@ -96,33 +86,28 @@ const PurchaseList = () => {
               </tr>
             </thead>
             <tbody>
-              {Purchase.map((purchase) => (
+              {Purchase.map(purchase => (
                 <tr key={purchase._id}>
-                  {/* Access properties with optional chaining */}
                   <td>{purchase.itemName}</td>
                   <td>{purchase.quantity}</td>
                   <td>{purchase.unitPrice}</td>
                   <td>{purchase.supplier}</td>
                   <td>
                     <div onClick={() => toggleDropdown(purchase._id)}>
-                      <IoEllipsisVerticalOutline />
-                      {openDropdowns[purchase._id] && (
-                        <div className="more-icon">
-                          <ul className="min-menu">
+                      <IoEllipsisVerticalOutline/>
+                      {openDropdowns[purchase._id] &&(
+                        <div className='more-icon'>
+                          <ul className='min-menu'>
                             <li>
-                              <FaEye />
+                              <FaEye/>
                               <span>View</span>
                             </li>
                             <li>
-                              <FaEdit />
+                              <FaEdit/>
                               <span>Edit</span>
                             </li>
-                            <li
-                              onClick={() =>
-                                deletePurchaseById(purchase._id, purchase.itemName, purchase.supplier)
-                              }
-                            >
-                              <FaTrash />
+                            <li onClick={() => deletePurchaseById(purchase._id, purchase.itemName, purchase.supplier)}>
+                              <FaTrash/>
                               <span>Delete</span>
                             </li>
                           </ul>
@@ -133,7 +118,7 @@ const PurchaseList = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
         )}
       </div>
     </div>

@@ -1,19 +1,12 @@
 const Cleared_cars = require('../models/clearedCarModel')
 const mongoose = require('mongoose')
 
-// Getting all cleared cars (with error handling)
+// Getting all cleared cars
 const getClearedCars = async (req, res) => {
-    try {
-      const vehicles = await Cleared_cars.find({}).sort({ createdAt: -1 });
-      if (!vehicles) {
-        return res.status(404).json({ error: 'No cleared vehicles found' });
-      }
-      res.status(200).json(vehicles);
-    } catch (error) {
-      console.error('Error fetching cleared cars:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-};
+    const vehicle = await Cleared_cars.find({}).sort({createdAt: -1})
+
+    res.status(200).json(vehicle)
+}
 
 // Getting a single cleared car
 const getOneClearedCar = async (req, res) => {

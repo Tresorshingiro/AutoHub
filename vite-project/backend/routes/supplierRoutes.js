@@ -7,12 +7,8 @@ const {
   deleteSupplierById,
   updateSupplierById,
 } = require('../controllers/suppliercontroller');
-const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router();
-
-// Require Auth for all Reception car routes
-router.use(requireAuth)
 
 // GET all users
 router.get('/', getAllSuppliers);
