@@ -5,9 +5,11 @@ const {
     getOneCar,
     createVehicle, 
     deleteVehicle, 
-    updateVehicle
+    updateVehicle,
+    deleteAllVehicles
 } = require('../controllers/cars_controllers')
 const requireAuth = require('../middleware/requireAuth')
+const { deleteAllCustomers } = require('../controllers/customerController')
 
 const router = express.Router()
 
@@ -25,6 +27,9 @@ router.post('/', createVehicle)
 
 // Delete a car
 router.delete('/:id', deleteVehicle)
+
+// Delete all cars
+router.delete('/', deleteAllVehicles)
 
 // Update a car
 router.patch('/:id', updateVehicle)

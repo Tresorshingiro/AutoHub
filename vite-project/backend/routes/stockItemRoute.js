@@ -25,6 +25,6 @@ router.put('/replenish', replenishStock);
 
 // Delete stock
 router.delete('/:id', deleteStockItem)
-router.delete('/deleteAll', deleteAllStock);
+router.delete('/', deleteAllStock);
 
 module.exports = router;

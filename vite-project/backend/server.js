@@ -13,6 +13,7 @@ const quotationRoutes = require('./routes/quotation_routes');
 const purchaseRoute = require('./routes/purchaseRoute');
 const stockItemRoute = require('./routes/stockItemRoute');
 const userRoutes = require('./routes/userRoutes');
+const customerRoutes = require('./routes/customerRoutes')
 
 //initialise the app
 const app = express();
@@ -40,11 +41,12 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/vehicles', cars_routes);
 app.use('/api/cleared/vehicles', cleared_car_routes);
-app.use('/api/supplier', supplierRoutes);
+app.use('/api/suppliers', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
-app.use('/api/purchase', purchaseRoute);
-app.use('/api/stock',stockItemRoute);
+app.use('/api/purchases', purchaseRoute);
+app.use('/api/stocks',stockItemRoute);
 app.use('/api/users', userRoutes);
+app.use('/api/customers', customerRoutes);
 
 // Connect to mongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -64,7 +66,7 @@ io.on('connection', (socket) => {
   });
 
   
-module.exports = io;
+module.exports = {server, io};
 
 // Operations is next
 

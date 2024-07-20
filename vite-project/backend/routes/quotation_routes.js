@@ -6,7 +6,8 @@ const {
     getOneQuotation,
     createQuotation,
     updateQuotation,
-    deleteQuotation
+    deleteQuotation,
+    deleteAllQuotations,
 } = require('../controllers/quotation_controllers')
 const requireAuth = require('../middleware/requireAuth')
 
@@ -31,5 +32,8 @@ router.patch('/:id', updateQuotation)
 
 // Delete quotation
 router.delete('/:id', deleteQuotation)
+
+// Delete all quotations
+router.delete('/', deleteAllQuotations)
 
 module.exports = router

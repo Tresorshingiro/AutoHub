@@ -1,7 +1,7 @@
 const Car_data = require('../models/vehicleModel')
 const Customer = require('../models/customerModel')
 const mongoose = require('mongoose')
-const io = require('../server')
+const { io } = require('../server')
 
 // Getting all car details
 const getAllCars = async (req, res) => {
@@ -138,6 +138,15 @@ const updateVehicle = async (req, res) => {
     }
 };
 
+const deleteAllVehicles = async (req, res) => {
+    try {
+        const deletedVehicle = await Car_data.deleteMany({});
+        res.status(200).json({message: `${deletedVehicle.deletedCount} vehicle(s) deleted successfully.`})
+    } catch (error) {
+        console.error('Error deleting vehicle: ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 
 module.exports = {
@@ -145,5 +154,6 @@ module.exports = {
     getOneCar,
     createVehicle,
     deleteVehicle,
+    deleteAllVehicles,
     updateVehicle
 }

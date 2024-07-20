@@ -94,10 +94,21 @@ const deleteSupplierById = async (req, res) => {
   }
 };
 
+const deleteAllSuppliers = async (req, res) => {
+  try {
+      const deletedSupplier = await Supplier.deleteMany({});
+      res.status(200).json({message: `${deletedSupplier.deletedCount} supplier(s) deleted successfully.`})
+  } catch (error) {
+      console.error('Error deleting supplier: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllSuppliers,
   getSupplierById,
   createSupplier,
   updateSupplierById,
   deleteSupplierById,
+  deleteAllSuppliers
 };
