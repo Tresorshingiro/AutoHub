@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
@@ -10,11 +10,11 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import formatDate from '../components/functions/formatDate';
 import UpdateSupplier from '../components/UpdateSupplier';
 
-const getLoc = "http://localhost:3000/api/supplier/"
+const getLoc = "http://localhost:3000/api/suppliers/";
 
 const SupplierList = () => {
   const [supplier, setSupplier] = useState([]);
-  const [openDropdowns, setOpenDropdowns] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedSupplierId, setSelectedSupplierId] = useState(null);
   const [viewModal, setViewModal] = useState(false);
@@ -22,13 +22,12 @@ const SupplierList = () => {
   const dropdownRef = useRef(null);
   const { user } = useAuthContext();
 
-  const toggleDropdown = (supplierId) =>{
-    setOpenDropdowns(prevState =>({
+  const toggleDropdown = (supplierId) => {
+    setOpenDropdowns(prevState => ({
       ...prevState,
-      [supplierId] : !prevState[supplierId]
-    }))
-  }
-
+      [supplierId]: !prevState[supplierId]
+    }));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,35 +43,36 @@ const SupplierList = () => {
 
     fetchData();
   }, []);
+
   return (
     <div className="container">
-       <AccountantNav/>
+      <AccountantNav />
       <div className='box'>
         <div className='add'>
-        <h2><span>Add</span> Supplier</h2>
-        <Link to='/AddSupplier' className='addbtn'>
-        <button> <FaPlus/> </button>
-        </Link>
+          <h2><span>Add</span> Supplier</h2>
+          <Link to='/AddSupplier' className='addbtn'>
+            <button> <FaPlus /> </button>
+          </Link>
         </div>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
         ) : (
-        <table>
+          <table>
             <thead>
               <tr>
                 <th>Supplier Name</th>
                 <th>Tin Number</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>address</th>
+                <th>Address</th>
                 <th>Date</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {supplier.map(supplier => (
+              {Array.isArray(supplier) && supplier.map(supplier => (
                 <tr key={supplier._id}>
                   <td>{supplier.company_name}</td>
                   <td>{supplier.TIN_no}</td>
@@ -82,20 +82,20 @@ const SupplierList = () => {
                   <td>{formatDate(supplier.createdAt)}</td>
                   <td>
                     <div onClick={() => toggleDropdown(supplier._id)}>
-                      <IoEllipsisVerticalOutline/>
-                      {openDropdowns[supplier._id] &&(
+                      <IoEllipsisVerticalOutline />
+                      {openDropdowns[supplier._id] && (
                         <div className='more-icon'>
                           <ul className='min-menu'>
                             <li>
-                            <FaEye/>
-                            <span>View</span>
+                              <FaEye />
+                              <span>View</span>
                             </li>
                             <li>
-                              <FaEdit/>
+                              <FaEdit />
                               <span>Edit</span>
                             </li>
-                          <li className='delete' onClick={() => deleteSupplier(supplier, setSupplier, getLoc, user)}>
-                              <FaTrash/>
+                            <li className='delete' onClick={() => deleteSupplier(supplier, setSupplier, getLoc, user)}>
+                              <FaTrash />
                               <span>Delete</span>
                             </li>
                           </ul>
@@ -106,11 +106,11 @@ const SupplierList = () => {
                 </tr>
               ))}
             </tbody>
-            </table>
+          </table>
         )}
       </div>
       {viewModal && (
-        <UpdateSupplier id={selectedSupplierId} onClose={handleCloseView}/>
+        <UpdateSupplier id={selectedSupplierId} onClose={handleCloseView} />
       )}
     </div>
   );

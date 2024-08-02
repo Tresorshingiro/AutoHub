@@ -33,7 +33,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchSupplierData = async() =>{
       try{
-        const response = await axios.get('http://localhost:3000/api/supplier/', {
+        const response = await axios.get('http://localhost:3000/api/suppliers/', {
           headers: {
             'Authorization': `Bearer ${user.token}`
           }

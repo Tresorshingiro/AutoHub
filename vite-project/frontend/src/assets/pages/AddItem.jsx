@@ -3,7 +3,7 @@ import '../../App.css';
 import AccountantNav from '../components/AccountantNav';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-const getLoc = "http://localhost:3000/api/supplier/";
+const getLoc = "http://localhost:3000/api/suppliers/";
 
 const AddItem = () => {
   const [itemName, setItemName] = useState('');
@@ -29,9 +29,14 @@ const AddItem = () => {
           throw new Error('Failed to fetch suppliers');
         }
         const data = await response.json();
-        setSuppliers(data);
+        if (Array.isArray(data)) {
+          setSuppliers(data);
+        } else {
+          throw new Error('Unexpected data format');
+        }
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
+        setSuppliers([]); // Ensure suppliers is an array in case of error
       } finally {
         setLoading(false);
       }
@@ -144,7 +149,7 @@ const AddItem = () => {
                 Supplier Name:
                 <select name="supplier" className='row' value={supplier} onChange={handleInputChange}>
                   <option value=''>Select Supplier</option>
-                  {suppliers.map((supplier) => (
+                  {Array.isArray(suppliers) && suppliers.map((supplier) => (
                     <option key={supplier._id} value={supplier._id}>{supplier.company_name}</option>
                   ))}
                 </select>

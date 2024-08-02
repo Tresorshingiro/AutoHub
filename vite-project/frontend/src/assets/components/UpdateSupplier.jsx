@@ -12,7 +12,7 @@ const UpdateSupplier = ({id, onClose}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/supplier/${id}`, {
+                const response = await axios.get(`http://localhost:3000/api/suppliers/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${user.token}`
                     }
@@ -40,7 +40,7 @@ const UpdateSupplier = ({id, onClose}) => {
         e.preventDefault();
 
         try {
-            const response = await axios.patch(`http://localhost:3000/api/supplier/${id}`, supplier, {
+            const response = await axios.patch(`http://localhost:3000/api/suppliers/${id}`, supplier, {
                 headers: {
                     'Authorization': `Beare ${user.token}`
                 }
