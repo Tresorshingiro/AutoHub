@@ -29,21 +29,25 @@ const AddItem = () => {
           throw new Error('Failed to fetch suppliers');
         }
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setSuppliers(data);
+        console.log('API Response:', data); // Log the data for debugging
+        if (data && Array.isArray(data.suppliers)) {
+          setSuppliers(data.suppliers);
         } else {
           throw new Error('Unexpected data format');
         }
       } catch (err) {
+        console.error('Error fetching data:', err); // Log error for debugging
         setError(err.message || 'An error occurred while fetching data.');
         setSuppliers([]); // Ensure suppliers is an array in case of error
       } finally {
         setLoading(false);
       }
     };
+    
 
     if (user) {
       fetchData();
+      setError(null)
     } else {
       setError('You must be logged in');
     }

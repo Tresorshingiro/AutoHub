@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../App.css';
@@ -13,13 +13,12 @@ import UpdateSupplier from '../components/UpdateSupplier';
 const getLoc = "http://localhost:3000/api/suppliers/";
 
 const SupplierList = () => {
-  const [supplier, setSupplier] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedSupplierId, setSelectedSupplierId] = useState(null);
   const [viewModal, setViewModal] = useState(false);
   const [error, setError] = useState(null);
-  const dropdownRef = useRef(null);
   const { user } = useAuthContext();
 
   const toggleDropdown = (supplierId) => {
@@ -30,19 +29,40 @@ const SupplierList = () => {
   };
 
   useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get(getLoc);
+    //     console.log('API Response:', response.data); // Log the response
+    //     if (Array.isArray(response.data)) {
+    //       setSuppliers(response.data);
+    //     } else {
+    //       throw new Error('Response data is not an array');
+    //     }
+    //   } catch (err) {
+    //     setError(err.message || 'An error occurred while fetching data.');
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
     const fetchData = async () => {
       try {
         const response = await axios.get(getLoc);
-        setSupplier(response.data);
+        console.log('API Response:', response.data); // Log the response
+        setSuppliers(response.data.suppliers); // Access the suppliers array
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchData();
   }, []);
+
+  const handleCloseView = () => {
+    setViewModal(false);
+  };
 
   return (
     <div className="container">
@@ -72,7 +92,7 @@ const SupplierList = () => {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(supplier) && supplier.map(supplier => (
+              {suppliers.map(supplier => (
                 <tr key={supplier._id}>
                   <td>{supplier.company_name}</td>
                   <td>{supplier.TIN_no}</td>
@@ -94,7 +114,7 @@ const SupplierList = () => {
                               <FaEdit />
                               <span>Edit</span>
                             </li>
-                            <li className='delete' onClick={() => deleteSupplier(supplier, setSupplier, getLoc, user)}>
+                            <li className='delete' onClick={() => deleteSupplier(supplier, setSuppliers, getLoc, user)}>
                               <FaTrash />
                               <span>Delete</span>
                             </li>
@@ -117,3 +137,4 @@ const SupplierList = () => {
 };
 
 export default SupplierList;
+  

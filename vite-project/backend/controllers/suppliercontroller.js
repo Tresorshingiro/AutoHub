@@ -4,16 +4,17 @@ const mongoose =require('mongoose');
 // Get all suppliers
 const getAllSuppliers = async (req, res) => {
   try {
-    const suppliers = await Supplier.find().sort({createdAt: -1});
+    const suppliers = await Supplier.find().sort({ createdAt: -1 });
 
-    const supplierCount = new Set(suppliers.map(Supplier => String(Supplier._id))).size;
+    const supplierCount = suppliers.length; // Get the number of suppliers
 
-    res.status(200).json({suppliers, supplierCount});
+    res.status(200).json({ suppliers, supplierCount });
   } catch (error) {
     console.error('Error getting suppliers:', error);
     res.status(400).json({ error: 'Internal Server Error' });
   }
 };
+
 
 // Get one supplier by ID
 const getSupplierById = async (req, res) => {
