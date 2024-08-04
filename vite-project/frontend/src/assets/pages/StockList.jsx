@@ -15,7 +15,7 @@ const StockList = () => {
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
 
-  const getLoc = 'http://localhost:3000/api/stock/'
+  const getLoc = 'http://localhost:3000/api/stock/stocks'
 
   const toggleDropdown = (stockId) => {
     setOpenDropdowns(prevState =>({
@@ -28,6 +28,7 @@ const StockList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(getLoc);
+        console.log(response.data);  // Log the received data
         setStock(response.data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
@@ -38,38 +39,47 @@ const StockList = () => {
 
     fetchData();
   }, []);
+
   return (
     <div className="container">
-       <AccountantNav/>
+      <AccountantNav/>
       <div className='box'>
-      <div className='add'>
-        <h2><span>Add</span>Stock</h2>
-        <Link to='/AddStock'className='addbtn'>
-        <button> <FaPlus/> </button>
-        </Link>
+        <div className='add'>
+          <h2><span>Add</span>Stock</h2>
+          <Link to='/AddStock'className='addbtn'>
+            <button> <FaPlus/> </button>
+          </Link>
         </div>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error}</p>
         ) : (
-        <table>
+          <table>
             <thead>
               <tr>
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Supplier Name</th>
+                <th>Value</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {Stock.map(stock => (
                 <tr key={stock._id}>
-                  <td>{stock.item_id.itemName}</td>
-                  <td>{stock.volume_remaining}</td>
-                  <td>{stock.item_id.unitPrice}</td>
-                  <td>{stock.supplier.company_name}</td>
+                  <td>{stock.item_id?.itemName || 'N/A'}</td>
+                  <td>{stock.volume_remaining || 'N/A'}</td>
+                  <td>{stock.item_id?.unitPrice || 'N/A'}</td>
+                  <td>
+                    {stock.item_id.supplier.length > 0 ? (
+                      stock.item_id.supplier.map(supplier => supplier.company_name).join(', ')
+                    ) : (
+                      'N/A'
+                    )}
+                  </td>
+                  <td>{stock.total_value}</td>
                   <td>
                     <div onClick={() => toggleDropdown(stock._id)}>
                       <IoEllipsisVerticalOutline/>
@@ -84,7 +94,7 @@ const StockList = () => {
                               <FaEdit/>
                               <span>Edit</span>
                             </li>
-                          <li className='delete' onClick={() => deleteStock(stock, setStock, getLoc, user)}>
+                            <li className='delete' onClick={() => deleteStock(stock, setStock, getLoc, user)}>
                               <FaTrash/>
                               <span>Delete</span>
                             </li>
@@ -96,7 +106,7 @@ const StockList = () => {
                 </tr>
               ))}
             </tbody>
-            </table>
+          </table>
         )}
       </div>
     </div>
@@ -104,5 +114,3 @@ const StockList = () => {
 };
 
 export default StockList;
-
-

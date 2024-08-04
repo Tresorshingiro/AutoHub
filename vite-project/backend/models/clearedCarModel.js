@@ -12,14 +12,10 @@ const clearedCarSchema = new Schema({
         type: String,
         required: true
     },
-    clearedAt: {
-        type: Date,
-        default: Date.now
-    },
     worker_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('ClearedCar', clearedCarSchema) // Collection name

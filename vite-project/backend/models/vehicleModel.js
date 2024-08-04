@@ -29,12 +29,8 @@ const vehicleSchema = new Schema({
     },
     chassis_no: {
         type: String
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
 
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Vehicle', vehicleSchema) // Collection name

@@ -20,11 +20,7 @@ const itemSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Supplier',
         required: true
-    }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-})
+    }]
+}, { timestamps: true });
 
 module.exports = mongoose.model('Item', itemSchema)

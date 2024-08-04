@@ -1,14 +1,13 @@
 const Stock = require('../models/stockModel');
 const Item = require('../models/itemModel');
-const Supplier = require('../models/supplierModel')
+const Supplier = require('../models/supplierModel');
 const mongoose = require('mongoose');
 
 // Get all Items
 const getAllItems = async (req, res) => {
   try {
-    const item = await Item.find().populate('supplier').sort({createdAt: -1});
+    const item = await Item.find().populate('supplier').sort({ createdAt: -1 });
     res.status(200).json(item);
-  
   } catch (error) {
     console.error('Error getting stock:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -18,9 +17,12 @@ const getAllItems = async (req, res) => {
 // Get all stocks
 const getAllStock = async (req, res) => {
   try {
-    const stock = await Stock.find().populate('item_id');
+    const stock = await Stock.find()
+      .populate({
+        path: 'item_id',
+        populate: { path: 'supplier' } // Populate the supplier field within item_id
+      }).sort({createdAt: -1});
     res.status(200).json(stock);
-    
   } catch (error) {
     console.error('Error getting stock:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -28,11 +30,12 @@ const getAllStock = async (req, res) => {
 };
 
 
+
 // Add new item to inventory
 const addItemToInventory = async (req, res) => {
   const { itemName, quantity, unitPrice, measurement_unit, supplier } = req.body;
 
-  console.log('Request body:', req.body);  // Log the incoming request body
+  console.log('Request body:', req.body); // Log the incoming request body
 
   try {
     // Check if item already exists
@@ -43,7 +46,7 @@ const addItemToInventory = async (req, res) => {
 
     // Check if supplier exists
     const supplierExist = await Supplier.findOne({ _id: supplier });
-    console.log('Supplier found:', supplierExist);  // Log the result of the supplier lookup
+    console.log('Supplier found:', supplierExist); // Log the result of the supplier lookup
     if (!supplierExist) {
       return res.status(400).json({ error: 'Supplier must exist in the database' });
     }
@@ -74,8 +77,6 @@ const addItemToInventory = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-
 
 // Use item in repairing process
 const useItem = async (req, res) => {
@@ -123,11 +124,10 @@ const replenishStock = async (req, res) => {
 
     res.status(200).json({ message: 'Stock replenished successfully' });
   } catch (error) {
-    console.error('Error replenishing stock', error);
+    console.error('Error replenishing stock:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 // Delete a stock item
 const deleteStockItem = async (req, res) => {
@@ -145,7 +145,6 @@ const deleteStockItem = async (req, res) => {
 
   res.status(200).json({ message: 'Stock Item deleted successfully' });
 };
-
 
 const deleteAllStock = async (req, res) => {
   try {
