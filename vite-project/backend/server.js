@@ -44,7 +44,7 @@ app.use('/api/cleared/vehicles', cleared_car_routes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/quotations/vehicles', quotationRoutes);
 app.use('/api/purchases', purchaseRoute);
-app.use('/api/stocks',stockItemRoute);
+app.use('/api/stock',stockItemRoute);
 app.use('/api/users', userRoutes);
 app.use('/api/customers', customerRoutes);
 

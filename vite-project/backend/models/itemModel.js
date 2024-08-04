@@ -16,6 +16,11 @@ const itemSchema = new Schema({
         type: Number,
         required: true
     },
+    supplier: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Supplier',
+        required: true
+    }],
     createdAt: {
         type: Date,
         default: Date.now

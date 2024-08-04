@@ -29,7 +29,6 @@ const AddItem = () => {
           throw new Error('Failed to fetch suppliers');
         }
         const data = await response.json();
-        console.log('API Response:', data); // Log the data for debugging
         if (data && Array.isArray(data.suppliers)) {
           setSuppliers(data.suppliers);
         } else {
@@ -55,14 +54,14 @@ const AddItem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!user) {
       setError('You must be logged in');
       return;
     }
-
-    const item = { itemName, quantity, measurement_unit, unitPrice };
-
+  
+    const item = { itemName, quantity, measurement_unit, unitPrice, supplier };
+  
     try {
       const response = await fetch('http://localhost:3000/api/stock/addItem', {
         method: 'POST',
@@ -72,7 +71,7 @@ const AddItem = () => {
           'Authorization': `Bearer ${user.token}`
         }
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         setError(errorData.error || 'An error occurred while processing your request.');
@@ -82,6 +81,7 @@ const AddItem = () => {
         setQuantity('');
         setMeasurementUnit('');
         setUnitPrice('');
+        setSupplier(''); // Reset supplier
         setError(null);
         setSuccess('Item added successfully');
       }
@@ -91,6 +91,7 @@ const AddItem = () => {
       setSuccess(null);
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -104,6 +105,9 @@ const AddItem = () => {
       case 'unitPrice':
         setUnitPrice(value);
         break;
+      case 'measurement_unit':
+        setMeasurementUnit(value); // Fix this line
+        break;
       case 'supplier':
         setSupplier(value);
         break;
@@ -111,6 +115,7 @@ const AddItem = () => {
         break;
     }
   };
+  
 
   return (
     <div className="container">

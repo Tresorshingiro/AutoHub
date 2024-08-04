@@ -11,15 +11,6 @@ const stockSchema =  new Schema({
     volume_remaining: {
         type: Number,
         required: true
-    },
-    supplier: {
-        type: Schema.Types.ObjectId,
-        ref: 'Supplier',
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
 });
 
