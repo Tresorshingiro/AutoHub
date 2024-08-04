@@ -28,12 +28,8 @@ const userSchema = new Schema({
     },
     profileImage: {
         type: String
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
-})
+}, { timestamps: true });
 
 // Static signup method
 userSchema.statics.signup = async function (role, username, email, password) {

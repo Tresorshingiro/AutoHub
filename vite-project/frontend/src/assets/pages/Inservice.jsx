@@ -8,6 +8,7 @@ import axios from 'axios';
 import '../../App.css';
 import deleteCar from '../components/functions/deleteCar';
 import { useAuthContext } from '../hooks/useAuthContext';
+import formatDate from '../components/functions/formatDate';
 
 const getLoc = "http://localhost:3000/api/vehicles/";
 
@@ -144,7 +145,7 @@ const Inservice = () => {
                   <td>{vehicle.brand}</td>
                   <td>{vehicle.plate_no}</td>
                   <td>{vehicle.owner ? vehicle.owner.names : 'N/A'}</td>
-                  <td>{vehicle.createdAt}</td>
+                  <td>{formatDate(vehicle.createdAt)}</td>
                   <td>{vehicle.insurance}</td>
                   <td>
                     <div ref={dropdownRef}>

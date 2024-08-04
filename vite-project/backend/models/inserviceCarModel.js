@@ -17,11 +17,7 @@ const inserviceCarSchema = new Schema({
     quotation_id: {
         type: Schema.Types.ObjectId,
         ref: 'Quotation'
-    },
-    registeredAt: {
-        type: Date,
-        default: Date.now
     }
-})
+}, { timestamps: true });
 
 module.exports = mongoose.model('InserviceCar', inserviceCarSchema)

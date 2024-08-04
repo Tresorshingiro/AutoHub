@@ -9,7 +9,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import formatDate from '../components/functions/formatDate';
 import AdminNav from '../components/AdminNav';
 
-const getLoc = "http://localhost:3000/api/supplier/"
+const getLoc = "http://localhost:3000/api/suppliers/"
 
 
 

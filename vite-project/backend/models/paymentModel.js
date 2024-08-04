@@ -27,11 +27,7 @@ const purchaseSchema =  new Schema({
     payment_type: {
         type: String,
         required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Purchase', purchaseSchema);

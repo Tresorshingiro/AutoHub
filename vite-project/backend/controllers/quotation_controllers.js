@@ -44,14 +44,14 @@ const getOneQuotation = async (req, res) => {
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {
-    const {car_id, total_price, vatIncluded, isApproved, createdAt, description, category, stock_item, quantity, unitPrice } = req.body
+    const {car_id, total_price, vatIncluded, isApproved, createdAt, description, category, Quotations_item, quantity, unitPrice } = req.body
 
     try {
         const worker_id = req.user._id
         const repair_service = await RepairService.create({
             description,
             category,
-            stock_item,
+            Quotations_item,
             quantity,
             unitPrice
         })
@@ -107,11 +107,22 @@ const deleteQuotation = async (req, res) => {
     res.status(200).json(quotation)
 }
 
+const deleteAllQuotations = async (req, res) => {
+    try {
+      const deletedQuotations = await Quotation.deleteMany({}); // Empty filter deletes all
+      res.status(200).json({ message: `${deletedQuotations.deletedCount} Quotations(s) deleted successfully.` });
+    } catch (error) {
+      console.error('Error deleting Quotation(s):', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
 module.exports = {
     getQuotation,
     getQuotations,
     getOneQuotation,
     createQuotation,
     updateQuotation,
-    deleteQuotation
+    deleteQuotation,
+    deleteAllQuotations
 }

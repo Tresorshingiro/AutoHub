@@ -14,11 +14,7 @@ const supplierTransactionSchema = new Schema({
     price: {
         type: Number,
         required: true
-    },
-    transactedAt: {
-        type: Date,
-        default: Date.now
     }
-})
+}, { timestamps: true });
 
 module.exports = mongoose.model('SupplierTransaction', supplierTransactionSchema)

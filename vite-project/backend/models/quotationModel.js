@@ -29,11 +29,7 @@ const QuotationSchema = new Schema({
     isApproved: {
         type: Boolean,
         default: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Quotation', QuotationSchema) // Collection name

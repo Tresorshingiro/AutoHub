@@ -19,7 +19,7 @@ const AddSupplier = () => {
     const supplier = { company_name, TIN_no, telephone, email, address };
 
     try {
-      const response = await fetch('http://localhost:3000/api/supplier/', {
+      const response = await fetch('http://localhost:3000/api/suppliers/', {
         method: 'POST',
         body: JSON.stringify(supplier),
         headers: {

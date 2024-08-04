@@ -6,23 +6,27 @@ const {
   createSupplier,
   deleteSupplierById,
   updateSupplierById,
+  deleteAllSuppliers,
 } = require('../controllers/suppliercontroller');
 
 const router = express.Router();
 
-// GET all users
+// GET all suppliers
 router.get('/', getAllSuppliers);
 
-// GET a single user
+// GET a single supplier
 router.get('/:id', getSupplierById);
 
-// Post a new user
+// Post a new supplier
 router.post('/', createSupplier);
 
-// Delete a user
+// Delete a supplier
 router.delete('/:id', deleteSupplierById);
 
-// Update a user (full update)
+// Delete all suppliers
+router.delete('/', deleteAllSuppliers);
+
+// Update a supplier (full update)
 router.put('/:id', updateSupplierById);
 
 module.exports = router;

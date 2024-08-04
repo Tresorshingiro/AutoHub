@@ -1,6 +1,7 @@
 const express = require('express');
 // controller functions
 const {
+  getAllItems,
   getAllStock,
   addItemToInventory,
   useItem,
@@ -11,8 +12,9 @@ const {
 
 const router = express.Router();
 
-// GET all stock
-router.get('/', getAllStock);
+// GET all items/stock
+router.get('/items', getAllItems);
+router.get('/stocks', getAllStock);
 
 // create new items and stock
 router.post('/addItem', addItemToInventory);
@@ -25,6 +27,6 @@ router.put('/replenish', replenishStock);
 
 // Delete stock
 router.delete('/:id', deleteStockItem)
-router.delete('/deleteAll', deleteAllStock);
+router.delete('/', deleteAllStock);
 
 module.exports = router;
