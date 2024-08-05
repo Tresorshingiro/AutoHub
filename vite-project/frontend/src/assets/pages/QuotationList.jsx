@@ -131,9 +131,9 @@ const QuotationList = () => {
                 {filteredQuotation.map(quotation => (
                   <tr key={quotation._id}>
                     <td>{quotation.createdAt}</td>
-                    <td>{quotation.car_id ?.plate_no || 'N/A'}</td>
-                    <td>{quotation.car_id ?.owner.names || 'N/A'}</td>
-                    <td>{quotation.repair_service_id?.stock_item}</td>
+                    <td>{quotation.car_id ? quotation.car_id.plate_no : 'N/A'}</td>
+                    <td>{quotation.car_id && quotation.car_id.owner ? quotation.car_id.owner.names : 'N/A'}</td>
+                    <td>{quotation.repair_service_id ? quotation.repair_service_id.stock_item : 'N/A'}</td>
                     <td>{quotation.repair_service_id?.quantity}</td>
                     <td>{quotation.repair_service_id?.unitPrice}</td>
                     <td>{quotation.vatIncluded ? 'Yes' : 'No'}</td>

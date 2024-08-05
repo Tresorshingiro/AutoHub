@@ -25,11 +25,19 @@ const AddItem = () => {
             'Authorization': `Bearer ${user.token}`
           }
         });
+
         if (!response.ok) {
-          throw new Error('Failed to fetch suppliers');
+          throw new Error('Network response was not ok');
         }
+
         const data = await response.json();
-        setSuppliers(data);
+
+        if (Array.isArray(data.suppliers)) {
+          setSuppliers(data.suppliers);
+        } else {
+          setError('Expected an array but got an object');
+        }
+        console.log('API response', data);
       } catch (err) {
         setError(err.message || 'An error occurred while fetching data.');
       } finally {
@@ -52,7 +60,7 @@ const AddItem = () => {
       return;
     }
 
-    const item = { itemName, quantity, measurement_unit, unitPrice };
+    const item = { itemName, quantity, measurement_unit, unitPrice, supplier };
 
     try {
       const response = await fetch('http://localhost:3000/api/stock/addItem', {
@@ -73,6 +81,7 @@ const AddItem = () => {
         setQuantity('');
         setMeasurementUnit('');
         setUnitPrice('');
+        setSupplier('');
         setError(null);
         setSuccess('Item added successfully');
       }
@@ -97,6 +106,9 @@ const AddItem = () => {
         break;
       case 'supplier':
         setSupplier(value);
+        break;
+      case 'measurement_unit':
+        setMeasurementUnit(value);
         break;
       default:
         break;

@@ -4,9 +4,9 @@ import { FaList, FaQuoteLeft, FaPlus , FaCheckCircle, FaChevronRight, FaMoon, Fa
 import '../../App.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
-import socketIOClient from 'socket.io-client';
+//import socketIOClient from 'socket.io-client';
 
-const SOCKET_SERVER_URL = "http://localhost:5000";
+//const SOCKET_SERVER_URL = "http://localhost:5000";
 
 const QuotationNav = () => {
   const { user } = useAuthContext()
@@ -20,7 +20,7 @@ const QuotationNav = () => {
   const { logout } = useLogout()
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     const socket = socketIOClient(SOCKET_SERVER_URL);
 
     socket.on('newVehicle', (data) => {
@@ -40,7 +40,7 @@ const QuotationNav = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
 
 
 

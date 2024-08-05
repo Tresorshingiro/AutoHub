@@ -20,29 +20,26 @@ const getAllStock = async (req, res) => {
 const addItemToInventory = async (req, res) => {
   const { itemName, quantity, unitPrice, measurement_unit, supplier } = req.body;
 
-  const company_name = supplier
   try {
-    const itemExist = await Item.findOne({itemName})
-    const supplierExist = await Supplier.findOne({company_name})
+    const itemExist = await Item.findOne({ itemName });
+    const supplierExist = await Supplier.findById(supplier);
 
     if (itemExist) {
-      throw Error('Item already exist in Database')
+      throw Error('Item already exists in the database');
     }
-    else if (!supplierExist) {
-      throw Error(`${Supplier} must exist in Database`)
+    if (!supplierExist) {
+      throw Error('Supplier must exist in the database');
     }
-    else {
-      supplierId = supplierExist._id;
-      const newItem = await Item.create({ itemName, unitPrice, measurement_unit });
-      const newStock = await Stock.create({ item_id: newItem._id, volume_remaining: quantity, supplier: supplierId });
-      res.status(200).json(newItem);
-      console.log('New Item added successfully', newItem)
-      console.log('Stock updated with new item', newStock)
-    }
-  }
-  catch (error) {
+
+    const newItem = await Item.create({ itemName, unitPrice, measurement_unit });
+    const newStock = await Stock.create({ item_id: newItem._id, volume_remaining: quantity, supplier: supplierExist._id });
+
+    res.status(200).json(newItem);
+    console.log('New Item added successfully', newItem);
+    console.log('Stock updated with new item', newStock);
+  } catch (error) {
     console.error('Error creating Item', error);
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message });
   }
 };
 

@@ -20,27 +20,66 @@ const getQuotation = async (req, res) => {
 
 // Getting all cleared cars
 const getQuotations = async (req, res) => {
-    const quotation = await Quotation.find({}).populate('car_id').populate('worker_id').populate('repair_service_id').sort({createdAt: -1})
+    try {
+        const quotations = await Quotation.find()
+            .populate({
+                path: 'repair_service_id',
+                populate: {
+                    path: 'stock_item',
+                    model: 'Stock'
+                }
+            })
+            .populate({
+                path: 'car_id',
+                populate: {
+                    path: 'owner',
+                    model: 'Customer'
+                }
+            })
+            .populate('worker_id')
+            .sort({ createdAt: -1 });
 
-    res.status(200).json(quotation)
-}
-
-// Getting a single cleared car
+        res.status(200).json(quotations);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 const getOneQuotation = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: 'No such Quotation'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'No such Quotation' });
     }
 
-    const quotation = await Quotation.findById(id).populate('car_id').populate('worker_id').populate('repair_service_id')
+    try {
+        const quotation = await Quotation.findById(id)
+            .populate({
+                path: 'repair_service_id',
+                populate: {
+                    path: 'stock_item',
+                    model: 'Stock'
+                }
+            })
+            .populate({
+                path: 'car_id',
+                populate: {
+                    path: 'owner',
+                    model: 'Customer'
+                }
+            })
+            .populate('worker_id');
 
-    if(!quotation) {
-        return res.status(404).json({error: 'No such Quotation'})
+        if (!quotation) {
+            return res.status(404).json({ error: 'No such Quotation' });
+        }
+
+        res.status(200).json(quotation);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-    res.status(200).json(quotation)
-}
+};
 
 // Adding a car to the cleared list
 const createQuotation = async (req, res) => {

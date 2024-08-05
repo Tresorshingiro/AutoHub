@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import '../../App.css';
@@ -13,7 +13,7 @@ import UpdateSupplier from '../components/UpdateSupplier';
 const getLoc = "http://localhost:3000/api/supplier/"
 
 const SupplierList = () => {
-  const [supplier, setSupplier] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [openDropdowns, setOpenDropdowns] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedSupplierId, setSelectedSupplierId] = useState(null);
@@ -29,21 +29,21 @@ const SupplierList = () => {
     }))
   }
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(getLoc);
-        setSupplier(response.data);
-      } catch (err) {
-        setError(err.message || 'An error occurred while fetching data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(getLoc);
+      setSuppliers(response.data.suppliers);
+      console.log('API response', response.data);
+    } catch (err) {
+      setError(err.message || 'An error occurred while fetching data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchData();
+});
+  
   return (
     <div className="container">
        <AccountantNav/>
@@ -72,7 +72,7 @@ const SupplierList = () => {
               </tr>
             </thead>
             <tbody>
-              {supplier.map(supplier => (
+              {suppliers.map((supplier) => (
                 <tr key={supplier._id}>
                   <td>{supplier.company_name}</td>
                   <td>{supplier.TIN_no}</td>
@@ -104,7 +104,7 @@ const SupplierList = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+                ))}
             </tbody>
             </table>
         )}
