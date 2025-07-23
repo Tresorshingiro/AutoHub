@@ -114,6 +114,7 @@ const AddVehicle = () => {
       // Add all form fields
       Object.keys(formData).forEach(key => {
         if (key === 'customer') {
+          // Send customer as JSON string for FormData
           submitData.append('customer', JSON.stringify(formData.customer))
         } else {
           submitData.append(key, formData[key])

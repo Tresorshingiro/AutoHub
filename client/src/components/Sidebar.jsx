@@ -10,7 +10,13 @@ import {
   LogOut, 
   User,
   Menu,
-  X
+  X,
+  FileText,
+  DollarSign,
+  Package,
+  Users,
+  BarChart3,
+  Settings
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -26,32 +32,124 @@ const Sidebar = () => {
     navigate('/login')
   }
 
-  const menuItems = [
-    {
-      title: 'Dashboard',
-      icon: LayoutDashboard,
-      path: '/reception/dashboard',
-      color: 'text-blue-600'
-    },
-    {
-      title: 'Add Vehicle',
-      icon: Plus,
-      path: '/reception/add-vehicle',
-      color: 'text-green-600'
-    },
-    {
-      title: 'In Service',
-      icon: Wrench,
-      path: '/reception/in-service',
-      color: 'text-orange-600'
-    },
-    {
-      title: 'Cleared Vehicles',
-      icon: CheckCircle,
-      path: '/reception/cleared',
-      color: 'text-purple-600'
+  // Role-based menu items
+  const getMenuItems = () => {
+    switch (user?.role) {
+      case 'receptionist':
+        return [
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            path: '/reception/dashboard',
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Add Vehicle',
+            icon: Plus,
+            path: '/reception/add-vehicle',
+            color: 'text-green-600'
+          },
+          {
+            title: 'In Service',
+            icon: Wrench,
+            path: '/reception/in-service',
+            color: 'text-orange-600'
+          },
+          {
+            title: 'Cleared Vehicles',
+            icon: CheckCircle,
+            path: '/reception/cleared',
+            color: 'text-purple-600'
+          }
+        ]
+      
+      case 'mechanic':
+        return [
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            path: '/mechanic/dashboard',
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Diagnosis',
+            icon: Car,
+            path: '/mechanic/diagnosis',
+            color: 'text-yellow-600'
+          },
+          {
+            title: 'Quotations',
+            icon: FileText,
+            path: '/mechanic/quotations',
+            color: 'text-orange-600'
+          },
+          {
+            title: 'Services',
+            icon: Wrench,
+            path: '/mechanic/services',
+            color: 'text-purple-600'
+          },
+          {
+            title: 'Completed',
+            icon: CheckCircle,
+            path: '/mechanic/completed',
+            color: 'text-green-600'
+          }
+        ]
+      
+      case 'accountant':
+        return [
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            path: '/accountant/dashboard',
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Cleared Vehicles',
+            icon: CheckCircle,
+            path: '/accountant/cleared',
+            color: 'text-green-600'
+          },
+          {
+            title: 'Suppliers',
+            icon: Users,
+            path: '/accountant/suppliers',
+            color: 'text-orange-600'
+          },
+          {
+            title: 'Inventory',
+            icon: Package,
+            path: '/accountant/inventory',
+            color: 'text-purple-600'
+          },
+          {
+            title: 'Reports',
+            icon: BarChart3,
+            path: '/accountant/reports',
+            color: 'text-indigo-600'
+          }
+        ]
+      
+      default:
+        return []
     }
-  ]
+  }
+
+  const menuItems = getMenuItems()
+  
+  const getRoleName = () => {
+    switch (user?.role) {
+      case 'receptionist':
+        return 'Reception Panel'
+      case 'mechanic':
+        return 'Mechanic Panel'
+      case 'accountant':
+        return 'Accountant Panel'
+      default:
+        return 'Dashboard'
+    }
+  }
 
   const isActive = (path) => location.pathname === path
 
@@ -65,7 +163,7 @@ const Sidebar = () => {
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">AutoHub</h1>
-            <p className="text-sm text-muted-foreground">Reception Panel</p>
+            <p className="text-sm text-muted-foreground">{getRoleName()}</p>
           </div>
         </Link>
       </div>
@@ -99,12 +197,6 @@ const Sidebar = () => {
             <span className="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full mt-1">
               {user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'Reception'}
             </span>
-            {/* Debug info - remove after testing */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="text-xs text-gray-500 mt-1">
-                User ID: {user?.id || 'Not loaded'}
-              </div>
-            )}
           </div>
         </div>
       </div>

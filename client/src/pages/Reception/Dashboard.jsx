@@ -135,7 +135,7 @@ const Dashboard = () => {
                   <div key={vehicle._id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                        <Car className="h-5 w-5 text-white" />
+                        <img src={vehicle.image} className='w-10 h-10' alt={vehicle.vehicleBrand} />
                       </div>
                       <div>
                         <p className="font-semibold text-foreground">

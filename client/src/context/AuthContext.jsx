@@ -94,6 +94,10 @@ const AuthContextProvider = (props) => {
                 config.headers['rtoken'] = token;
             } else if (role === 'admin') {
                 config.headers['atoken'] = token;
+            } else if (role === 'mechanic') {
+                config.headers['mtoken'] = token;
+            } else if (role === 'accountant') {
+                config.headers['actoken'] = token;
             } else {
                 // For other employee roles, use rtoken as default
                 config.headers['rtoken'] = token;
@@ -130,29 +134,62 @@ const AuthContextProvider = (props) => {
     // Logout function
     const logout = () => {
         if (user) {
-            localStorage.removeItem(`${user.role}Token`);
+            // Handle role mismatch: 'receptionist' from DB vs 'reception' used for tokens
+            const tokenRole = user.role === 'receptionist' ? 'reception' : user.role;
+            localStorage.removeItem(`${tokenRole}Token`);
         }
         localStorage.removeItem('userData');
         setUser(null);
         toast.success("Logged out");
     };
 
-    // Check for token on mount
+    // Check for token on mount and restore session
     useEffect(() => {
-        const storedUserData = localStorage.getItem('userData');
-        if (storedUserData) {
-            try {
-                const userData = JSON.parse(storedUserData);
-                const token = localStorage.getItem(`${userData.role}Token`);
-                if (token) {
-                    setUser(userData);
+        const restoreSession = async () => {
+            const storedUserData = localStorage.getItem('userData');
+            
+            if (storedUserData) {
+                try {
+                    const userData = JSON.parse(storedUserData);
+                    
+                    // Handle role mismatch: 'receptionist' from DB vs 'reception' used for tokens
+                    const tokenRole = userData.role === 'receptionist' ? 'reception' : userData.role;
+                    const token = localStorage.getItem(`${tokenRole}Token`);
+                    
+                    if (token) {
+                        // If it's a reception user and we don't have complete profile data, fetch it
+                        if ((userData.role === 'receptionist' || userData.role === 'reception') && (!userData.firstName || !userData.lastName)) {
+                            try {
+                                console.log('Fetching fresh profile data after page refresh...');
+                                const employeeData = await fetchEmployeeData(token, 'reception'); // Always use 'reception' for API calls
+                                const completeUserData = {
+                                    ...userData,
+                                    ...employeeData
+                                };
+                                setUser(completeUserData);
+                                localStorage.setItem('userData', JSON.stringify(completeUserData));
+                                console.log('Profile data refreshed:', completeUserData);
+                            } catch (fetchError) {
+                                console.error('Failed to refresh profile data:', fetchError);
+                                // Use stored data as fallback
+                                setUser(userData);
+                            }
+                        } else {
+                            setUser(userData);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error restoring session:', error);
+                    // Clear invalid stored data
+                    localStorage.removeItem('userData');
+                    localStorage.clear(); // Clear all role tokens
                 }
-            } catch (error) {
-                // Clear invalid stored data
-                localStorage.removeItem('userData');
-                localStorage.clear(); // Clear all role tokens
+            } else {
+                console.log('No stored user data found');
             }
-        }
+        };
+
+        restoreSession();
     }, []);
 
     const value = {

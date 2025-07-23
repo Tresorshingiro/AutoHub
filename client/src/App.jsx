@@ -12,6 +12,13 @@ import Dashboard from './pages/Reception/Dashboard'
 import AddVehicle from './pages/Reception/AddVehicle'
 import InService from './pages/Reception/InService'
 import ClearedVehicles from './pages/Reception/ClearedVehicles'
+import MechanicDashboard from './pages/Mechanic/Dashboard'
+import MechanicDiagnosis from './pages/Mechanic/Diagnosis'
+import Quotations from './pages/Mechanic/Quotations'
+import MechanicServices from './pages/Mechanic/Services'
+import MechanicCompletedVehicles from './pages/Mechanic/CompletedVehicles'
+import { MechanicProvider } from './context/MechanicContext'
+import { AccountantProvider } from './context/AccountantContext'
 import {Toaster} from 'react-hot-toast'
 
 // Landing Page Component
@@ -37,6 +44,34 @@ const ReceptionLayout = ({ children }) => {
         {children}
       </main>
     </div>
+  )
+}
+
+// Mechanic Layout Component
+const MechanicLayout = ({ children }) => {
+  return (
+    <MechanicProvider>
+      <div className="flex h-screen bg-background">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </MechanicProvider>
+  )
+}
+
+// Accountant Layout Component
+const AccountantLayout = ({ children }) => {
+  return (
+    <AccountantProvider>
+      <div className="flex h-screen bg-background">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </AccountantProvider>
   )
 }
 
@@ -69,6 +104,34 @@ const App = () => {
             <ClearedVehicles />
           </ReceptionLayout>
         } />
+
+        {/* Mechanic Routes */}
+        <Route path="/mechanic/dashboard" element={
+          <MechanicLayout>
+            <MechanicDashboard />
+          </MechanicLayout>
+        } />
+        <Route path="/mechanic/diagnosis" element={
+          <MechanicLayout>
+            <MechanicDiagnosis />
+          </MechanicLayout>
+        } />
+        <Route path="/mechanic/quotations" element={
+          <MechanicLayout>
+            <Quotations />
+          </MechanicLayout>
+        } />
+        <Route path="/mechanic/services" element={
+          <MechanicLayout>
+            <MechanicServices />
+          </MechanicLayout>
+        } />
+        <Route path="/mechanic/completed" element={
+          <MechanicLayout>
+            <MechanicCompletedVehicles />
+          </MechanicLayout>
+        } />
+
       </Routes>
     </div>
   )

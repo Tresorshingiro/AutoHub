@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ReceptionContext } from '@/context/ReceptionContext'
+import ViewVehicleModal from '@/components/ViewVehicleModal'
+import EditVehicleModal from '@/components/EditVehicleModal'
 import { 
   Wrench, 
   Search, 
@@ -273,14 +275,24 @@ const InService = () => {
 
                   {/* Actions */}
                   <div className="flex flex-row lg:flex-col gap-2">
-                    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
-                      <Eye className="h-4 w-4 mr-2" />
-                      View
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </Button>
+                    <ViewVehicleModal 
+                      vehicle={vehicle}
+                      trigger={
+                        <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </Button>
+                      }
+                    />
+                    <EditVehicleModal 
+                      vehicle={vehicle}
+                      trigger={
+                        <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit
+                        </Button>
+                      }
+                    />
                   </div>
                 </div>
               </CardContent>
