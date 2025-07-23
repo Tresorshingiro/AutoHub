@@ -5,6 +5,8 @@ const cors = require('cors')
 const connectCloudinary = require('./config/cloudinary')
 const adminRouter = require('./routes/adminRoutes')
 const receptionRouter = require('./routes/receptionRoutes')
+const mechanicRouter = require('./routes/mechanicRoutes')
+const accountantRouter = require('./routes/accountantRoutes')
 
 
 const app = express()
@@ -15,6 +17,8 @@ app.use(cors())
 
 app.use('/api/admin', adminRouter)
 app.use('/api/reception', receptionRouter)
+app.use('/api/mechanic', mechanicRouter)
+app.use('/api/accountant', accountantRouter)
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {

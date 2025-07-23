@@ -56,8 +56,34 @@ const VehicleSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['awaiting-diagnosis', 'in-progress', 'waiting-parts', 'completed'],
+        enum: [
+            'awaiting-diagnosis',
+            'quotation-pending',
+            'quotation-approved',
+            'quotation-rejected',
+            'in-progress',
+            'waiting-parts',
+            'completed'
+        ],
         default: 'awaiting-diagnosis'
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['unpaid', 'partially-paid', 'paid'],
+        default: 'unpaid'
+    },
+    totalAmount: {
+        type: Number,
+        min: 0,
+        default: 0
+    },
+    paidAmount: {
+        type: Number,
+        min: 0,
+        default: 0
+    },
+    completedAt: {
+        type: Date
     }
 }, {timestamps: true})
 

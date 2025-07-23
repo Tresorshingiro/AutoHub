@@ -17,7 +17,7 @@ const EmployeeSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ['receptionist', 'manager', 'accountant', 'technician']
+        enum: ['receptionist', 'manager', 'accountant', 'mechanic']
     },
     password: {
         type: String,

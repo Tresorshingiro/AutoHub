@@ -7,18 +7,30 @@ const bcrypt = require('bcrypt')
 
 const addVehicle = async (req, res)=> {
     try{
+        
         const {vehicleBrand, vehicleType, ModelYear, PlateNo, ChassisNo, engine, customer, insurance, TinNo, concerns, status} = req.body
         const imageFile = req.file
+        
+        // Parse customer data if it's a JSON string (from FormData)
+        let parsedCustomer;
+        try {
+            parsedCustomer = typeof customer === 'string' ? JSON.parse(customer) : customer;
+        } catch (parseError) {
+            console.log('Customer parsing error:', parseError);
+            return res.json({success: false, message: "Invalid customer data format"});
+        }
+        
+        console.log('Parsed customer data:', parsedCustomer);
         
         if(!vehicleBrand || !vehicleType || !ModelYear || !PlateNo || !ChassisNo || !engine || !insurance || !TinNo || !concerns ){
             return res.json({success: false, message: "All fields are required"})
         }
 
-        if(!customer || !customer.name || !customer.email || !customer.phone ){
-            return res.json({success: false, message: "Customers details are required"})
+        if(!parsedCustomer || !parsedCustomer.name || !parsedCustomer.email || !parsedCustomer.phone ){
+            return res.json({success: false, message: "Customer details are required"})
         }
 
-        if(!validator.isEmail(customer.email)){
+        if(!validator.isEmail(parsedCustomer.email)){
             return res.json({success: false, message: "Invalid email format"})
         }
 
@@ -48,9 +60,9 @@ const addVehicle = async (req, res)=> {
             engine,
             image: imageUrl,
             customer: {
-                name: customer.name,
-                email: customer.email,
-                phone: customer.phone
+                name: parsedCustomer.name,
+                email: parsedCustomer.email,
+                phone: parsedCustomer.phone
             },
             insurance,
             TinNo,
@@ -151,6 +163,15 @@ const updateVehicle = async (req, res) => {
         } = req.body;
         const imageFile = req.file;
 
+        // Parse customer data if it's a JSON string (from FormData)
+        let parsedCustomer;
+        try {
+            parsedCustomer = typeof customer === 'string' ? JSON.parse(customer) : customer;
+        } catch (parseError) {
+            console.log('Customer parsing error:', parseError);
+            return res.json({success: false, message: "Invalid customer data format"});
+        }
+
         if (!id) {
             return res.json({ success: false, message: "Vehicle ID is required" });
         }
@@ -165,11 +186,11 @@ const updateVehicle = async (req, res) => {
             return res.json({ success: false, message: "All fields are required" });
         }
 
-        if (!customer || !customer.name || !customer.email || !customer.phone) {
+        if (!parsedCustomer || !parsedCustomer.name || !parsedCustomer.email || !parsedCustomer.phone) {
             return res.json({ success: false, message: "Customer details are required" });
         }
 
-        if (!validator.isEmail(customer.email)) {
+        if (!validator.isEmail(parsedCustomer.email)) {
             return res.json({ success: false, message: "Invalid email format" });
         }
 
@@ -193,9 +214,9 @@ const updateVehicle = async (req, res) => {
         vehicle.status = status || vehicle.status;
         vehicle.image = imageUrl;
         vehicle.customer = {
-            name: customer.name,
-            email: customer.email,
-            phone: customer.phone
+            name: parsedCustomer.name,
+            email: parsedCustomer.email,
+            phone: parsedCustomer.phone
         };
 
         await vehicle.save();
