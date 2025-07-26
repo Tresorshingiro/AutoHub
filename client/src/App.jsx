@@ -17,6 +17,13 @@ import MechanicDiagnosis from './pages/Mechanic/Diagnosis'
 import Quotations from './pages/Mechanic/Quotations'
 import MechanicServices from './pages/Mechanic/Services'
 import MechanicCompletedVehicles from './pages/Mechanic/CompletedVehicles'
+import AccountantDashboard from './pages/Accountant/Dashboard'
+import AccountantClearedVehicles from './pages/Accountant/ClearedVehicles'
+import IncomeManagement from './pages/Accountant/Income'
+import ExpenseManagement from './pages/Accountant/Expenses'
+import EnhancedInventory from './pages/Accountant/Inventory'
+import Suppliers from './pages/Accountant/Suppliers'
+import Reports from './pages/Accountant/Reports'
 import { MechanicProvider } from './context/MechanicContext'
 import { AccountantProvider } from './context/AccountantContext'
 import {Toaster} from 'react-hot-toast'
@@ -130,6 +137,43 @@ const App = () => {
           <MechanicLayout>
             <MechanicCompletedVehicles />
           </MechanicLayout>
+        } />
+
+        {/* Accountant Routes */}
+        <Route path="/accountant/dashboard" element={
+          <AccountantLayout>
+            <AccountantDashboard />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/cleared-vehicles" element={
+          <AccountantLayout>
+            <AccountantClearedVehicles />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/income" element={
+          <AccountantLayout>
+            <IncomeManagement />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/expenses" element={
+          <AccountantLayout>
+            <ExpenseManagement />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/inventory" element={
+          <AccountantLayout>
+            <EnhancedInventory />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/suppliers" element={
+          <AccountantLayout>
+            <Suppliers />
+          </AccountantLayout>
+        } />
+        <Route path="/accountant/reports" element={
+          <AccountantLayout>
+            <Reports />
+          </AccountantLayout>
         } />
 
       </Routes>

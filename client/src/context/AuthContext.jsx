@@ -97,7 +97,7 @@ const AuthContextProvider = (props) => {
             } else if (role === 'mechanic') {
                 config.headers['mtoken'] = token;
             } else if (role === 'accountant') {
-                config.headers['actoken'] = token;
+                config.headers['Authorization'] = `Bearer ${token}`;
             } else {
                 // For other employee roles, use rtoken as default
                 config.headers['rtoken'] = token;
@@ -151,19 +151,26 @@ const AuthContextProvider = (props) => {
             if (storedUserData) {
                 try {
                     const userData = JSON.parse(storedUserData);
+                    console.log('Restoring session for user:', userData)
                     
                     // Handle role mismatch: 'receptionist' from DB vs 'reception' used for tokens
                     const tokenRole = userData.role === 'receptionist' ? 'reception' : userData.role;
                     const token = localStorage.getItem(`${tokenRole}Token`);
                     
+                    console.log('Looking for token with key:', `${tokenRole}Token`)
+                    console.log('Found token:', token)
+                    
                     if (token) {
+                        // Update user data with token to ensure it's available
+                        const userDataWithToken = { ...userData, token }
+                        
                         // If it's a reception user and we don't have complete profile data, fetch it
                         if ((userData.role === 'receptionist' || userData.role === 'reception') && (!userData.firstName || !userData.lastName)) {
                             try {
                                 console.log('Fetching fresh profile data after page refresh...');
                                 const employeeData = await fetchEmployeeData(token, 'reception'); // Always use 'reception' for API calls
                                 const completeUserData = {
-                                    ...userData,
+                                    ...userDataWithToken,
                                     ...employeeData
                                 };
                                 setUser(completeUserData);
@@ -172,10 +179,10 @@ const AuthContextProvider = (props) => {
                             } catch (fetchError) {
                                 console.error('Failed to refresh profile data:', fetchError);
                                 // Use stored data as fallback
-                                setUser(userData);
+                                setUser(userDataWithToken);
                             }
                         } else {
-                            setUser(userData);
+                            setUser(userDataWithToken);
                         }
                     }
                 } catch (error) {

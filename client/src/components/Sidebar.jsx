@@ -108,20 +108,32 @@ const Sidebar = () => {
           {
             title: 'Cleared Vehicles',
             icon: CheckCircle,
-            path: '/accountant/cleared',
+            path: '/accountant/cleared-vehicles',
             color: 'text-green-600'
           },
           {
-            title: 'Suppliers',
-            icon: Users,
-            path: '/accountant/suppliers',
-            color: 'text-orange-600'
+            title: 'Income',
+            icon: DollarSign,
+            path: '/accountant/income',
+            color: 'text-green-600'
+          },
+          {
+            title: 'Expenses',
+            icon: FileText,
+            path: '/accountant/expenses',
+            color: 'text-red-600'
           },
           {
             title: 'Inventory',
             icon: Package,
             path: '/accountant/inventory',
             color: 'text-purple-600'
+          },
+          {
+            title: 'Suppliers',
+            icon: Users,
+            path: '/accountant/suppliers',
+            color: 'text-orange-600'
           },
           {
             title: 'Reports',
@@ -259,13 +271,13 @@ const Sidebar = () => {
       )}
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex w-80 bg-background border-r flex-col h-screen sticky top-0">
+      <div className="hidden lg:flex w-64 bg-background border-r flex-col h-screen sticky top-0">
         <SidebarContent />
       </div>
 
       {/* Mobile Sidebar */}
       <div className={`
-        lg:hidden fixed left-0 top-0 h-screen w-80 bg-background border-r z-50 transform transition-transform duration-300
+        lg:hidden fixed left-0 top-0 h-screen w-64 bg-background border-r z-50 transform transition-transform duration-300
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <SidebarContent />

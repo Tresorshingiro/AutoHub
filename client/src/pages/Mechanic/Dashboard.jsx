@@ -345,15 +345,6 @@ const MechanicDashboard = () => {
                     <Badge className={`${getQuotationStatusColor(quotation.status)} text-white`}>
                       {quotation.status}
                     </Badge>
-                    {quotation.status === 'approved' && !hasExistingService(quotation._id) && (
-                      <Button 
-                        size="sm"
-                        onClick={() => handleStartService(quotation._id)}
-                      >
-                        <Play className="w-4 h-4 mr-1" />
-                        Start Service
-                      </Button>
-                    )}
                     {quotation.status === 'approved' && hasExistingService(quotation._id) && !isServiceCompleted(quotation._id) && (
                       <Badge variant="outline" className="text-blue-600">
                         Service In Progress
