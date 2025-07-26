@@ -4,6 +4,7 @@ const Part = require('../models/Parts')
 const Supplier = require('../models/Supplier')
 const Employee = require('../models/Employee')
 const Service = require('../models/Service')
+const Expense = require('../models/Expense')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -423,12 +424,14 @@ const startService = async (req, res) => {
     }
 
     // Create service items from quotation parts
-    const serviceItems = quotation.parts.map(part => ({
-      partId: part.partId._id,
-      description: part.description,
-      quantity: part.quantity,
-      status: 'pending'
-    }))
+    const serviceItems = quotation.parts
+      .filter(part => part.partId && part.partId._id) // Filter out parts with null partId
+      .map(part => ({
+        partId: part.partId._id,
+        description: part.description,
+        quantity: part.quantity,
+        status: 'pending'
+      }))
 
     // Generate service number
     const year = new Date().getFullYear()
@@ -460,9 +463,11 @@ const startService = async (req, res) => {
 
     // Reserve parts inventory (reduce stock)
     for (let part of quotation.parts) {
-      await Part.findByIdAndUpdate(part.partId._id, {
-        $inc: { 'inventory.currentStock': -part.quantity }
-      })
+      if (part.partId && part.partId._id) { // Check if partId exists
+        await Part.findByIdAndUpdate(part.partId._id, {
+          $inc: { 'inventory.currentStock': -part.quantity }
+        })
+      }
     }
 
     // Populate service for response
@@ -584,7 +589,7 @@ const updateServiceProgress = async (req, res) => {
 const completeService = async (req, res) => {
   try {
     const { serviceId } = req.params
-    const { serviceNotes, actualPartsUsed } = req.body
+    const { serviceNotes, actualPartsUsed, mechanicId } = req.body
 
     const service = await Service.findById(serviceId)
       .populate('quotationId')
@@ -599,6 +604,50 @@ const completeService = async (req, res) => {
         ...part,
         totalCost: part.quantityUsed * part.unitPrice
       }))
+
+      // Process each part used - create expense records and update inventory
+      for (const partUsed of actualPartsUsed) {
+        try {
+          // Find the part document
+          const partDoc = await Part.findById(partUsed.partId)
+          if (!partDoc) {
+            console.warn(`Part not found: ${partUsed.partId}`)
+            continue
+          }
+
+          // Create expense record for this part usage
+          const expenseRefNumber = `EXP-${Date.now()}-${partDoc.partNumber}`
+          const expense = new Expense({
+            referenceNumber: expenseRefNumber,
+            category: 'parts-purchase',
+            supplierId: partDoc.supplier,
+            description: `Parts used: ${partDoc.name} (${partUsed.quantityUsed} units) for service ${serviceId}`,
+            amount: partUsed.totalCost,
+            paymentMethod: 'cash', // Default for internal consumption
+            accountantId: mechanicId, // Using mechanic as the one who recorded the expense
+            vehicleId: service.vehicleId,
+            serviceId: service._id,
+            notes: `Automatic expense record for parts consumption during service`
+          })
+          
+          await expense.save()
+          console.log(`Expense record created for part ${partDoc.name}: RWF ${partUsed.totalCost}`)
+
+          // Update part inventory
+          if (partDoc.inventory && partDoc.inventory.currentStock >= partUsed.quantityUsed) {
+            partDoc.inventory.currentStock -= partUsed.quantityUsed
+            partDoc.inventory.lastUpdated = new Date()
+            await partDoc.save()
+            console.log(`Inventory updated for ${partDoc.name}: ${partUsed.quantityUsed} units consumed`)
+          } else {
+            console.warn(`Insufficient stock for ${partDoc.name}. Current: ${partDoc.inventory?.currentStock || 0}, Needed: ${partUsed.quantityUsed}`)
+          }
+
+        } catch (partError) {
+          console.error(`Error processing part ${partUsed.partId}:`, partError)
+          // Continue with other parts even if one fails
+        }
+      }
     }
 
     // Complete the service
@@ -622,10 +671,11 @@ const completeService = async (req, res) => {
 
     res.json({ 
       success: true, 
-      message: 'Service completed successfully. Vehicle moved to cleared vehicles for payment processing.',
+      message: 'Service completed successfully. Parts consumption recorded as expenses and inventory updated.',
       service 
     })
   } catch (error) {
+    console.error('Service completion error:', error)
     res.json({ success: false, message: error.message })
   }
 }

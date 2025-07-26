@@ -2,19 +2,30 @@ const jwt = require('jsonwebtoken')
 
 const authAccountant = (req, res, next) => {
     try{
-        const {atoken} = req.headers
-        if(!atoken){
-            return res.json({success: false, message: "Not Authorized Login Again"})
+        const authHeader = req.headers.authorization || req.headers.atoken
+
+        
+        if(!authHeader){
+            return res.status(401).json({success: false, message: "Not Authorized Login Again"})
         }
-        const token_decode = jwt.verify(atoken, process.env.JWT_SECRET)
-
+        
+        // Extract token from "Bearer <token>" format or direct token
+        const token = authHeader.startsWith('Bearer ') 
+            ? authHeader.slice(7) 
+            : authHeader
+        
+        
+        if(!token){
+            return res.status(401).json({success: false, message: "Not Authorized Login Again"})
+        }
+        
+        const token_decode = jwt.verify(token, process.env.JWT_SECRET)
         req.employee = { id: token_decode.id }
-
         next()
 
     } catch(error) {
-        console.log(error)
-        res.status(400).json({message:error.message})
+        console.log('Auth error:', error)
+        res.status(401).json({success: false, message: "Invalid token. Please login again."})
     }
 }
 

@@ -6,6 +6,8 @@ const Supplier = require('../models/Supplier')
 const Income = require('../models/Income')
 const Expense = require('../models/Expense')
 const Employee = require('../models/Employee')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 //login accountant
 const loginAccountant = async (req, res) => {
@@ -29,6 +31,35 @@ const loginAccountant = async (req, res) => {
         console.log(error)
         res.json({success: false, message: error.message})
     }
+}
+
+// Get accountant profile
+const getAccountantProfile = async (req, res) => {
+  try {
+    const accountantId = req.employee.id
+    const employee = await Employee.findById(accountantId).select('-password')
+    
+    if (!employee) {
+      return res.json({ success: false, message: 'Accountant not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      employee: {
+        _id: employee._id,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        email: employee.email,
+        phoneNumber: employee.phoneNumber,
+        address: employee.address,
+        gender: employee.gender,
+        role: employee.role,
+        image: employee.image
+      }
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
 }
 // VEHICLE PAYMENT MANAGEMENT
 // Get completed vehicles (cleared vehicles)
@@ -66,8 +97,10 @@ const getClearedVehicles = async (req, res) => {
 const updatePaymentStatus = async (req, res) => {
   try {
     const { vehicleId } = req.params
-    const { paymentStatus, paidAmount, paymentMethod, notes } = req.body
+    const { amount, paymentMethod, notes, phoneNumber, accountNumber } = req.body
     const accountantId = req.employee.id
+    
+    console.log('Payment data received:', { vehicleId, amount, paymentMethod, notes, phoneNumber, accountNumber })
     
     const vehicle = await Vehicle.findById(vehicleId)
       .populate('customer')
@@ -85,33 +118,108 @@ const updatePaymentStatus = async (req, res) => {
     }
     
     // Update vehicle payment details
-    vehicle.paymentStatus = paymentStatus
-    vehicle.paidAmount = paidAmount || vehicle.paidAmount
-    vehicle.totalAmount = quotation.summary.grandTotal
+    const currentPaidAmount = vehicle.paidAmount || 0
+    const newPaidAmount = currentPaidAmount + (amount || 0)
+    const totalAmount = quotation.summary.grandTotal
+    
+    vehicle.paidAmount = newPaidAmount
+    vehicle.totalAmount = totalAmount
+    
+    // Determine payment status based on amounts
+    if (newPaidAmount >= totalAmount) {
+      vehicle.paymentStatus = 'paid'
+    } else if (newPaidAmount > 0) {
+      vehicle.paymentStatus = 'partially-paid'
+    } else {
+      vehicle.paymentStatus = 'unpaid'
+    }
     
     await vehicle.save()
     
     // Create income record if payment received
-    if (paidAmount > 0) {
+    if (amount > 0) {
+      // Generate reference number
+      const referenceNumber = `INC-${Date.now()}-${vehicle.PlateNo.replace(/\s+/g, '')}`
+      
       const income = new Income({
+        referenceNumber,
         vehicleId: vehicle._id,
         serviceId: service._id,
         quotationId: quotation._id,
         customerName: vehicle.customer.name,
-        amount: paidAmount,
+        vehicleRef: vehicle.PlateNo, // Add vehicle reference
+        category: 'service_payment', // Set category for service payments
+        amount: amount,
         paymentMethod,
+        phoneNumber: paymentMethod === 'mobile_money' ? phoneNumber : undefined,
+        accountNumber: ['bank_transfer', 'credit_card'].includes(paymentMethod) ? accountNumber : undefined,
         description: `Payment for ${vehicle.vehicleBrand} ${vehicle.vehicleType} - ${vehicle.PlateNo}`,
         accountantId,
         notes
       })
       
       await income.save()
+      console.log('Income record created:', income)
     }
+    
+    console.log('Vehicle updated:', { 
+      id: vehicle._id, 
+      paidAmount: vehicle.paidAmount, 
+      totalAmount: vehicle.totalAmount,
+      paymentStatus: vehicle.paymentStatus 
+    })
     
     res.json({ 
       success: true, 
-      message: 'Payment status updated successfully',
+      message: 'Payment recorded successfully',
       vehicle 
+    })
+  } catch (error) {
+    console.error('Payment recording error:', error)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Create invoice for vehicle
+const createInvoice = async (req, res) => {
+  try {
+    const { vehicleId } = req.params
+    const { invoiceNumber, dueDate, notes, taxRate } = req.body
+    
+    const vehicle = await Vehicle.findById(vehicleId)
+      .populate('customer')
+    
+    if (!vehicle) {
+      return res.json({ success: false, message: 'Vehicle not found' })
+    }
+    
+    // Get the service and quotation for this vehicle
+    const service = await Service.findOne({ vehicleId }).populate('quotationId')
+    const quotation = service?.quotationId
+    
+    if (!quotation) {
+      return res.json({ success: false, message: 'No quotation found for this vehicle' })
+    }
+    
+    // Update vehicle with invoice details
+    vehicle.invoiceNumber = invoiceNumber
+    vehicle.invoiceDueDate = dueDate
+    vehicle.invoiceNotes = notes
+    vehicle.taxRate = taxRate || 18
+    vehicle.hasInvoice = true
+    
+    await vehicle.save()
+    
+    res.json({ 
+      success: true, 
+      message: 'Invoice created successfully',
+      invoice: {
+        invoiceNumber,
+        dueDate,
+        notes,
+        taxRate,
+        vehicle
+      }
     })
   } catch (error) {
     res.json({ success: false, message: error.message })
@@ -167,6 +275,27 @@ const addSupplier = async (req, res) => {
   }
 }
 
+// Create supplier (alias for addSupplier)
+const createSupplier = async (req, res) => {
+  try {
+    const supplierData = req.body
+    const supplier = new Supplier(supplierData)
+    await supplier.save()
+    
+    res.json({ 
+      success: true, 
+      message: 'Supplier created successfully',
+      supplier 
+    })
+  } catch (error) {
+    if (error.code === 11000) {
+      res.json({ success: false, message: 'Supplier email already exists' })
+    } else {
+      res.json({ success: false, message: error.message })
+    }
+  }
+}
+
 // Update supplier
 const updateSupplier = async (req, res) => {
   try {
@@ -187,6 +316,26 @@ const updateSupplier = async (req, res) => {
       success: true, 
       message: 'Supplier updated successfully',
       supplier 
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Delete supplier
+const deleteSupplier = async (req, res) => {
+  try {
+    const { supplierId } = req.params
+    
+    const supplier = await Supplier.findByIdAndDelete(supplierId)
+    
+    if (!supplier) {
+      return res.json({ success: false, message: 'Supplier not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Supplier deleted successfully'
     })
   } catch (error) {
     res.json({ success: false, message: error.message })
@@ -228,8 +377,92 @@ const getPartsInventory = async (req, res) => {
   }
 }
 
+// Get all parts (alias for getPartsInventory)
+const getParts = async (req, res) => {
+  try {
+    const { category, lowStock, search } = req.query
+    
+    let query = {}
+    
+    if (category && category !== 'All') {
+      query.category = category
+    }
+    
+    if (lowStock === 'true') {
+      query.$expr = { $lte: ['$quantity', '$minStockLevel'] }
+    }
+    
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { partNumber: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ]
+    }
+    
+    const parts = await Part.find(query)
+      .populate('supplier', 'name contactPerson')
+      .sort({ name: 1 })
+    
+    res.json({ success: true, parts })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
 // Add new part
 const addPart = async (req, res) => {
+  try {
+    console.log('addPart called with body:', req.body)
+    
+    const partData = req.body
+    
+    // Transform frontend data to backend schema
+    const transformedData = {
+      name: partData.name,
+      category: partData.category,
+      partNumber: partData.partNumber,
+      description: partData.description,
+      location: partData.location,
+      supplier: partData.supplier || undefined,
+      inventory: {
+        currentStock: parseInt(partData.quantity) || 0,
+        minimumStock: parseInt(partData.minStockLevel) || 0,
+        location: {
+          warehouse: partData.location || 'Main Warehouse'
+        }
+      },
+      pricing: {
+        costPrice: parseFloat(partData.unitPrice) || 0,
+        sellingPrice: parseFloat(partData.unitPrice) || 0,
+        currency: 'RWF'
+      }
+    }
+    
+    console.log('Transformed data:', transformedData)
+    
+    const part = new Part(transformedData)
+    await part.save()
+    
+    console.log('Part saved successfully:', part)
+    
+    res.json({ 
+      success: true, 
+      message: 'Part added successfully',
+      part 
+    })
+  } catch (error) {
+    console.error('Error in addPart:', error)
+    if (error.code === 11000) {
+      res.json({ success: false, message: 'Part number already exists' })
+    } else {
+      res.json({ success: false, message: error.message })
+    }
+  }
+}
+
+// Create part (alias for addPart)
+const createPart = async (req, res) => {
   try {
     const partData = req.body
     const part = new Part(partData)
@@ -237,7 +470,7 @@ const addPart = async (req, res) => {
     
     res.json({ 
       success: true, 
-      message: 'Part added successfully',
+      message: 'Part created successfully',
       part 
     })
   } catch (error) {
@@ -246,6 +479,52 @@ const addPart = async (req, res) => {
     } else {
       res.json({ success: false, message: error.message })
     }
+  }
+}
+
+// Update part
+const updatePart = async (req, res) => {
+  try {
+    const { partId } = req.params
+    const updateData = req.body
+    
+    const part = await Part.findByIdAndUpdate(
+      partId, 
+      updateData, 
+      { new: true }
+    )
+    
+    if (!part) {
+      return res.json({ success: false, message: 'Part not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Part updated successfully',
+      part 
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Delete part
+const deletePart = async (req, res) => {
+  try {
+    const { partId } = req.params
+    
+    const part = await Part.findByIdAndDelete(partId)
+    
+    if (!part) {
+      return res.json({ success: false, message: 'Part not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Part deleted successfully'
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
   }
 }
 
@@ -313,6 +592,89 @@ const getIncomeRecords = async (req, res) => {
   }
 }
 
+// Create income record
+const createIncomeRecord = async (req, res) => {
+  try {
+    const incomeData = req.body
+    incomeData.accountantId = req.employee.id
+    
+    // Generate reference number if not provided
+    if (!incomeData.referenceNumber) {
+      const year = new Date().getFullYear()
+      const month = String(new Date().getMonth() + 1).padStart(2, '0')
+      const count = await Income.countDocuments({
+        createdAt: {
+          $gte: new Date(year, new Date().getMonth(), 1),
+          $lt: new Date(year, new Date().getMonth() + 1, 1)
+        }
+      })
+      incomeData.referenceNumber = `INC-${year}${month}-${String(count + 1).padStart(4, '0')}`
+    }
+    
+    console.log('Creating income with data:', incomeData)
+    
+    const income = new Income(incomeData)
+    await income.save()
+    
+    console.log('Income created successfully:', income)
+    
+    res.json({ 
+      success: true, 
+      message: 'Income record created successfully',
+      income 
+    })
+  } catch (error) {
+    console.error('Income creation error:', error)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Update income record
+const updateIncomeRecord = async (req, res) => {
+  try {
+    const { incomeId } = req.params
+    const updateData = req.body
+    
+    const income = await Income.findByIdAndUpdate(
+      incomeId, 
+      updateData, 
+      { new: true }
+    )
+    
+    if (!income) {
+      return res.json({ success: false, message: 'Income record not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Income record updated successfully',
+      income 
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Delete income record
+const deleteIncomeRecord = async (req, res) => {
+  try {
+    const { incomeId } = req.params
+    
+    const income = await Income.findByIdAndDelete(incomeId)
+    
+    if (!income) {
+      return res.json({ success: false, message: 'Income record not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Income record deleted successfully'
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
 // EXPENSE MANAGEMENT
 
 // Get all expense records
@@ -361,6 +723,80 @@ const addExpense = async (req, res) => {
       success: true, 
       message: 'Expense recorded successfully',
       expense 
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Create expense record (alias for addExpense)
+const createExpenseRecord = async (req, res) => {
+  try {
+    console.log('createExpenseRecord called with body:', req.body)
+    console.log('Employee ID from token:', req.employee?.id)
+    
+    const expenseData = req.body
+    expenseData.accountantId = req.employee.id
+    
+    console.log('Final expense data to save:', expenseData)
+    
+    const expense = new Expense(expenseData)
+    console.log('Created expense model instance')
+    
+    await expense.save()
+    console.log('Expense saved successfully:', expense)
+    
+    res.json({ 
+      success: true, 
+      message: 'Expense record created successfully',
+      expense 
+    })
+  } catch (error) {
+    console.error('Error in createExpenseRecord:', error)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Update expense record
+const updateExpenseRecord = async (req, res) => {
+  try {
+    const { expenseId } = req.params
+    const updateData = req.body
+    
+    const expense = await Expense.findByIdAndUpdate(
+      expenseId, 
+      updateData, 
+      { new: true }
+    )
+    
+    if (!expense) {
+      return res.json({ success: false, message: 'Expense record not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Expense record updated successfully',
+      expense 
+    })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
+// Delete expense record
+const deleteExpenseRecord = async (req, res) => {
+  try {
+    const { expenseId } = req.params
+    
+    const expense = await Expense.findByIdAndDelete(expenseId)
+    
+    if (!expense) {
+      return res.json({ success: false, message: 'Expense record not found' })
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Expense record deleted successfully'
     })
   } catch (error) {
     res.json({ success: false, message: error.message })
@@ -565,6 +1001,63 @@ const accountantDashboard = async (req, res) => {
       }
     ])
 
+    // Get last 12 months of financial data for charts
+    const last12Months = []
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date(currentYear, currentMonth - i, 1)
+      const monthStart = new Date(date.getFullYear(), date.getMonth(), 1)
+      const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59)
+      
+      last12Months.push({
+        month: monthNames[date.getMonth()],
+        year: date.getFullYear(),
+        startDate: monthStart,
+        endDate: monthEnd
+      })
+    }
+
+    // Get income and expenses for each month
+    const monthlyFinancialData = await Promise.all(
+      last12Months.map(async (monthInfo) => {
+        const [incomeData, expenseData] = await Promise.all([
+          Income.aggregate([
+            {
+              $match: {
+                date: { $gte: monthInfo.startDate, $lte: monthInfo.endDate }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: '$amount' }
+              }
+            }
+          ]),
+          Expense.aggregate([
+            {
+              $match: {
+                date: { $gte: monthInfo.startDate, $lte: monthInfo.endDate }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: '$amount' }
+              }
+            }
+          ])
+        ])
+
+        return {
+          month: `${monthInfo.month} ${monthInfo.year}`,
+          income: incomeData[0]?.total || 0,
+          expenses: expenseData[0]?.total || 0
+        }
+      })
+    )
+
     // Get inventory alerts
     const lowStockParts = await Part.countDocuments({
       $expr: { $lte: ['$inventory.currentStock', '$inventory.minimumStock'] },
@@ -656,6 +1149,7 @@ const accountantDashboard = async (req, res) => {
           profitMargin: overallIncomeTotal > 0 ? ((overallProfit / overallIncomeTotal) * 100).toFixed(2) : 0
         }
       },
+      monthlyFinancialData: monthlyFinancialData, // Add 12 months of data for charts
       payments: {
         ...paymentStats,
         totalVehicles: paymentStats.unpaid + paymentStats.partiallyPaid + paymentStats.paid,
@@ -692,27 +1186,41 @@ module.exports = {
   accountantDashboard,
 
   loginAccountant,
+  getAccountantProfile,
   
   // Payment management
   getClearedVehicles,
   updatePaymentStatus,
+  createInvoice,
   
   // Supplier management
   getSuppliers,
   addSupplier,
+  createSupplier,
   updateSupplier,
+  deleteSupplier,
   
   // Parts management
   getPartsInventory,
+  getParts,
   addPart,
+  createPart,
+  updatePart,
+  deletePart,
   updatePartInventory,
   
   // Income management
   getIncomeRecords,
+  createIncomeRecord,
+  updateIncomeRecord,
+  deleteIncomeRecord,
   
   // Expense management
   getExpenseRecords,
   addExpense,
+  createExpenseRecord,
+  updateExpenseRecord,
+  deleteExpenseRecord,
   
   // Reports
   getMonthlyReport,

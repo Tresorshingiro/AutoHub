@@ -22,12 +22,10 @@ const supplierSchema = new mongoose.Schema({
     required: true
   },
   address: {
-    street: { type: String },
-    city: { type: String },
-    country: { type: String, default: 'Rwanda' },
-    postalCode: { type: String }
+    type: String,
+    required: true
   },
-  taxNumber: {
+  tinNumber: {
     type: String,
     unique: true,
     sparse: true
@@ -36,11 +34,6 @@ const supplierSchema = new mongoose.Schema({
     bankName: { type: String },
     accountNumber: { type: String },
     accountName: { type: String }
-  },
-  paymentTerms: {
-    type: String,
-    enum: ['Cash', 'Net 15', 'Net 30', 'Net 45', 'Net 60'],
-    default: 'Net 30'
   },
   status: {
     type: String,

@@ -9,20 +9,30 @@ const incomeSchema = new mongoose.Schema({
   vehicleId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vehicle',
-    required: true
+    required: false // Made optional for manual income entries
   },
   serviceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Service',
-    required: true
+    required: false // Made optional for manual income entries
   },
   quotationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Quotation',
-    required: true
+    required: false // Made optional for manual income entries
   },
   customerName: {
     type: String,
+    required: false // Made optional for manual income entries
+  },
+  vehicleRef: {
+    type: String, // For manual entries, store plate number as string
+    required: false
+  },
+  category: {
+    type: String,
+    enum: ['service_payment', 'parts_sales', 'consultation', 'insurance_claim', 'other'],
+    default: 'other',
     required: true
   },
   amount: {
@@ -32,8 +42,36 @@ const incomeSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['cash', 'bank-transfer', 'mobile-money', 'credit-card', 'cheque'],
+    enum: ['cash', 'bank_transfer', 'mobile_money', 'credit_card', 'cheque'],
     required: true
+  },
+  phoneNumber: {
+    type: String,
+    // Required only for mobile money payments
+    validate: {
+      validator: function(v) {
+        // If paymentMethod is mobile_money, phoneNumber is required
+        if (this.paymentMethod === 'mobile_money') {
+          return v && v.length > 0
+        }
+        return true
+      },
+      message: 'Phone number is required for mobile money payments'
+    }
+  },
+  accountNumber: {
+    type: String,
+    // Required for bank transfer and credit card payments
+    validate: {
+      validator: function(v) {
+        // If paymentMethod is bank_transfer or credit_card, accountNumber is required
+        if (['bank_transfer', 'credit_card'].includes(this.paymentMethod)) {
+          return v && v.length > 0
+        }
+        return true
+      },
+      message: 'Account number is required for bank transfer and credit card payments'
+    }
   },
   description: {
     type: String,

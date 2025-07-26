@@ -14,33 +14,33 @@ const partSchema = new mongoose.Schema({
     trim: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
+    // Optional field
   },
   category: {
     type: String,
     required: true,
     enum: [
       'Engine Parts',
-      'Transmission',
       'Brake System',
-      'Suspension',
+      'Transmission',
       'Electrical',
-      'Body Parts',
-      'Interior',
+      'Suspension',
       'Exhaust',
       'Cooling System',
       'Fuel System',
+      'Body Parts',
+      'Tires & Wheels',
       'Filters',
       'Fluids',
-      'Tires',
+      'Tools',
       'Other'
     ]
   },
   supplier: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Supplier',
-    required: true
+    ref: 'Supplier'
+    // Not required - some parts might not have a supplier assigned yet
   },
   vehicleCompatibility: {
     brands: [{ type: String }], // ['Toyota', 'Honda']
