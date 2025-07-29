@@ -122,11 +122,98 @@ const getEmployeeProfile = async (req, res) => {
     }
 };
 
+//API to update employee
+const updateEmployee = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { firstName, lastName, email, phoneNumber, address, gender, role, salary, status } = req.body;
+        
+        const updateData = {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            address,
+            gender,
+            role,
+            salary,
+            status
+        };
+
+        // Handle image upload
+        if (req.file) {
+            updateData.image = req.file.path;
+        }
+
+        const employee = await Employee.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
+        
+        if (!employee) {
+            return res.json({ success: false, message: "Employee not found" });
+        }
+
+        res.json({ success: true, message: "Employee updated successfully", employee });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+//API to delete employee
+const deleteEmployee = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const employee = await Employee.findByIdAndDelete(id);
+        
+        if (!employee) {
+            return res.json({ success: false, message: "Employee not found" });
+        }
+
+        res.json({ success: true, message: "Employee deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+//API to change employee password
+const changeEmployeePassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { newPassword } = req.body;
+        
+        if (!newPassword || newPassword.length < 6) {
+            return res.json({ success: false, message: "Password must be at least 6 characters long" });
+        }
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        const employee = await Employee.findByIdAndUpdate(
+            id, 
+            { password: hashedPassword }, 
+            { new: true }
+        ).select('-password');
+        
+        if (!employee) {
+            return res.json({ success: false, message: "Employee not found" });
+        }
+
+        res.json({ success: true, message: "Password changed successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
 
 module.exports = {
     addEmployee,
     loginAdmin,
     getAllEmployees,
     getOneEmployee,
-    getEmployeeProfile
+    getEmployeeProfile,
+    updateEmployee,
+    deleteEmployee,
+    changeEmployeePassword
 }

@@ -8,4 +8,4 @@ const connectCloudinary = async () => {
     })
 }
 
-module.exports = connectCloudinary
+module.exports = { connectCloudinary, cloudinary }

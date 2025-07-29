@@ -2,11 +2,12 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const connectCloudinary = require('./config/cloudinary')
+const { connectCloudinary } = require('./config/cloudinary')
 const adminRouter = require('./routes/adminRoutes')
 const receptionRouter = require('./routes/receptionRoutes')
 const mechanicRouter = require('./routes/mechanicRoutes')
 const accountantRouter = require('./routes/accountantRoutes')
+const managerRouter = require('./routes/managerRoutes')
 
 
 const app = express()
@@ -19,6 +20,7 @@ app.use('/api/admin', adminRouter)
 app.use('/api/reception', receptionRouter)
 app.use('/api/mechanic', mechanicRouter)
 app.use('/api/accountant', accountantRouter)
+app.use('/api/manager', managerRouter)
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {

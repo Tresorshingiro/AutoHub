@@ -47,6 +47,11 @@ const expenseSchema = new mongoose.Schema({
     ref: 'Employee',
     required: true
   },
+  employeeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee'
+    // Optional - for salary expenses, tracks which employee the expense is for
+  },
   vehicleId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vehicle'
