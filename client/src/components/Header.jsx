@@ -43,7 +43,9 @@ const Header = () => {
             <Link to="/login">
               <Button variant="ghost">Sign In</Button>
             </Link>
-            <Button variant="cta">Get Started</Button>
+            <Link to="/register">
+              <Button variant="cta">Get Started</Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,7 +79,9 @@ const Header = () => {
                 <Link to="/login">
                   <Button variant="ghost" className="w-full">Sign In</Button>
                 </Link>
-                <Button variant="cta" className="w-full">Get Started</Button>
+                <Link to="/register">
+                  <Button variant="cta" className="w-full">Get Started</Button>
+                </Link>
               </div>
             </div>
           </div>

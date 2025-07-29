@@ -142,6 +142,40 @@ const Sidebar = () => {
             color: 'text-indigo-600'
           }
         ]
+
+      case 'manager':
+        return [
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            path: '/manager/dashboard',
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Employees',
+            icon: Users,
+            path: '/manager/employees',
+            color: 'text-green-600'
+          },
+          {
+            title: 'Payroll',
+            icon: DollarSign,
+            path: '/manager/payroll',
+            color: 'text-yellow-600'
+          },
+          {
+            title: 'Operations',
+            icon: Settings,
+            path: '/manager/operations',
+            color: 'text-purple-600'
+          },
+          {
+            title: 'Reports',
+            icon: BarChart3,
+            path: '/manager/reports',
+            color: 'text-indigo-600'
+          }
+        ]
       
       default:
         return []
@@ -158,6 +192,8 @@ const Sidebar = () => {
         return 'Mechanic Panel'
       case 'accountant':
         return 'Accountant Panel'
+      case 'manager':
+        return 'Manager Panel'
       default:
         return 'Dashboard'
     }
@@ -200,14 +236,18 @@ const Sidebar = () => {
                 ? `${user.firstName} ${user.lastName}` 
                 : user?.firstName 
                 ? user.firstName
-                : 'Receptionist'
+                : user?.role === 'manager' ? 'Manager'
+                : user?.role === 'receptionist' ? 'Receptionist'
+                : user?.role === 'mechanic' ? 'Mechanic'
+                : user?.role === 'accountant' ? 'Accountant'
+                : 'User'
               }
             </h3>
             <p className="text-sm text-muted-foreground">
-              {user?.email || 'reception@autohub.com'}
+              {user?.email || `${user?.role || 'user'}@autohub.com`}
             </p>
             <span className="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full mt-1">
-              {user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'Reception'}
+              {user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User'}
             </span>
           </div>
         </div>

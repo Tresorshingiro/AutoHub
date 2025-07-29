@@ -98,6 +98,9 @@ const AuthContextProvider = (props) => {
                 config.headers['mtoken'] = token;
             } else if (role === 'accountant') {
                 config.headers['Authorization'] = `Bearer ${token}`;
+            } else if (role === 'manager') {
+                config.headers['Authorization'] = `Bearer ${token}`;
+                console.log('Using Authorization header for manager profile fetch');
             } else {
                 // For other employee roles, use rtoken as default
                 config.headers['rtoken'] = token;

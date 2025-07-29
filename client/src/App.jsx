@@ -4,9 +4,12 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import Features from './components/Features'
 import Roles from './components/Roles'
+import Pricing from './components/Pricing'
+import Contact from './components/Contact'
 import CTA from './components/CTA'
 import Footer from './components/Footer'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Reception/Dashboard'
 import AddVehicle from './pages/Reception/AddVehicle'
@@ -24,8 +27,14 @@ import ExpenseManagement from './pages/Accountant/Expenses'
 import EnhancedInventory from './pages/Accountant/Inventory'
 import Suppliers from './pages/Accountant/Suppliers'
 import Reports from './pages/Accountant/Reports'
+import ManagerDashboard from './pages/Manager/Dashboard'
+import EmployeesPage from './pages/Manager/Employees'
+import PayrollPage from './pages/Manager/Payroll'
+import OperationsPage from './pages/Manager/Operations'
+import ReportsPage from './pages/Manager/Reports'
 import { MechanicProvider } from './context/MechanicContext'
 import { AccountantProvider } from './context/AccountantContext'
+import { ManagerProvider } from './context/ManagerContext'
 import {Toaster} from 'react-hot-toast'
 
 // Landing Page Component
@@ -36,6 +45,8 @@ const LandingPage = () => {
       <Hero />
       <Features />
       <Roles />
+      <Pricing />
+      <Contact />
       <CTA />
       <Footer />
     </>
@@ -82,6 +93,20 @@ const AccountantLayout = ({ children }) => {
   )
 }
 
+// Manager Layout Component
+const ManagerLayout = ({ children }) => {
+  return (
+    <ManagerProvider>
+      <div className="flex h-screen bg-background">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </ManagerProvider>
+  )
+}
+
 const App = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -89,6 +114,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         
         {/* Reception Routes */}
         <Route path="/reception/dashboard" element={
@@ -174,6 +200,33 @@ const App = () => {
           <AccountantLayout>
             <Reports />
           </AccountantLayout>
+        } />
+
+        {/* Manager Routes */}
+        <Route path="/manager/dashboard" element={
+          <ManagerLayout>
+            <ManagerDashboard />
+          </ManagerLayout>
+        } />
+        <Route path="/manager/employees" element={
+          <ManagerLayout>
+            <EmployeesPage />
+          </ManagerLayout>
+        } />
+        <Route path="/manager/payroll" element={
+          <ManagerLayout>
+            <PayrollPage />
+          </ManagerLayout>
+        } />
+        <Route path="/manager/operations" element={
+          <ManagerLayout>
+            <OperationsPage />
+          </ManagerLayout>
+        } />
+        <Route path="/manager/reports" element={
+          <ManagerLayout>
+            <ReportsPage />
+          </ManagerLayout>
         } />
 
       </Routes>

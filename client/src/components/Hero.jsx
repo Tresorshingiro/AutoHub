@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/garage-hero.png";
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -24,11 +25,13 @@ const Hero = () => {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              
+              <Link to="/register">
+                <Button variant="hero" size="lg" className="group">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+
               <Button variant="outline" size="lg" className="group">
                 <Play className="mr-2 h-5 w-5" />
                 Watch Demo

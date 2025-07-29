@@ -22,7 +22,7 @@ const Login = () => {
     { value: 'reception', label: 'Receptionist', icon: Phone, color: 'text-blue-600' },
     { value: 'mechanic', label: 'Mechanic', icon: Wrench, color: 'text-green-600' },
     { value: 'accountant', label: 'Accountant', icon: Calculator, color: 'text-purple-600' },
-    { value: 'management', label: 'Manager', icon: UserCheck, color: 'text-orange-600' },
+    { value: 'manager', label: 'Manager', icon: UserCheck, color: 'text-orange-600' },
     { value: 'admin', label: 'Admin', icon: Crown, color: 'text-red-600' }
   ]
 
@@ -69,8 +69,8 @@ const Login = () => {
         case 'accountant':
           navigate('/accountant/dashboard')
           break
-        case 'management':
-          navigate('/management/dashboard')
+        case 'manager':
+          navigate('/manager/dashboard')
           break
         default:
           navigate('/')

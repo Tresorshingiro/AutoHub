@@ -29,7 +29,7 @@ const Footer = () => {
     ],
   };
   return (
-        <footer className="bg-garage-gray text-primary-foreground">
+      <footer className="bg-garage-gray text-primary-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-5 gap-8">
           {/* Brand Section */}
@@ -48,11 +48,11 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-garage-green" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+                <span className="text-sm">+250 788 349 679</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-garage-green" />
-                <span className="text-sm">hello@autohub.com</span>
+                <span className="text-sm">autohubgaragerw@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="h-4 w-4 text-garage-green" />
@@ -85,7 +85,7 @@ const Footer = () => {
         <div className="border-t border-primary-foreground/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-primary-foreground/60 text-sm">
-              © 2024 AutoHub. All rights reserved.
+              © 2025 AutoHub. All rights reserved.
             </p>
             
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
