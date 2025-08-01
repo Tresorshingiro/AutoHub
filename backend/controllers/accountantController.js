@@ -87,8 +87,33 @@ const getClearedVehicles = async (req, res) => {
       .populate('customer')
       .sort({ completedAt: -1 })
     
-    res.json({ success: true, vehicles })
+    // For each vehicle, find its approved quotation with parts details
+    const vehiclesWithQuotations = await Promise.all(
+      vehicles.map(async (vehicle) => {
+        try {
+          // Find the approved quotation for this vehicle
+          const quotation = await Quotation.findOne({ 
+            vehicleId: vehicle._id, 
+            status: 'approved' 
+          }).populate('parts.partId')
+          
+          // Convert to object and add quotation
+          const vehicleObj = vehicle.toObject()
+          if (quotation) {
+            vehicleObj.quotation = quotation.toObject()
+          }
+          
+          return vehicleObj
+        } catch (error) {
+          console.log('Error fetching quotation for vehicle:', vehicle._id, error)
+          return vehicle.toObject()
+        }
+      })
+    )
+    
+    res.json({ success: true, vehicles: vehiclesWithQuotations })
   } catch (error) {
+    console.log('Error in getClearedVehicles:', error)
     res.json({ success: false, message: error.message })
   }
 }

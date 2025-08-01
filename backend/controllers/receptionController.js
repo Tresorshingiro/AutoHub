@@ -47,8 +47,19 @@ const addVehicle = async (req, res)=> {
         }
 
 
-        //upload vehicle image to cloudinary
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type: "image"})
+        //check if image file is provided
+        if (!imageFile) {
+            return res.json({success: false, message: "Vehicle image is required"})
+        }
+
+        //upload vehicle image to cloudinary using buffer
+        const imageUpload = await cloudinary.uploader.upload(
+            `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`, 
+            {
+                resource_type: "image",
+                folder: "autohub/vehicles" // Optional: organize images in folders
+            }
+        )
         const imageUrl = imageUpload.secure_url
 
         const vehicleData = {
@@ -110,9 +121,32 @@ const loginReceptionist = async (req, res) => {
 //API to fetch all vehicles
 const getAllVehicles = async (req, res) => {
     try{
-
         const vehicles = await Vehicle.find({})
-        res.json({success: true, vehicles})
+        
+        // For each vehicle, get related quotation and service data
+        const populatedVehicles = await Promise.all(vehicles.map(async (vehicle) => {
+            const vehicleObj = vehicle.toObject()
+            
+            // Get quotation data if exists
+            const Quotation = require('../models/Quotation')
+            const Service = require('../models/Service')
+            
+            const quotation = await Quotation.findOne({ vehicleId: vehicle._id })
+                .populate('parts.partId', 'name partNumber')
+                .populate('mechanicId', 'name')
+            
+            const service = await Service.findOne({ vehicleId: vehicle._id })
+                .populate('quotationId')
+                .populate('mechanicId', 'name')
+                .populate('partsUsed.partId', 'name partNumber')
+            
+            vehicleObj.quotation = quotation
+            vehicleObj.service = service
+            
+            return vehicleObj
+        }))
+        
+        res.json({success: true, vehicles: populatedVehicles})
 
     } catch(error){
         console.log(error)
@@ -197,7 +231,14 @@ const updateVehicle = async (req, res) => {
         
         let imageUrl = vehicle.image; // Use existing image by default
         if (imageFile) {
-            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+            //upload new vehicle image to cloudinary using buffer
+            const imageUpload = await cloudinary.uploader.upload(
+                `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`, 
+                {
+                    resource_type: "image",
+                    folder: "autohub/vehicles" // Optional: organize images in folders
+                }
+            )
             imageUrl = imageUpload.secure_url;
         }
 
