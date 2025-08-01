@@ -269,6 +269,9 @@ const EnhancedInventory = () => {
   const [stockFilter, setStockFilter] = useState('all')
   const [filteredParts, setFilteredParts] = useState([])
   const [filteredSuppliers, setFilteredSuppliers] = useState([])
+  const [currentPartsPage, setCurrentPartsPage] = useState(1)
+  const [currentSuppliersPage, setCurrentSuppliersPage] = useState(1)
+  const [itemsPerPage] = useState(12) // 12 items per page for grid layout
   const [showPartModal, setShowPartModal] = useState(false)
   const [showSupplierModal, setShowSupplierModal] = useState(false)
   const [editingPart, setEditingPart] = useState(null)
@@ -345,6 +348,7 @@ const EnhancedInventory = () => {
     }
 
     setFilteredParts(filtered)
+    setCurrentPartsPage(1) // Reset to first page when filters change
   }, [partsInventory, searchTerm, categoryFilter, stockFilter])
 
   useEffect(() => {
@@ -359,7 +363,19 @@ const EnhancedInventory = () => {
     }
 
     setFilteredSuppliers(filtered)
+    setCurrentSuppliersPage(1) // Reset to first page when filters change
   }, [suppliers, searchTerm])
+
+  // Pagination calculations
+  const totalPartsPages = Math.ceil(filteredParts.length / itemsPerPage)
+  const partsStartIndex = (currentPartsPage - 1) * itemsPerPage
+  const partsEndIndex = partsStartIndex + itemsPerPage
+  const currentParts = filteredParts.slice(partsStartIndex, partsEndIndex)
+
+  const totalSuppliersPages = Math.ceil(filteredSuppliers.length / itemsPerPage)
+  const suppliersStartIndex = (currentSuppliersPage - 1) * itemsPerPage
+  const suppliersEndIndex = suppliersStartIndex + itemsPerPage
+  const currentSuppliers = filteredSuppliers.slice(suppliersStartIndex, suppliersEndIndex)
 
   const handleAddPart = () => {
     setEditingPart(null)
@@ -697,11 +713,18 @@ const EnhancedInventory = () => {
         <Card>
           <CardHeader>
             <CardTitle>Parts Inventory</CardTitle>
-            <CardDescription>Manage your parts inventory and stock levels</CardDescription>
+            <CardDescription>
+              Manage your parts inventory and stock levels
+              {filteredParts.length > 0 && (
+                <span className="ml-2">
+                  (Showing {partsStartIndex + 1}-{Math.min(partsEndIndex, filteredParts.length)} of {filteredParts.length})
+                </span>
+              )}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {filteredParts.map((part) => {
+              {currentParts.map((part) => {
                 const stockStatus = getStockStatus(part)
                 return (
                   <div key={part._id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
@@ -772,6 +795,58 @@ const EnhancedInventory = () => {
                 </div>
               )}
             </div>
+            
+            {/* Parts Pagination Controls */}
+            {totalPartsPages > 1 && (
+              <div className="mt-6 flex justify-center items-center gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentPartsPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPartsPage === 1}
+                  className="px-3 py-1"
+                >
+                  Previous
+                </Button>
+                
+                {/* Page numbers */}
+                <div className="flex gap-1">
+                  {Array.from({ length: totalPartsPages }, (_, i) => i + 1).map(pageNum => {
+                    // Show first page, last page, current page, and pages around current
+                    const showPage = pageNum === 1 || 
+                                   pageNum === totalPartsPages || 
+                                   Math.abs(pageNum - currentPartsPage) <= 1
+                    
+                    if (!showPage && pageNum === 2 && currentPartsPage > 4) {
+                      return <span key="start-ellipsis" className="px-2 py-1">...</span>
+                    }
+                    if (!showPage && pageNum === totalPartsPages - 1 && currentPartsPage < totalPartsPages - 3) {
+                      return <span key="end-ellipsis" className="px-2 py-1">...</span>
+                    }
+                    if (!showPage) return null
+                    
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPartsPage === pageNum ? "default" : "outline"}
+                        onClick={() => setCurrentPartsPage(pageNum)}
+                        className="px-3 py-1 min-w-[40px]"
+                      >
+                        {pageNum}
+                      </Button>
+                    )
+                  })}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentPartsPage(prev => Math.min(prev + 1, totalPartsPages))}
+                  disabled={currentPartsPage === totalPartsPages}
+                  className="px-3 py-1"
+                >
+                  Next
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
@@ -781,11 +856,18 @@ const EnhancedInventory = () => {
         <Card>
           <CardHeader>
             <CardTitle>Suppliers</CardTitle>
-            <CardDescription>Manage your supplier relationships</CardDescription>
+            <CardDescription>
+              Manage your supplier relationships
+              {filteredSuppliers.length > 0 && (
+                <span className="ml-2">
+                  (Showing {suppliersStartIndex + 1}-{Math.min(suppliersEndIndex, filteredSuppliers.length)} of {filteredSuppliers.length})
+                </span>
+              )}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {filteredSuppliers.map((supplier) => (
+              {currentSuppliers.map((supplier) => (
                 <div key={supplier._id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3">
@@ -840,6 +922,58 @@ const EnhancedInventory = () => {
                 </div>
               )}
             </div>
+            
+            {/* Suppliers Pagination Controls */}
+            {totalSuppliersPages > 1 && (
+              <div className="mt-6 flex justify-center items-center gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSuppliersPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentSuppliersPage === 1}
+                  className="px-3 py-1"
+                >
+                  Previous
+                </Button>
+                
+                {/* Page numbers */}
+                <div className="flex gap-1">
+                  {Array.from({ length: totalSuppliersPages }, (_, i) => i + 1).map(pageNum => {
+                    // Show first page, last page, current page, and pages around current
+                    const showPage = pageNum === 1 || 
+                                   pageNum === totalSuppliersPages || 
+                                   Math.abs(pageNum - currentSuppliersPage) <= 1
+                    
+                    if (!showPage && pageNum === 2 && currentSuppliersPage > 4) {
+                      return <span key="start-ellipsis" className="px-2 py-1">...</span>
+                    }
+                    if (!showPage && pageNum === totalSuppliersPages - 1 && currentSuppliersPage < totalSuppliersPages - 3) {
+                      return <span key="end-ellipsis" className="px-2 py-1">...</span>
+                    }
+                    if (!showPage) return null
+                    
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentSuppliersPage === pageNum ? "default" : "outline"}
+                        onClick={() => setCurrentSuppliersPage(pageNum)}
+                        className="px-3 py-1 min-w-[40px]"
+                      >
+                        {pageNum}
+                      </Button>
+                    )
+                  })}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSuppliersPage(prev => Math.min(prev + 1, totalSuppliersPages))}
+                  disabled={currentSuppliersPage === totalSuppliersPages}
+                  className="px-3 py-1"
+                >
+                  Next
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}

@@ -77,8 +77,51 @@ const ManagerReports = () => {
   }, [])
 
   useEffect(() => {
+    // Calculate start and end dates based on dateRange selection
+    const now = new Date()
+    let calculatedStartDate = ''
+    let calculatedEndDate = ''
+
+    switch (dateRange) {
+      case 'week':
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()))
+        const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 6))
+        calculatedStartDate = startOfWeek.toISOString().split('T')[0]
+        calculatedEndDate = endOfWeek.toISOString().split('T')[0]
+        break
+      case 'month':
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+        calculatedStartDate = startOfMonth.toISOString().split('T')[0]
+        calculatedEndDate = endOfMonth.toISOString().split('T')[0]
+        break
+      case 'quarter':
+        const currentQuarter = Math.floor(now.getMonth() / 3)
+        const startOfQuarter = new Date(now.getFullYear(), currentQuarter * 3, 1)
+        const endOfQuarter = new Date(now.getFullYear(), (currentQuarter + 1) * 3, 0)
+        calculatedStartDate = startOfQuarter.toISOString().split('T')[0]
+        calculatedEndDate = endOfQuarter.toISOString().split('T')[0]
+        break
+      case 'year':
+        const startOfYear = new Date(now.getFullYear(), 0, 1)
+        const endOfYear = new Date(now.getFullYear(), 11, 31)
+        calculatedStartDate = startOfYear.toISOString().split('T')[0]
+        calculatedEndDate = endOfYear.toISOString().split('T')[0]
+        break
+      case 'custom':
+        // Don't auto-calculate for custom range, let user set manually
+        return
+      default:
+        return
+    }
+
+    setStartDate(calculatedStartDate)
+    setEndDate(calculatedEndDate)
+  }, [dateRange])
+
+  useEffect(() => {
     // Auto-generate report when filters change (but not on initial mount)
-    if (selectedReport && dateRange) {
+    if (selectedReport && dateRange && startDate && endDate) {
       const timeoutId = setTimeout(() => {
         handleGenerateReport()
       }, 500) // Small delay to prevent rapid requests
@@ -434,7 +477,7 @@ const ManagerReports = () => {
               <div className="mt-4 flex justify-end">
                 <Button
                   onClick={handleGenerateReport}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-gradient-hero hover:shadow-glow transition-all duration-300"
                   disabled={loading || !startDate || !endDate}
                 >
                   <Search className="h-4 w-4 mr-2" />

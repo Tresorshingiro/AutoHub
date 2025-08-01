@@ -152,28 +152,45 @@ const Quotations = () => {
   const generatePDF = (quotation) => {
     const doc = new jsPDF()
     
-    // Header with Logo and Garage Details (using project theme color - blue-600)
-    doc.setFillColor(37, 99, 235) // Blue-600 theme color
-    doc.rect(0, 0, 210, 40, 'F')
+    // Header with gradient background - using garage-blue to garage-green gradient
+    // garage-blue: hsl(210, 100%, 12%) = rgb(0, 61, 122)
+    // garage-green: hsl(142, 76%, 36%) = rgb(22, 163, 74)
+    const startColor = [0, 61, 122]
+    const endColor = [22, 163, 74]
     
-    // Logo placeholder (you can replace this with actual logo)
+    // Create gradient effect by drawing multiple rectangles
+    for (let i = 0; i <= 210; i += 2) {
+      const ratio = i / 210
+      const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * ratio)
+      const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * ratio)
+      const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * ratio)
+      
+      doc.setFillColor(r, g, b)
+      doc.rect(i, 0, 2, 45, 'F')
+    }
+    
+    // Add simple text logo
     doc.setFillColor(255, 255, 255)
-    doc.circle(25, 20, 12, 'F')
-    doc.setTextColor(37, 99, 235) // Blue-600 for logo text
-    doc.setFontSize(16)
+    doc.circle(25, 22, 12, 'F')
+    doc.setTextColor(22, 163, 74)
+    doc.setFontSize(14)
     doc.setFont('helvetica', 'bold')
-    doc.text('AutoHub', 21, 24)
+    doc.text('AH', 21, 26)
     
-    // Garage Name and Details
+    // Company Info
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(24)
     doc.setFont('helvetica', 'bold')
-    doc.text('AUTOHUB', 45, 18)
+    doc.text('AUTOHUB GARAGE', 45, 18)
     
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
     doc.text('Professional Vehicle Repair & Maintenance Services', 45, 26)
-    doc.text('Kigali, Rwanda  |  +250 788 123 456  |  info@autohub.rw', 45, 32)
+    
+    // Contact details
+    doc.setFontSize(8)
+    doc.text('Location: Kigali, Rwanda', 45, 33)
+    doc.text('Tel: +250 788 349 679 | Email: autohubgaragerw@gmail.com', 45, 39)
     
     // Reset text color
     doc.setTextColor(0, 0, 0)
@@ -241,7 +258,7 @@ const Quotations = () => {
       startY: tableStartY,
       theme: 'striped',
       headStyles: { 
-        fillColor: [37, 99, 235], // Blue-600 theme color
+        fillColor: [22, 163, 74], // Using garage-green color to match ClearedVehicles
         textColor: [255, 255, 255],
         fontSize: 11,
         fontStyle: 'bold'
@@ -283,7 +300,7 @@ const Quotations = () => {
     // Grand Total
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(12)
-    doc.setDrawColor(37, 99, 235) // Blue-600 theme color for line
+    doc.setDrawColor(22, 163, 74) // Using garage-green color to match ClearedVehicles
     doc.line(125, finalY + 48, 185, finalY + 48)
     doc.text(`GRAND TOTAL:`, 125, finalY + 55)
     doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(quotation.summary.grandTotal)}`, 160, finalY + 55)
@@ -300,6 +317,7 @@ const Quotations = () => {
     doc.text('• Warranty applies as per our standard terms', 20, footerY + 28)
     
     doc.text('Thank you for choosing AutoHub Garage!', 20, footerY + 40)
+    doc.text('Location: Kigali, Rwanda | Tel: +250 788 349 679 | Email: autohubgaragerw@gmail.com', 20, footerY + 47)
     
     // Save PDF
     doc.save(`Quotation-${quotation.quotationNumber}.pdf`)

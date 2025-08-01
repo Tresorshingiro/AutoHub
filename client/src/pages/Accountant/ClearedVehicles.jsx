@@ -192,6 +192,8 @@ const ClearedVehicles = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [paymentFilter, setPaymentFilter] = useState('all')
   const [filteredVehicles, setFilteredVehicles] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(9) // 9 items per page (3x3 grid)
   const [selectedVehicle, setSelectedVehicle] = useState(null)
   const [showVehicleModal, setShowVehicleModal] = useState(false)
   const [showInvoiceModal, setShowInvoiceModal] = useState(false)
@@ -232,7 +234,14 @@ const ClearedVehicles = () => {
     }
 
     setFilteredVehicles(filtered)
+    setCurrentPage(1) // Reset to first page when filters change
   }, [clearedVehicles, searchTerm, paymentFilter])
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredVehicles.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentVehicles = filteredVehicles.slice(startIndex, endIndex)
 
   const getPaymentStatusColor = (status) => {
     switch (status) {
@@ -300,88 +309,252 @@ const ClearedVehicles = () => {
   const generateInvoicePDF = (vehicle) => {
     const doc = new jsPDF()
     
-    // Header
-    doc.setFillColor(37, 99, 235)
-    doc.rect(0, 0, 210, 35, 'F')
+    // Header with gradient background - using garage-blue to garage-green gradient
+    // garage-blue: hsl(210, 100%, 12%) = rgb(0, 61, 122)
+    // garage-green: hsl(142, 76%, 36%) = rgb(22, 163, 74)
+    const startColor = [0, 61, 122]
+    const endColor = [22, 163, 74]
     
-    // Logo and Company Info
+    // Create gradient effect by drawing multiple rectangles
+    for (let i = 0; i <= 210; i += 2) {
+      const ratio = i / 210
+      const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * ratio)
+      const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * ratio)
+      const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * ratio)
+      
+      doc.setFillColor(r, g, b)
+      doc.rect(i, 0, 2, 45, 'F')
+    }
+    
+    // Add simple text logo
+    doc.setFillColor(255, 255, 255)
+    doc.circle(25, 22, 12, 'F')
+    doc.setTextColor(22, 163, 74)
+    doc.setFontSize(14)
+    doc.setFont('helvetica', 'bold')
+    doc.text('AH', 21, 26)
+    
+    // Company Info
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(24)
     doc.setFont('helvetica', 'bold')
-    doc.text('AUTOHUB GARAGE', 20, 20)
+    doc.text('AUTOHUB GARAGE', 45, 18)
     
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
-    doc.text('Professional Vehicle Repair & Maintenance Services', 20, 28)
+    doc.text('Professional Vehicle Repair & Maintenance Services', 45, 26)
+    
+    // Contact details
+    doc.setFontSize(8)
+    doc.text('Location: Kigali, Rwanda', 45, 33)
+    doc.text('Tel: +250 788 349 679 | Email: autohubgaragerw@gmail.com', 45, 39)
+    
+    // Reset text color
+    doc.setTextColor(0, 0, 0)
     
     // Invoice Title
-    doc.setTextColor(0, 0, 0)
     doc.setFontSize(20)
     doc.setFont('helvetica', 'bold')
-    doc.text('INVOICE', 20, 55)
+    doc.text('INVOICE', 20, 60)
     
     // Invoice Details
     doc.setFontSize(12)
     doc.setFont('helvetica', 'normal')
-    doc.text(`Invoice #: ${vehicle.invoiceNumber || invoiceData.invoiceNumber}`, 20, 70)
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 78)
-    doc.text(`Due Date: ${invoiceData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}`, 20, 86)
+    doc.text(`Invoice #: ${vehicle.invoiceNumber || invoiceData.invoiceNumber}`, 20, 75)
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 83)
+    doc.text(`Due Date: ${invoiceData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}`, 20, 91)
     
     // Customer Information
     doc.setFont('helvetica', 'bold')
-    doc.text('BILL TO:', 20, 105)
+    doc.text('BILL TO:', 20, 110)
     doc.setFont('helvetica', 'normal')
-    doc.text(`${vehicle.customer?.name}`, 20, 115)
-    doc.text(`Phone: ${vehicle.customer?.phone}`, 20, 123)
-    doc.text(`Email: ${vehicle.customer?.email}`, 20, 131)
+    doc.text(`${vehicle.customer?.name}`, 20, 120)
+    doc.text(`Phone: ${vehicle.customer?.phone}`, 20, 128)
+    doc.text(`Email: ${vehicle.customer?.email}`, 20, 136)
     
     // Vehicle Information
     doc.setFont('helvetica', 'bold')
-    doc.text('VEHICLE DETAILS:', 110, 105)
+    doc.text('VEHICLE DETAILS:', 110, 110)
     doc.setFont('helvetica', 'normal')
-    doc.text(`${vehicle.vehicleBrand} ${vehicle.vehicleType}`, 110, 115)
-    doc.text(`Plate: ${vehicle.PlateNo}`, 110, 123)
-    doc.text(`Year: ${vehicle.ModelYear}`, 110, 131)
+    doc.text(`${vehicle.vehicleBrand} ${vehicle.vehicleType}`, 110, 120)
+    doc.text(`Plate: ${vehicle.PlateNo}`, 110, 128)
+    doc.text(`Year: ${vehicle.ModelYear}`, 110, 136)
     
-    // Service Details Table
-    const tableData = [
-      ['Service Description', 'Amount'],
-      ['Vehicle Repair & Maintenance', `RWF ${vehicle.totalAmount?.toLocaleString() || '0'}`],
-      ['Parts & Labor', `RWF ${(vehicle.totalAmount * 0.8)?.toLocaleString() || '0'}`],
-      ['Service Charge', `RWF ${(vehicle.totalAmount * 0.2)?.toLocaleString() || '0'}`]
-    ]
+    // Service Details Table - Use actual quotation data if available
+    let tableData = []
+    let partsTotal = 0
+    let serviceCharge = 0
+    let subtotal = 0
+    let vatAmount = 0
+    let grandTotal = 0
+    let includeVAT = false
+    let vatRate = 0
+    
+    // Check multiple possible paths for quotation data
+    const quotationData = vehicle.quotation || vehicle.quotationId || vehicle.approvedQuotation
+    
+    if (quotationData && quotationData.parts && quotationData.parts.length > 0) {
+      // Use actual quotation data - same format as quotation PDF
+      console.log('Using quotation parts:', quotationData.parts) // Debug log
+      
+      tableData = quotationData.parts.map(part => [
+        part.description || part.name || 'Service Item',
+        part.quantity.toString(),
+        new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(part.unitPrice),
+        new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(part.totalPrice)
+      ])
+      
+      // Add service charge if exists
+      if (quotationData.serviceCharge && quotationData.serviceCharge > 0) {
+        tableData.push([
+          'Service Charge',
+          '1',
+          new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(quotationData.serviceCharge),
+          new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(quotationData.serviceCharge)
+        ])
+      }
+      
+      // Use quotation summary data for accurate calculations
+      partsTotal = quotationData.summary?.partsTotal || quotationData.parts.reduce((sum, part) => sum + part.totalPrice, 0)
+      serviceCharge = quotationData.serviceCharge || 0
+      subtotal = quotationData.summary?.subtotal || (partsTotal + serviceCharge)
+      includeVAT = quotationData.summary?.includeVAT || false
+      vatRate = quotationData.summary?.taxRate || 0
+      vatAmount = quotationData.summary?.taxAmount || 0
+      grandTotal = quotationData.summary?.grandTotal || (includeVAT ? subtotal + vatAmount : subtotal)
+      
+    } else if (vehicle.services && vehicle.services.length > 0) {
+      // Try to use services data if available
+      console.log('Using services data:', vehicle.services) // Debug log
+      
+      tableData = vehicle.services.map(service => [
+        service.description || service.serviceName || 'Service Item',
+        '1',
+        new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(service.cost || service.amount || 0),
+        new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(service.cost || service.amount || 0)
+      ])
+      
+      subtotal = vehicle.services.reduce((sum, service) => sum + (service.cost || service.amount || 0), 0)
+      grandTotal = subtotal
+      
+    } else {
+      // Final fallback to generic service description
+      console.log('Using fallback - vehicle data:', vehicle) // Debug log
+      
+      subtotal = vehicle.totalAmount || 0
+      grandTotal = subtotal
+      tableData = [
+        ['Vehicle Repair & Maintenance Service', '1', new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(subtotal), new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(subtotal)]
+      ]
+    }
     
     autoTable(doc, {
+      head: [['Description', 'Qty', 'Unit Price', 'Total']],
       body: tableData,
-      startY: 150,
-      theme: 'grid',
+      startY: 155,
+      theme: 'striped',
       headStyles: { 
-        fillColor: [37, 99, 235],
-        textColor: [255, 255, 255]
-      }
+        fillColor: [22, 163, 74], // Using garage-green color to match quotations
+        textColor: [255, 255, 255],
+        fontSize: 11,
+        fontStyle: 'bold'
+      },
+      bodyStyles: { fontSize: 10 },
+      alternateRowStyles: { fillColor: [248, 249, 250] },
+      margin: { left: 20, right: 20 }
     })
     
-    // Totals
+    // Summary Section - Same format as quotation PDF
     const finalY = doc.lastAutoTable.finalY + 20
+    
+    // Summary Box - Same style as quotation
+    doc.setFillColor(248, 249, 250)
+    doc.rect(120, finalY, 70, 60, 'F')
+    doc.setDrawColor(200, 200, 200)
+    doc.rect(120, finalY, 70, 60, 'S')
+    
     doc.setFont('helvetica', 'bold')
-    doc.text(`Subtotal: RWF ${vehicle.totalAmount?.toLocaleString() || '0'}`, 140, finalY)
-    doc.text(`Tax (${invoiceData.taxRate}%): RWF ${((vehicle.totalAmount * invoiceData.taxRate) / 100)?.toLocaleString() || '0'}`, 140, finalY + 8)
-    doc.text(`TOTAL: RWF ${(vehicle.totalAmount * (1 + invoiceData.taxRate / 100))?.toLocaleString() || '0'}`, 140, finalY + 16)
+    doc.setFontSize(12)
+    doc.text('INVOICE SUMMARY', 125, finalY + 10)
+    
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    
+    // Show breakdown if quotation data is available
+    if (quotationData && quotationData.summary) {
+      doc.text(`Parts Total:`, 125, finalY + 20)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(partsTotal)}`, 160, finalY + 20)
+      
+      doc.text(`Service Charge:`, 125, finalY + 27)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(serviceCharge)}`, 160, finalY + 27)
+      
+      doc.text(`Subtotal:`, 125, finalY + 34)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(subtotal)}`, 160, finalY + 34)
+      
+      // Only show VAT if it was included in quotation
+      if (includeVAT && vatAmount > 0) {
+        doc.text(`VAT (${vatRate}%):`, 125, finalY + 41)
+        doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(vatAmount)}`, 160, finalY + 41)
+      }
+      
+      // Grand Total
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(12)
+      doc.setDrawColor(22, 163, 74) // Using garage-green color to match quotations
+      doc.line(125, finalY + 48, 185, finalY + 48)
+      doc.text(`GRAND TOTAL:`, 125, finalY + 55)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(grandTotal)}`, 160, finalY + 55)
+    } else {
+      // Fallback calculation
+      doc.text(`Subtotal:`, 125, finalY + 20)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(subtotal)}`, 160, finalY + 20)
+      
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(12)
+      doc.setDrawColor(22, 163, 74)
+      doc.line(125, finalY + 28, 185, finalY + 28)
+      doc.text(`GRAND TOTAL:`, 125, finalY + 35)
+      doc.text(`${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(grandTotal)}`, 160, finalY + 35)
+    }
     
     // Payment Status
+    const paymentStatusY = finalY + 75
     if (vehicle.paymentStatus === 'paid') {
       doc.setTextColor(0, 128, 0)
-      doc.text('PAID', 20, finalY + 16)
+      doc.setFont('helvetica', 'bold')
+      doc.text('PAID', 20, paymentStatusY)
+    } else if (vehicle.paymentStatus === 'partially-paid') {
+      doc.setTextColor(255, 165, 0)
+      doc.setFont('helvetica', 'bold')
+      doc.text('PARTIALLY PAID', 20, paymentStatusY)
     } else {
       doc.setTextColor(255, 0, 0)
-      doc.text('UNPAID', 20, finalY + 16)
+      doc.setFont('helvetica', 'bold')
+      doc.text('UNPAID', 20, paymentStatusY)
+    }
+    
+    // Additional Invoice Information
+    doc.setTextColor(100, 100, 100)
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'normal')
+    
+    const infoY = paymentStatusY + 15
+    doc.text('Invoice Details:', 20, infoY)
+    if (quotationData && quotationData.summary) {
+      doc.text(`• Parts Cost: ${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(partsTotal)}`, 20, infoY + 7)
+      doc.text(`• Service Charge: ${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(serviceCharge)}`, 20, infoY + 14)
+      doc.text(`• VAT Status: ${includeVAT ? `Included (${vatRate}%)` : 'Not Included'}`, 20, infoY + 21)
+      doc.text(`• Payment Status: ${vehicle.paymentStatus?.toUpperCase() || 'PENDING'}`, 20, infoY + 28)
+    } else {
+      doc.text(`• Total Amount: ${new Intl.NumberFormat('en-RW', { style: 'currency', currency: 'RWF' }).format(grandTotal)}`, 20, infoY + 7)
+      doc.text(`• Payment Status: ${vehicle.paymentStatus?.toUpperCase() || 'PENDING'}`, 20, infoY + 14)
     }
     
     // Footer
-    doc.setTextColor(100, 100, 100)
-    doc.setFontSize(9)
-    doc.text('Thank you for your business!', 20, finalY + 35)
-    doc.text('Payment due within 30 days of invoice date.', 20, finalY + 42)
+    const footerY = infoY + (quotationData && quotationData.summary ? 40 : 30)
+    doc.text('Thank you for your business!', 20, footerY)
+    doc.text('Payment due within 30 days of invoice date.', 20, footerY + 7)
+    doc.text('For any questions, please contact us at +250 788 349 679', 20, footerY + 14)
     
     doc.save(`Invoice-${vehicle.PlateNo}-${new Date().toISOString().split('T')[0]}.pdf`)
   }
@@ -523,12 +696,24 @@ const ClearedVehicles = () => {
               </select>
             </div>
           </div>
+          
+          {/* Pagination Info */}
+          {filteredVehicles.length > 0 && (
+            <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+              <span>
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredVehicles.length)} of {filteredVehicles.length} vehicles
+              </span>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
 
       {/* Vehicles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredVehicles.map((vehicle) => (
+        {currentVehicles.map((vehicle) => (
           <Card key={vehicle._id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -624,6 +809,62 @@ const ClearedVehicles = () => {
                 : 'No completed vehicles available yet'
               }
             </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-center items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1"
+              >
+                Previous
+              </Button>
+              
+              {/* Page numbers */}
+              <div className="flex gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                  // Show first page, last page, current page, and pages around current
+                  const showPage = pageNum === 1 || 
+                                 pageNum === totalPages || 
+                                 Math.abs(pageNum - currentPage) <= 1
+                  
+                  if (!showPage && pageNum === 2 && currentPage > 4) {
+                    return <span key="start-ellipsis" className="px-2 py-1">...</span>
+                  }
+                  if (!showPage && pageNum === totalPages - 1 && currentPage < totalPages - 3) {
+                    return <span key="end-ellipsis" className="px-2 py-1">...</span>
+                  }
+                  if (!showPage) return null
+                  
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className="px-3 py-1 min-w-[40px]"
+                    >
+                      {pageNum}
+                    </Button>
+                  )
+                })}
+              </div>
+              
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1"
+              >
+                Next
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}

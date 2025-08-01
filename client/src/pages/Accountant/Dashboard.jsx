@@ -69,6 +69,13 @@ const AccountantDashboard = () => {
   // Chart colors
   const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#F97316']
 
+  // Payment status colors - specific mapping
+  const PAYMENT_STATUS_COLORS = {
+    'Paid': '#10B981',      // Green
+    'Partial': '#F59E0B',   // Orange  
+    'Unpaid': '#EF4444'     // Red
+  }
+
   // Use monthly financial data from the last 12 months
   const monthlyRevenueData = dashboard?.monthlyFinancialData || []
 
@@ -227,7 +234,7 @@ const AccountantDashboard = () => {
                     dataKey="value"
                   >
                     {paymentStatusData.filter(item => item.value > 0).map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={PAYMENT_STATUS_COLORS[entry.name] || COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip 

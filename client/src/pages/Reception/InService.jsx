@@ -26,6 +26,8 @@ const InService = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(6) // 6 vehicles per page for better layout
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -55,7 +57,14 @@ const InService = () => {
     }
 
     setFilteredVehicles(filtered)
+    setCurrentPage(1) // Reset to first page when filters change
   }, [vehicles, searchTerm, statusFilter])
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredVehicles.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentVehicles = filteredVehicles.slice(startIndex, endIndex)
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -196,13 +205,25 @@ const InService = () => {
               {statusFilter !== 'all' ? 'Clear Filter' : 'All Status'}
             </Button>
           </div>
+          
+          {/* Pagination Info */}
+          {filteredVehicles.length > 0 && (
+            <div className="mt-4 flex justify-between items-center text-sm text-muted-foreground">
+              <span>
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredVehicles.length)} of {filteredVehicles.length} vehicles
+              </span>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
 
       {/* Vehicles List */}
       <div className="space-y-4">
-        {filteredVehicles.length > 0 ? (
-          filteredVehicles.map((vehicle) => (
+        {currentVehicles.length > 0 ? (
+          currentVehicles.map((vehicle) => (
             <Card key={vehicle._id} className="hover:shadow-lg transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
@@ -320,6 +341,62 @@ const InService = () => {
           </Card>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-center items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1"
+              >
+                Previous
+              </Button>
+              
+              {/* Page numbers */}
+              <div className="flex gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                  // Show first page, last page, current page, and pages around current
+                  const showPage = pageNum === 1 || 
+                                 pageNum === totalPages || 
+                                 Math.abs(pageNum - currentPage) <= 1
+                  
+                  if (!showPage && pageNum === 2 && currentPage > 4) {
+                    return <span key="start-ellipsis" className="px-2 py-1">...</span>
+                  }
+                  if (!showPage && pageNum === totalPages - 1 && currentPage < totalPages - 3) {
+                    return <span key="end-ellipsis" className="px-2 py-1">...</span>
+                  }
+                  if (!showPage) return null
+                  
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className="px-3 py-1 min-w-[40px]"
+                    >
+                      {pageNum}
+                    </Button>
+                  )
+                })}
+              </div>
+              
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1"
+              >
+                Next
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

@@ -10,6 +10,7 @@ import CTA from './components/CTA'
 import Footer from './components/Footer'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import AdminLogin from './pages/AdminLogin'
 import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Reception/Dashboard'
 import AddVehicle from './pages/Reception/AddVehicle'
@@ -35,6 +36,10 @@ import ReportsPage from './pages/Manager/Reports'
 import { MechanicProvider } from './context/MechanicContext'
 import { AccountantProvider } from './context/AccountantContext'
 import { ManagerProvider } from './context/ManagerContext'
+import { AdminProvider } from './context/AdminContext'
+import AdminDashboard from './pages/Admin/Dashboard'
+import AdminEmployees from './pages/Admin/Employees'
+import AdminReports from './pages/Admin/Reports'
 import {Toaster} from 'react-hot-toast'
 
 // Landing Page Component
@@ -107,6 +112,20 @@ const ManagerLayout = ({ children }) => {
   )
 }
 
+// Admin Layout Component
+const AdminLayout = ({ children }) => {
+  return (
+    <AdminProvider>
+      <div className="flex h-screen bg-background">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </AdminProvider>
+  )
+}
+
 const App = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -115,6 +134,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         
         {/* Reception Routes */}
         <Route path="/reception/dashboard" element={
@@ -227,6 +247,23 @@ const App = () => {
           <ManagerLayout>
             <ReportsPage />
           </ManagerLayout>
+        } />
+
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={
+          <AdminLayout>
+            <AdminDashboard />
+          </AdminLayout>
+        } />
+        <Route path="/admin/employees" element={
+          <AdminLayout>
+            <AdminEmployees />
+          </AdminLayout>
+        } />
+        <Route path="/admin/reports" element={
+          <AdminLayout>
+            <AdminReports />
+          </AdminLayout>
         } />
 
       </Routes>

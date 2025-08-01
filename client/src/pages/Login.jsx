@@ -22,8 +22,7 @@ const Login = () => {
     { value: 'reception', label: 'Receptionist', icon: Phone, color: 'text-blue-600' },
     { value: 'mechanic', label: 'Mechanic', icon: Wrench, color: 'text-green-600' },
     { value: 'accountant', label: 'Accountant', icon: Calculator, color: 'text-purple-600' },
-    { value: 'manager', label: 'Manager', icon: UserCheck, color: 'text-orange-600' },
-    { value: 'admin', label: 'Admin', icon: Crown, color: 'text-red-600' }
+    { value: 'manager', label: 'Manager', icon: UserCheck, color: 'text-orange-600' }
   ]
 
   const handleInputChange = (e) => {
@@ -209,13 +208,22 @@ const Login = () => {
         </Card>
 
         {/* Footer */}
-        <div className="text-center mt-6">
+        <div className="text-center mt-6 space-y-2">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
             <a href="#" className="text-garage-green hover:underline font-medium">
               Contact your administrator
             </a>
           </p>
+          <div className="pt-2 border-t border-gray-200">
+            <Link 
+              to="/admin-login"
+              className="text-sm text-purple-600 hover:text-purple-700 transition-colors inline-flex items-center"
+            >
+              <Crown className="h-4 w-4 mr-1" />
+              Admin Login
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -176,6 +176,28 @@ const Sidebar = () => {
             color: 'text-indigo-600'
           }
         ]
+
+      case 'admin':
+        return [
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            path: '/admin/dashboard',
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Employees',
+            icon: Users,
+            path: '/admin/employees',
+            color: 'text-green-600'
+          },
+          {
+            title: 'Reports',
+            icon: BarChart3,
+            path: '/admin/reports',
+            color: 'text-indigo-600'
+          }
+        ]
       
       default:
         return []
@@ -194,6 +216,8 @@ const Sidebar = () => {
         return 'Accountant Panel'
       case 'manager':
         return 'Manager Panel'
+      case 'admin':
+        return 'Admin Panel'
       default:
         return 'Dashboard'
     }

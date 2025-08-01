@@ -240,7 +240,7 @@ const ManagerEmployees = () => {
             </div>
             <Button 
               onClick={() => setShowAddModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
+              className="bg-gradient-hero hover:shadow-glow transition-all duration-300 whitespace-nowrap"
             >
               <UserPlus className="h-4 w-4 mr-2" />
               Add Employee
@@ -366,7 +366,7 @@ const ManagerEmployees = () => {
                   <p className="text-gray-500 mb-6">Get started by adding your first employee to the system.</p>
                   <Button 
                     onClick={() => setShowAddModal(true)}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="bg-gradient-hero hover:shadow-glow transition-all duration-300"
                   >
                     <UserPlus className="h-4 w-4 mr-2" />
                     Add First Employee
@@ -638,7 +638,7 @@ const ManagerEmployees = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              <Button type="submit" className="bg-gradient-hero hover:shadow-glow transition-all duration-300">
                 Add Employee
               </Button>
             </div>
@@ -841,7 +841,7 @@ const ManagerEmployees = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              <Button type="submit" className="bg-gradient-hero hover:shadow-glow transition-all duration-300">
                 Update Employee
               </Button>
             </div>

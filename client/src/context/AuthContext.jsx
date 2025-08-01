@@ -28,7 +28,6 @@ const AuthContextProvider = (props) => {
                         setUser(userData);
                         localStorage.setItem(`${role}Token`, data.token);
                         localStorage.setItem('userData', JSON.stringify(userData));
-                        console.log('Reception employee data loaded:', userData);
                     } catch (fetchError) {
                         console.error('Failed to fetch employee data:', fetchError);
                         // Fallback if employee data fetch fails
@@ -106,12 +105,10 @@ const AuthContextProvider = (props) => {
                 config.headers['rtoken'] = token;
             }
             
-            console.log('Fetching employee profile with config:', config);
             
             // Fetch employee profile data from the backend
             const { data } = await axios.get(`${backendUrl}/api/${role}/profile`, config);
             
-            console.log('Employee profile response:', data);
             
             if (data.success) {
                 return {
@@ -154,14 +151,11 @@ const AuthContextProvider = (props) => {
             if (storedUserData) {
                 try {
                     const userData = JSON.parse(storedUserData);
-                    console.log('Restoring session for user:', userData)
                     
                     // Handle role mismatch: 'receptionist' from DB vs 'reception' used for tokens
                     const tokenRole = userData.role === 'receptionist' ? 'reception' : userData.role;
                     const token = localStorage.getItem(`${tokenRole}Token`);
                     
-                    console.log('Looking for token with key:', `${tokenRole}Token`)
-                    console.log('Found token:', token)
                     
                     if (token) {
                         // Update user data with token to ensure it's available

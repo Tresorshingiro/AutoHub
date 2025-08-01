@@ -27,9 +27,6 @@ export const MechanicProvider = ({ children }) => {
   
   // Get auth headers
   const getAuthHeaders = () => {
-    console.log('Current user in MechanicContext:', user)
-    console.log('User role:', user?.role)
-    console.log('User token:', user?.token)
     return {
       headers: { mtoken: user?.token }
     }
@@ -55,13 +52,9 @@ export const MechanicProvider = ({ children }) => {
   const fetchAssignedVehicles = async () => {
     try {
       setLoading(true)
-      console.log('Fetching vehicles from:', `${backendUrl}/api/mechanic/vehicles`)
-      console.log('Auth headers:', getAuthHeaders())
       const { data } = await axios.get(`${backendUrl}/api/mechanic/vehicles`, getAuthHeaders())
-      console.log('Vehicles API response:', data)
       if (data.success) {
         setVehicles(data.vehicles)
-        console.log('Vehicles set to state:', data.vehicles)
         return data.vehicles
       }
     } catch (error) {

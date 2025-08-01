@@ -151,6 +151,8 @@ const Suppliers = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [filteredSuppliers, setFilteredSuppliers] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(8) // 8 items per page for grid layout
   const [showSupplierModal, setShowSupplierModal] = useState(false)
   const [editingSupplier, setEditingSupplier] = useState(null)
   const [supplierData, setSupplierData] = useState({
@@ -187,7 +189,14 @@ const Suppliers = () => {
     }
 
     setFilteredSuppliers(filtered)
+    setCurrentPage(1) // Reset to first page when filters change
   }, [suppliers, searchTerm, statusFilter])
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentSuppliers = filteredSuppliers.slice(startIndex, endIndex)
 
   const handleAddSupplier = () => {
     setEditingSupplier(null)
@@ -374,8 +383,21 @@ const Suppliers = () => {
       </Card>
 
       {/* Suppliers Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredSuppliers.map((supplier) => (
+      <div className="space-y-6">
+        {/* Pagination Info */}
+        {filteredSuppliers.length > 0 && (
+          <div className="flex justify-between items-center text-sm text-gray-600">
+            <span>
+              Showing {startIndex + 1}-{Math.min(endIndex, filteredSuppliers.length)} of {filteredSuppliers.length} suppliers
+            </span>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+          </div>
+        )}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentSuppliers.map((supplier) => (
           <Card key={supplier._id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -443,6 +465,59 @@ const Suppliers = () => {
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1"
+          >
+            Previous
+          </Button>
+          
+          {/* Page numbers */}
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+              // Show first page, last page, current page, and pages around current
+              const showPage = pageNum === 1 || 
+                             pageNum === totalPages || 
+                             Math.abs(pageNum - currentPage) <= 1
+              
+              if (!showPage && pageNum === 2 && currentPage > 4) {
+                return <span key="start-ellipsis" className="px-2 py-1">...</span>
+              }
+              if (!showPage && pageNum === totalPages - 1 && currentPage < totalPages - 3) {
+                return <span key="end-ellipsis" className="px-2 py-1">...</span>
+              }
+              if (!showPage) return null
+              
+              return (
+                <Button
+                  key={pageNum}
+                  variant={currentPage === pageNum ? "default" : "outline"}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className="px-3 py-1 min-w-[40px]"
+                >
+                  {pageNum}
+                </Button>
+              )
+            })}
+          </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1"
+          >
+            Next
+          </Button>
+        </div>
+      )}
       </div>
 
       {/* No suppliers message */}

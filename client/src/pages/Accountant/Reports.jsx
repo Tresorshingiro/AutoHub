@@ -123,7 +123,7 @@ const Reports = () => {
           Category: item.category || '',
           Amount: item.amount || 0,
           'Payment Method': item.paymentMethod || '',
-          Supplier: item.supplier || 'N/A',
+          Supplier: typeof item.supplier === 'object' ? item.supplier?.name || 'N/A' : item.supplier || 'N/A',
           Notes: item.notes || 'N/A'
         }))
         filename = `Expenses_Report_${startDate}_to_${endDate}`
@@ -181,7 +181,7 @@ const Reports = () => {
           item.category || '',
           (item.amount || 0).toLocaleString(),
           item.paymentMethod || '',
-          item.supplier || 'N/A'
+          typeof item.supplier === 'object' ? item.supplier?.name || 'N/A' : item.supplier || 'N/A'
         ])
         break
       case 'income':
@@ -479,7 +479,9 @@ const Reports = () => {
                           RWF {(item.amount || 0).toLocaleString()}
                         </td>
                         <td className="border border-gray-300 px-4 py-2">{item.paymentMethod || ''}</td>
-                        <td className="border border-gray-300 px-4 py-2">{item.supplier || 'N/A'}</td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          {typeof item.supplier === 'object' ? item.supplier?.name || 'N/A' : item.supplier || 'N/A'}
+                        </td>
                       </>
                     )}
                     {reportType === 'income' && (

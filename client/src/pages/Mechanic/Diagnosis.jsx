@@ -36,13 +36,11 @@ const Diagnosis = () => {
   const [showQuotationModal, setShowQuotationModal] = useState(false)
 
   useEffect(() => {
-    console.log('Diagnosis component mounted, fetching data...')
     fetchAssignedVehicles()
     fetchAllParts()
   }, [])
 
   useEffect(() => {
-    console.log('Vehicles data updated:', vehicles)
     if (!vehicles) {
       setFilteredVehicles([])
       return
@@ -51,7 +49,6 @@ const Diagnosis = () => {
     let filtered = vehicles.filter(vehicle => 
       vehicle.status === 'awaiting-diagnosis' || vehicle.status === 'waiting-parts'
     )
-    console.log('Filtered vehicles (awaiting-diagnosis + waiting-parts):', filtered)
 
     if (searchTerm && searchTerm.trim().length > 0) {
       const searchLower = searchTerm.toLowerCase()
@@ -78,9 +75,7 @@ const Diagnosis = () => {
 
   const handleQuotationSubmit = useCallback(async (quotationData) => {
     try {
-      console.log('Submitting quotation with data:', quotationData)
       const result = await createQuotation(selectedVehicle._id, quotationData)
-      console.log('Quotation creation result:', result)
       setShowQuotationModal(false)
       setSelectedVehicle(null)
       fetchAssignedVehicles() // Refresh the list
