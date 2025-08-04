@@ -14,7 +14,10 @@ const app = express()
 connectCloudinary()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: 'https://autohub-sigma.vercel.app',
+    credentials: true
+}))
 
 app.use('/api/admin', adminRouter)
 app.use('/api/reception', receptionRouter)
