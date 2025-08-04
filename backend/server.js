@@ -15,8 +15,10 @@ connectCloudinary()
 
 app.use(express.json())
 app.use(cors({
-    origin: 'https://autohub-sigma.vercel.app',
-    credentials: true
+    origin: ['https://autohub-sigma.vercel.app', 'http://localhost:5173'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use('/api/admin', adminRouter)
