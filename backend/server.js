@@ -14,6 +14,8 @@ const app = express()
 connectCloudinary()
 
 app.use(express.json())
+
+// Enhanced CORS configuration for production
 app.use(cors({
     origin: ['https://autohub-sigma.vercel.app', 'http://localhost:5173'],
     credentials: true,
@@ -26,8 +28,23 @@ app.use(cors({
         'atoken',        // Accountant token
         'managertoken',  // Manager token
         'admintoken'     // Admin token
-    ]
+    ],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }))
+
+// Additional middleware to handle CORS manually
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, rtoken, mtoken, atoken, managertoken, admintoken');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+    next();
+})
 
 app.use('/api/admin', adminRouter)
 app.use('/api/reception', receptionRouter)
